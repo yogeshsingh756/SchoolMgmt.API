@@ -13,9 +13,26 @@ namespace SchoolMgmt.API.Controllers
     public class AuthController : BaseController
     {
         private readonly IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private readonly ISuperAdminService _superAdminService;
+        public AuthController(IAuthService authService, ISuperAdminService superAdminService)
         {
             _authService = authService;
+            _superAdminService = superAdminService;
+        }
+
+        // ------------------------------------------------------
+        // 🔹 GET /api/register/plans
+        // Public endpoint - fetches available subscription plans
+        // ------------------------------------------------------
+        [HttpGet("subscription/plans")]
+        public async Task<IActionResult> GetPlans()
+        {
+            var plans = await _superAdminService.GetAllPlansAsync();
+
+            if (plans == null || !plans.Any())
+                return NotFoundResponse("No subscription plans found.");
+
+            return OkResponse(plans, "Fetched subscription plans successfully.");
         }
 
         /// <summary>
