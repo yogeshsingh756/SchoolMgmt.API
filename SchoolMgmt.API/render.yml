@@ -1,0 +1,9 @@
+﻿services:
+  - name: schoolmgmt-api
+    type: web
+    plan: free
+    buildCommand: "dotnet publish -c Release -o out"
+    startCommand: "dotnet out/SchoolMgmt.API.dll"
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
