@@ -20,7 +20,14 @@ namespace SchoolMgmt.Infrastructure.Repositories
         }
         public async Task<(bool Success, string Message)> CreateUserAsync(
     int organizationId, string roleName, string firstName, string lastName,
-    string username, string email, string passwordHash, string phoneNumber, int createdBy)
+    string username, string email, string passwordHash, string phoneNumber, int createdBy, string? qualification = null,
+    string? designation = null,
+    decimal? salary = null,
+    string? occupation = null,
+    string? address = null,
+    string? admissionNo = null,
+    int? parentId = null,
+    int? classId = null)
         {
             using var conn = _dbFactory.CreateConnection();
 
@@ -35,6 +42,16 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("@p_CreatedBy", createdBy);
             parameters.Add("@p_PhoneNumber", phoneNumber);
 
+            // Optional role-specific fields
+            parameters.Add("@p_Qualification", qualification);
+            parameters.Add("@p_Designation", designation);
+            parameters.Add("@p_Salary", salary);
+            parameters.Add("@p_Occupation", occupation);
+            parameters.Add("@p_Address", address);
+            parameters.Add("@p_AdmissionNo", admissionNo);
+            parameters.Add("@p_ParentId", parentId);
+            parameters.Add("@p_ClassId", classId);
+
             var result = await conn.QueryFirstOrDefaultAsync<SpResult>(
                 "sp_User_Create", parameters, commandType: CommandType.StoredProcedure);
 
@@ -46,7 +63,15 @@ namespace SchoolMgmt.Infrastructure.Repositories
 
         public async Task<(bool Success, string Message)> UpdateUserAsync(
     int organizationId, int userId, string firstName, string lastName,
-    string email, string phone, int modifiedBy)
+    string email, string phone, int modifiedBy,
+    string? qualification = null,
+    string? designation = null,
+    decimal? salary = null,
+    string? occupation = null,
+    string? address = null,
+    string? admissionNo = null,
+    int? parentId = null,
+    int? classId = null)
         {
             using var conn = _dbFactory.CreateConnection();
             var parameters = new DynamicParameters();
@@ -58,6 +83,16 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("@p_Email", email);
             parameters.Add("@p_Phone", phone);
             parameters.Add("@p_ModifiedBy", modifiedBy);
+
+            // Optional role-specific fields
+            parameters.Add("@p_Qualification", qualification);
+            parameters.Add("@p_Designation", designation);
+            parameters.Add("@p_Salary", salary);
+            parameters.Add("@p_Occupation", occupation);
+            parameters.Add("@p_Address", address);
+            parameters.Add("@p_AdmissionNo", admissionNo);
+            parameters.Add("@p_ParentId", parentId);
+            parameters.Add("@p_ClassId", classId);
 
             var result = await conn.QueryFirstOrDefaultAsync<SpResult>(
                 "sp_User_Update", parameters, commandType: CommandType.StoredProcedure);

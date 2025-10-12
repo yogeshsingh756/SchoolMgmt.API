@@ -14,12 +14,14 @@ namespace SchoolMgmt.Application.Services
         private readonly IDbConnectionFactory _dbFactory;
         private readonly IJwtTokenService _jwtService;
         private readonly IConfiguration _config;
+        private readonly IPermissionService _permissionService;
 
-        public AuthService(IDbConnectionFactory dbFactory, IJwtTokenService jwtService, IConfiguration config)
+        public AuthService(IDbConnectionFactory dbFactory, IJwtTokenService jwtService, IConfiguration config, IPermissionService permissionService)
         {
             _dbFactory = dbFactory;
             _jwtService = jwtService;
             _config = config;
+            _permissionService = permissionService;
         }
 
         public async Task<(bool Success, string? Message, AuthResponse? Response)> RegisterAsync(RegisterRequest req)
@@ -174,6 +176,17 @@ namespace SchoolMgmt.Application.Services
 
             await conn.ExecuteAsync("sp_RefreshToken_Create", p2, commandType: CommandType.StoredProcedure);
 
+            var effectivePermissions = await _permissionService.GetEffectivePermissionsAtLoginAsync(userId);
+
+            // Convert to UserPermissionDto
+            var permissions = effectivePermissions.Select(p => new UserPermissionDto
+            {
+                PermissionKey = p.PermissionKey,
+                CanView = p.CanView,
+                CanCreate = p.CanCreate,
+                CanEdit = p.CanEdit,
+                CanDelete = p.CanDelete
+            }).ToList();
             var response = new AuthResponse
             {
                 AccessToken = accessToken,
@@ -183,7 +196,8 @@ namespace SchoolMgmt.Application.Services
                 OrganizationId = orgId,
                 UserId = userId,
                 Role = roleName,
-                Username = req.Username
+                Username = req.Username,
+                Permissions = permissions
             };
 
             return (true, null, response);

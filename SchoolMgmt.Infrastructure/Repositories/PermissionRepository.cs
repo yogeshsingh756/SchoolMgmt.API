@@ -130,5 +130,20 @@ namespace SchoolMgmt.Infrastructure.Repositories
 
             return true;
         }
+
+        public async Task<IEnumerable<EffectivePermissionDto>> GetEffectivePermissionsAtLoginAsync(int userId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            var p = new DynamicParameters();
+            p.Add("p_UserId", userId);
+
+            var result = await conn.QueryAsync<EffectivePermissionDto>(
+                "sp_User_GetEffectivePermissions",
+                p,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result;
+        }
     }
 }

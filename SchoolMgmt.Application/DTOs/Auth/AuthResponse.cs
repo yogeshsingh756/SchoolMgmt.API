@@ -16,5 +16,6 @@ namespace SchoolMgmt.Application.DTOs.Auth
         public int UserId { get; set; }
         public string Role { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
+        public List<UserPermissionDto> Permissions { get; set; } = new();
     }
 }

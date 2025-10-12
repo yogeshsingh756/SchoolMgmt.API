@@ -9,6 +9,7 @@ namespace SchoolMgmt.Application.DTOs.User
 {
     public class CreateUserRequest
     {
+
         [Required]
         public string RoleName { get; set; } = string.Empty;
 
@@ -29,5 +30,19 @@ namespace SchoolMgmt.Application.DTOs.User
 
         [Phone]
         public string? PhoneNumber { get; set; }
+
+        // 🧑‍🏫 Optional Teacher fields
+        public string? Qualification { get; set; }
+        public string? Designation { get; set; }
+        public decimal? Salary { get; set; }
+
+        // 👨‍👩‍👧 Optional Parent fields
+        public string? Occupation { get; set; }
+        public string? Address { get; set; }
+
+        // 🎓 Optional Student fields
+        public string? AdmissionNo { get; set; }
+        public int? ParentId { get; set; }
+        public int? ClassId { get; set; }
     }
 }

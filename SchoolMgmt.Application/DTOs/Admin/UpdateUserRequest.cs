@@ -23,5 +23,15 @@ namespace SchoolMgmt.Application.DTOs.Admin
 
         [Phone]
         public string? Phone { get; set; }
+
+        // Optional Role-Specific Fields (same as Create)
+        public string? Qualification { get; set; }
+        public string? Designation { get; set; }
+        public decimal? Salary { get; set; }
+        public string? Occupation { get; set; }
+        public string? Address { get; set; }
+        public string? AdmissionNo { get; set; }
+        public int? ParentId { get; set; }
+        public int? ClassId { get; set; }
     }
 }

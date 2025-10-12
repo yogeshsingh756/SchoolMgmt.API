@@ -27,8 +27,24 @@ namespace SchoolMgmt.Application.Services
             // Hash password securely
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(req.Password, workFactor: 11);
             return await _repo.CreateUserAsync(
-                organizationId, req.RoleName, req.FirstName, req.LastName,
-                req.Username, req.Email, hashedPassword, req.PhoneNumber, createdBy);
+        organizationId,
+        req.RoleName,
+        req.FirstName,
+        req.LastName,
+        req.Username,
+        req.Email,
+        hashedPassword,
+        req.PhoneNumber,
+        createdBy,
+        req.Qualification,
+        req.Designation,
+        req.Salary,
+        req.Occupation,
+        req.Address,
+        req.AdmissionNo,
+        req.ParentId,
+        req.ClassId
+    );
         }
         public async Task<AdminDashboardDto> GetDashboardAsync(int organizationId)
         {
@@ -46,8 +62,22 @@ namespace SchoolMgmt.Application.Services
         public async Task<(bool Success, string Message)> UpdateUserAsync(int organizationId, UpdateUserRequest req, int modifiedBy)
         {
             return await _repo.UpdateUserAsync(
-                organizationId, req.UserId, req.FirstName, req.LastName,
-                req.Email, req.Phone, modifiedBy);
+        organizationId,
+        req.UserId,
+        req.FirstName,
+        req.LastName,
+        req.Email,
+        req.Phone,
+        modifiedBy,
+        req.Qualification,
+        req.Designation,
+        req.Salary,
+        req.Occupation,
+        req.Address,
+        req.AdmissionNo,
+        req.ParentId,
+        req.ClassId
+    );
         }
 
         public async Task<(bool Success, string Message)> SoftDeleteUserAsync(int organizationId, int userId, int modifiedBy)
