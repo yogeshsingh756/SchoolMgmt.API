@@ -181,7 +181,7 @@ namespace SchoolMgmt.Application.Services
 
             var effectivePermissions = await _permissionService.GetEffectivePermissionsAtLoginAsync(userId);
 
-            // Convert to UserPermissionDto
+            // Convert to UserPermissionDto 
             var permissions = effectivePermissions.Select(p => new UserPermissionDto
             {
                 PermissionKey = p.PermissionKey,
