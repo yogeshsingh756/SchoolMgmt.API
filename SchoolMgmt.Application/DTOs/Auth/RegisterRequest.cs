@@ -15,6 +15,7 @@ namespace SchoolMgmt.Application.DTOs.Auth
         public int? PlanId { get; set; }
         public bool IsTrial { get; set; }
         public int TrialDays { get; set; } = 0;
+        public string? LogoUrl { get; set; }
 
         // Admin user
         public string AdminFirstName { get; set; } = string.Empty;

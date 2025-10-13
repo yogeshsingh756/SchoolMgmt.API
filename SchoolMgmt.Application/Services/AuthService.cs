@@ -32,9 +32,9 @@ namespace SchoolMgmt.Application.Services
 
             // Hash password here
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(req.AdminPassword, workFactor: 12);
-
             using var conn = _dbFactory.CreateConnection();
             var p = new DynamicParameters();
+            // ✅ Input parameters (match SP order exactly)
             p.Add("p_SchoolName", req.SchoolName);
             p.Add("p_Address", req.Address);
             p.Add("p_Phone", req.Phone);
@@ -49,11 +49,14 @@ namespace SchoolMgmt.Application.Services
             p.Add("p_AdminPasswordHash", passwordHash);
             p.Add("p_CreatedBy", 0);
             p.Add("p_AdminPhone", req.AdminPhone);
+            p.Add("p_LogoUrl", req.LogoUrl);
 
+            // ✅ Output parameters
             p.Add("o_OrganizationId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             p.Add("o_AdminUserId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             p.Add("o_Status", dbType: DbType.String, size: 50, direction: ParameterDirection.Output);
 
+            // ✅ Use explicit CALL to preserve parameter order
             await conn.ExecuteAsync("sp_Org_Register", p, commandType: CommandType.StoredProcedure);
 
             var status = p.Get<string>("o_Status");
