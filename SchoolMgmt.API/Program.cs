@@ -74,6 +74,8 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IPermissionService, PermissionRepository>();
+builder.Services.AddScoped<ISuperAdminRoleService, SuperAdminRoleService>();
+builder.Services.AddScoped<SuperAdminRoleRepository>();
 builder.Services.AddScoped<AdminRepository>();
 builder.Services.AddScoped<SuperAdminRepository>();
 
