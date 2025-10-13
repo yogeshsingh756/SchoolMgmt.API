@@ -103,6 +103,18 @@ namespace SchoolMgmt.Application.Services
 
             var refreshId = p2.Get<long>("o_RefreshTokenId");
 
+            var effectivePermissions = await _permissionService.GetEffectivePermissionsAtLoginAsync(adminUserId);
+
+            // Convert to UserPermissionDto 
+            var permissions = effectivePermissions.Select(p => new UserPermissionDto
+            {
+                PermissionKey = p.PermissionKey,
+                CanView = p.CanView,
+                CanCreate = p.CanCreate,
+                CanEdit = p.CanEdit,
+                CanDelete = p.CanDelete
+            }).ToList();
+
             var response = new AuthResponse
             {
                 AccessToken = accessToken,
@@ -112,7 +124,8 @@ namespace SchoolMgmt.Application.Services
                 OrganizationId = orgId,
                 UserId = adminUserId,
                 Role = "Admin",
-                Username = req.AdminUsername
+                Username = req.AdminUsername,
+                Permissions = permissions
             };
 
             return (true, null, response);
