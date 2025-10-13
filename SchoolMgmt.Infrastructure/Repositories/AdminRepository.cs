@@ -160,5 +160,14 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 new { p_OrganizationId = organizationId },
                 commandType: CommandType.StoredProcedure);
         }
+
+        public async Task<IEnumerable<DbRole>> GetAssignableRolesForAdminAsync()
+        {
+            using var conn = _dbFactory.CreateConnection();
+            return await conn.QueryAsync<DbRole>(
+                "sp_Roles_GetAssignableByAdmin",
+                commandType: CommandType.StoredProcedure
+            );
+        }
     }
 }

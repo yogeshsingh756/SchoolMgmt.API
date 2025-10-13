@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using SchoolMgmt.Application.DTOs.Admin;
+using SchoolMgmt.Application.DTOs.SuperAdmin;
 using SchoolMgmt.Application.DTOs.User;
 using SchoolMgmt.Application.Interfaces;
 using SchoolMgmt.Infrastructure.Repositories;
@@ -110,6 +111,16 @@ namespace SchoolMgmt.Application.Services
                 PageNumber = req.PageNumber,
                 PageSize = req.PageSize
             };
+        }
+
+        public async Task<IEnumerable<RoleDto>> GetAssignableRolesForAdminAsync()
+        {
+            var roles = await _repo.GetAssignableRolesForAdminAsync();
+            return roles.Select(r => new RoleDto
+            {
+                RoleId = r.RoleId,
+                RoleName = r.RoleName
+            });
         }
     }
 }

@@ -176,6 +176,13 @@ namespace SchoolMgmt.API.Controllers
 
             return OkResponse(result, "Fetched users successfully.");
         }
+
+        [HttpGet("roles/available")]
+        public async Task<IActionResult> GetAssignableRoles()
+        {
+            var roles = await _adminService.GetAssignableRolesForAdminAsync();
+            return OkResponse(roles, "Fetched Role details successfully.");
+        }
     }
 
 }
