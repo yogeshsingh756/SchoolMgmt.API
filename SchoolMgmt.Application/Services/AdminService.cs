@@ -113,9 +113,9 @@ namespace SchoolMgmt.Application.Services
             };
         }
 
-        public async Task<IEnumerable<RoleDto>> GetAssignableRolesForAdminAsync()
+        public async Task<IEnumerable<RoleDto>> GetAssignableRolesForAdminAsync(int adminId)
         {
-            var roles = await _repo.GetAssignableRolesForAdminAsync();
+            var roles = await _repo.GetAssignableRolesForAdminAsync(adminId);
             return roles.Select(r => new RoleDto
             {
                 RoleId = r.RoleId,

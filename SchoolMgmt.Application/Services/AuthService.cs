@@ -5,6 +5,8 @@ using SchoolMgmt.Application.Interfaces;
 using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Shared.Interfaces;
 using SchoolMgmt.Shared.Models;
+using SchoolMgmt.Shared.Models.Module;
+using SchoolMgmt.Shared.Models.Permission;
 using System.Data;
 
 namespace SchoolMgmt.Application.Services
@@ -103,17 +105,68 @@ namespace SchoolMgmt.Application.Services
 
             var refreshId = p2.Get<long>("o_RefreshTokenId");
 
-            var effectivePermissions = await _permissionService.GetEffectivePermissionsAtLoginAsync(adminUserId);
-
-            // Convert to UserPermissionDto 
-            var permissions = effectivePermissions.Select(p => new UserPermissionDto
+            IEnumerable<dynamic>? effectivePermissions = null;
+            try
             {
-                PermissionKey = p.PermissionKey,
-                CanView = p.CanView,
-                CanCreate = p.CanCreate,
-                CanEdit = p.CanEdit,
-                CanDelete = p.CanDelete
-            }).ToList();
+                effectivePermissions = await _permissionService.GetEffectivePermissionsAtLoginAsync(adminUserId);
+            }
+            catch
+            {
+                effectivePermissions = Enumerable.Empty<dynamic>();
+            }
+
+            // 🧩 Step 7: Build module hierarchy safely
+            var moduleDict = new Dictionary<int, Modules>();
+
+            foreach (var row in effectivePermissions ?? Enumerable.Empty<dynamic>())
+            {
+                int moduleId = row?.ModuleId ?? 0;
+                string moduleName = row?.ModuleName ?? "Unknown";
+
+                if (moduleId == 0)
+                    continue; // skip invalid rows
+
+                if (!moduleDict.TryGetValue(moduleId, out var module))
+                {
+                    module = new Modules
+                    {
+                        ModuleId = moduleId,
+                        ModuleName = moduleName,
+                        Icon = row?.Icon ?? string.Empty,
+                        RoutePath = row?.ModuleRoutePath ?? string.Empty,
+                        OrderNo = row?.OrderNo ?? 0,
+                        SubModules = new List<SubModules>()
+                    };
+                    moduleDict.Add(moduleId, module);
+                }
+
+                int? subModuleId = row?.SubModuleId;
+                if (subModuleId.HasValue)
+                {
+                    var subModule = module.SubModules.FirstOrDefault(s => s.SubModuleId == subModuleId.Value);
+                    if (subModule == null)
+                    {
+                        subModule = new SubModules
+                        {
+                            SubModuleId = subModuleId.Value,
+                            SubModuleName = row?.SubModuleName ?? "Unnamed",
+                            RoutePath = row?.SubModuleRoutePath ?? string.Empty,
+                            Permissions = new List<Permissions>()
+                        };
+                        module.SubModules.Add(subModule);
+                    }
+
+                    subModule.Permissions.Add(new Permissions
+                    {
+                        PermissionId = row?.PermissionId ?? 0,
+                        PermissionKey = row?.PermissionKey ?? string.Empty,
+                        CanView = Convert.ToBoolean(row?.CanView ?? false),
+                        CanCreate = Convert.ToBoolean(row?.CanCreate ?? false),
+                        CanEdit = Convert.ToBoolean(row?.CanEdit ?? false),
+                        CanDelete = Convert.ToBoolean(row?.CanDelete ?? false)
+                    });
+                }
+            }
 
             var response = new AuthResponse
             {
@@ -125,7 +178,7 @@ namespace SchoolMgmt.Application.Services
                 UserId = adminUserId,
                 Role = "Admin",
                 Username = req.AdminUsername,
-                Permissions = permissions
+                Permissions = moduleDict.Values.ToList()
             };
 
             return (true, null, response);
@@ -192,17 +245,69 @@ namespace SchoolMgmt.Application.Services
 
             await conn.ExecuteAsync("sp_RefreshToken_Create", p2, commandType: CommandType.StoredProcedure);
 
-            var effectivePermissions = await _permissionService.GetEffectivePermissionsAtLoginAsync(userId);
-
-            // Convert to UserPermissionDto 
-            var permissions = effectivePermissions.Select(p => new UserPermissionDto
+            IEnumerable<dynamic>? effectivePermissions = null;
+            try
             {
-                PermissionKey = p.PermissionKey,
-                CanView = p.CanView,
-                CanCreate = p.CanCreate,
-                CanEdit = p.CanEdit,
-                CanDelete = p.CanDelete
-            }).ToList();
+                effectivePermissions = await _permissionService.GetEffectivePermissionsAtLoginAsync(userId);
+            }
+            catch
+            {
+                effectivePermissions = Enumerable.Empty<dynamic>();
+            }
+
+            // 🧩 Step 7: Build module hierarchy safely
+            var moduleDict = new Dictionary<int, Modules>();
+
+            foreach (var row in effectivePermissions ?? Enumerable.Empty<dynamic>())
+            {
+                int moduleId = row?.ModuleId ?? 0;
+                string moduleName = row?.ModuleName ?? "Unknown";
+
+                if (moduleId == 0)
+                    continue; // skip invalid rows
+
+                if (!moduleDict.TryGetValue(moduleId, out var module))
+                {
+                    module = new Modules
+                    {
+                        ModuleId = moduleId,
+                        ModuleName = moduleName,
+                        Icon = row?.Icon ?? string.Empty,
+                        RoutePath = row?.ModuleRoutePath ?? string.Empty,
+                        OrderNo = row?.OrderNo ?? 0,
+                        SubModules = new List<SubModules>()
+                    };
+                    moduleDict.Add(moduleId, module);
+                }
+
+                int? subModuleId = row?.SubModuleId;
+                if (subModuleId.HasValue)
+                {
+                    var subModule = module.SubModules.FirstOrDefault(s => s.SubModuleId == subModuleId.Value);
+                    if (subModule == null)
+                    {
+                        subModule = new SubModules
+                        {
+                            SubModuleId = subModuleId.Value,
+                            SubModuleName = row?.SubModuleName ?? "Unnamed",
+                            RoutePath = row?.SubModuleRoutePath ?? string.Empty,
+                            Permissions = new List<Permissions>()
+                        };
+                        module.SubModules.Add(subModule);
+                    }
+
+                    subModule.Permissions.Add(new Permissions
+                    {
+                        PermissionId = row?.PermissionId ?? 0,
+                        PermissionKey = row?.PermissionKey ?? string.Empty,
+                        CanView = Convert.ToBoolean(row?.CanView ?? false),
+                        CanCreate = Convert.ToBoolean(row?.CanCreate ?? false),
+                        CanEdit = Convert.ToBoolean(row?.CanEdit ?? false),
+                        CanDelete = Convert.ToBoolean(row?.CanDelete ?? false)
+                    });
+                }
+            }
+
             var response = new AuthResponse
             {
                 AccessToken = accessToken,
@@ -213,7 +318,7 @@ namespace SchoolMgmt.Application.Services
                 UserId = userId,
                 Role = roleName,
                 Username = req.Username,
-                Permissions = permissions
+                Permissions = moduleDict.Values.ToList()
             };
 
             return (true, null, response);

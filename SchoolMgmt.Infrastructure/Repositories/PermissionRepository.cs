@@ -97,14 +97,19 @@ namespace SchoolMgmt.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<IEnumerable<UserPermissionDto>> GetUserPermissionsAsync(int userId)
+        public async Task<IEnumerable<UserPermissionDto>> GetUserPermissionsAsync(int userId,int adminId)
         {
             using var conn = _dbFactory.CreateConnection();
-            var result = await conn.QueryAsync<UserPermissionDto>(
+            var p = new DynamicParameters();
+            p.Add("p_UserId", userId);
+            p.Add("p_AdminId", adminId);
+
+            var list = await conn.QueryAsync<UserPermissionDto>(
                 "sp_UserPermissions_GetByUserId",
-                new { p_UserId = userId },
-                commandType: CommandType.StoredProcedure);
-            return result;
+                p,
+                commandType: CommandType.StoredProcedure
+            );
+            return list.ToList();
         }
 
         public async Task<bool> UpsertUserPermissionsV2Async(int userId, IEnumerable<UserPermissionDto> permissions, int modifiedBy)
@@ -131,19 +136,15 @@ namespace SchoolMgmt.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<IEnumerable<EffectivePermissionDto>> GetEffectivePermissionsAtLoginAsync(int userId)
+        public async Task<IEnumerable<dynamic>> GetEffectivePermissionsAtLoginAsync(int userId)
         {
             using var conn = _dbFactory.CreateConnection();
-            var p = new DynamicParameters();
-            p.Add("p_UserId", userId);
-
-            var result = await conn.QueryAsync<EffectivePermissionDto>(
-                "sp_User_GetEffectivePermissions",
-                p,
+            var result = await conn.QueryAsync<dynamic>(
+                "sp_User_GetEffectivePermissionsForLogin",
+                new { p_UserId = userId },
                 commandType: CommandType.StoredProcedure
             );
-
-            return result;
+            return result; 
         }
     }
 }

@@ -16,6 +16,6 @@ namespace SchoolMgmt.Application.Interfaces
         Task<PaginatedUserResponse> GetAllUsersAsync(int organizationId, GetUsersRequest req);
         Task<(bool Success, string Message)> UpdateUserAsync(int organizationId, UpdateUserRequest req, int modifiedBy);
         Task<(bool Success, string Message)> SoftDeleteUserAsync(int organizationId, int userId, int modifiedBy);
-        Task<IEnumerable<RoleDto>> GetAssignableRolesForAdminAsync();
+        Task<IEnumerable<RoleDto>> GetAssignableRolesForAdminAsync(int adminId);
     }
 }

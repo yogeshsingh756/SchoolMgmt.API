@@ -25,10 +25,12 @@ namespace SchoolMgmt.API.Controllers
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserPermissions(int userId)
         {
+            var adminId = GetCurrentUserId();
+
             if (userId <= 0)
                 return BadRequestResponse("Invalid user ID.");
 
-            var result = await _permissionService.GetUserPermissionsAsync(userId);
+            var result = await _permissionService.GetUserPermissionsAsync(userId, adminId);
 
             if (result == null || !result.Any())
                 return NotFoundResponse("No permissions found for this user.");

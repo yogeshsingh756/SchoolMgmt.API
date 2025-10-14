@@ -180,7 +180,8 @@ namespace SchoolMgmt.API.Controllers
         [HttpGet("roles/available")]
         public async Task<IActionResult> GetAssignableRoles()
         {
-            var roles = await _adminService.GetAssignableRolesForAdminAsync();
+            var adminId = GetCurrentUserId();
+            var roles = await _adminService.GetAssignableRolesForAdminAsync(adminId);
             return OkResponse(roles, "Fetched Role details successfully.");
         }
     }

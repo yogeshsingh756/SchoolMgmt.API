@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SchoolMgmt.Shared.Models.Module;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,6 @@ namespace SchoolMgmt.Application.DTOs.Auth
         public int UserId { get; set; }
         public string Role { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
-        public List<UserPermissionDto> Permissions { get; set; } = new();
+        public List<Modules> Permissions { get; set; } = new();
     }
 }

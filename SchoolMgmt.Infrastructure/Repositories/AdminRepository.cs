@@ -161,11 +161,15 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<IEnumerable<DbRole>> GetAssignableRolesForAdminAsync()
+        public async Task<IEnumerable<DbRole>> GetAssignableRolesForAdminAsync(int adminId)
         {
             using var conn = _dbFactory.CreateConnection();
+            var p = new DynamicParameters();
+            p.Add("p_AdminId", adminId);
+
             return await conn.QueryAsync<DbRole>(
                 "sp_Roles_GetAssignableByAdmin",
+                p,
                 commandType: CommandType.StoredProcedure
             );
         }
