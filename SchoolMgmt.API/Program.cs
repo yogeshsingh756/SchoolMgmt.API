@@ -80,12 +80,18 @@ builder.Services.AddScoped<IModuleService, ModuleService>();
 builder.Services.AddScoped<IAuditLogService, AuditLogService>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<IClassSectionService, ClassSectionService>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<IClassSubjectService, ClassSubjectService>();
+builder.Services.AddScoped<ITeacherSubjectService, TeacherSubjectService>();
+builder.Services.AddScoped<SubjectRepository>();
 builder.Services.AddScoped<ClassSectionRepository>();
 builder.Services.AddScoped<SuperAdminRoleRepository>();
 builder.Services.AddScoped<AdminRepository>();
 builder.Services.AddScoped<SuperAdminRepository>();
 builder.Services.AddScoped<ModuleRepository>();
 builder.Services.AddScoped<RoleRepository>();
+builder.Services.AddScoped<ClassSubjectRepository>();
+builder.Services.AddScoped<TeacherSubjectRepository>();
 
 
 
