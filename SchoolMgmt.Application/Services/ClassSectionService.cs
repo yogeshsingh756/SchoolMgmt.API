@@ -70,7 +70,7 @@ namespace SchoolMgmt.Application.Services
         public Task<(bool Success, string Message)> DeleteClassAsync(int classId, int organizationId, int modifiedBy)
             => _repo.DeleteClassAsync(classId, organizationId, modifiedBy);
 
-        public Task<IEnumerable<SectionDto>> GetSectionsByClassAsync(int organizationId, int classId)
+        public Task<IEnumerable<SectionDto>> GetSectionsByClassAsync(int organizationId, int classId, bool isActive)
             => _repo.GetSectionsByClassAsync(organizationId, classId)
                 .ContinueWith(t => t.Result.Select(s => new SectionDto
                 {

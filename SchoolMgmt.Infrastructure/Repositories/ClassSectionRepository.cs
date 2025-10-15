@@ -83,13 +83,22 @@ namespace SchoolMgmt.Infrastructure.Repositories
         }
 
         // 🔹 Get all sections for a class
-        public async Task<IEnumerable<SectionEntity>> GetSectionsByClassAsync(int organizationId, int classId)
+        public async Task<IEnumerable<SectionEntity>> GetSectionsByClassAsync(int organizationId, int? classId = null, bool includeInactive = false)
         {
             using var conn = _dbFactory.CreateConnection();
+
+            var parameters = new
+            {
+                p_OrganizationId = organizationId,
+                p_ClassId = classId,
+                p_IncludeInactive = includeInactive ? 1 : 0
+            };
+
             return await conn.QueryAsync<SectionEntity>(
                 "sp_Admin_Sections_GetAll",
-                new { p_OrganizationId = organizationId },
-                commandType: CommandType.StoredProcedure);
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
         }
 
         // 🔹 Create section

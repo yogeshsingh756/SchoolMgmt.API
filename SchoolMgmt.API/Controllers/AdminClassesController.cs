@@ -58,7 +58,7 @@ namespace SchoolMgmt.API.Controllers
         public async Task<IActionResult> GetSections(int classId)
         {
             int orgId = GetOrgIdFromClaims();
-            var result = await _service.GetSectionsByClassAsync(orgId, classId);
+            var result = await _service.GetSectionsByClassAsync(orgId, classId, false);
             return OkResponse(result, "Fetched sections.");
         }
 

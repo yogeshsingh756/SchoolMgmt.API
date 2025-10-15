@@ -14,7 +14,7 @@ namespace SchoolMgmt.Application.Interfaces
         Task<(bool Success, string Message)> UpdateClassAsync(ClassDto dto, int organizationId, int modifiedBy);
         Task<(bool Success, string Message)> DeleteClassAsync(int classId, int organizationId, int modifiedBy);
 
-        Task<IEnumerable<SectionDto>> GetSectionsByClassAsync(int organizationId, int classId);
+        Task<IEnumerable<SectionDto>> GetSectionsByClassAsync(int organizationId, int classId,bool isActive);
         Task<(int SectionId, string Message)> CreateSectionAsync(SectionDto dto, int organizationId, int createdBy);
         Task<(bool Success, string Message)> UpdateSectionAsync(SectionDto dto, int organizationId, int modifiedBy);
         Task<(bool Success, string Message)> DeleteSectionAsync(int sectionId, int organizationId, int modifiedBy);
