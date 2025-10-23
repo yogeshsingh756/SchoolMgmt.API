@@ -1,5 +1,6 @@
 ﻿using SchoolMgmt.Application.Interfaces;
 using SchoolMgmt.Domain.Entities;
+using SchoolMgmt.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
