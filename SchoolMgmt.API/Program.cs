@@ -83,6 +83,8 @@ builder.Services.AddScoped<IClassSectionService, ClassSectionService>();
 builder.Services.AddScoped<ISubjectService, SubjectService>();
 builder.Services.AddScoped<IClassSubjectService, ClassSubjectService>();
 builder.Services.AddScoped<ITeacherSubjectService, TeacherSubjectService>();
+builder.Services.AddScoped<IFeeService, FeeService>();
+builder.Services.AddScoped<FeeRepository>();
 builder.Services.AddScoped<SubjectRepository>();
 builder.Services.AddScoped<ClassSectionRepository>();
 builder.Services.AddScoped<SuperAdminRoleRepository>();
