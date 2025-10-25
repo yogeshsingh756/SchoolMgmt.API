@@ -53,5 +53,13 @@ namespace SchoolMgmt.Infrastructure.Repositories
             await conn.ExecuteAsync("sp_AdminRoleScope_Upsert", p, commandType: CommandType.StoredProcedure);
             return true;
         }
+        public async Task<IEnumerable<TenantAdminDropdownEntity>> GetTenantAdminsAsync()
+        {
+            using var conn = _dbFactory.CreateConnection();
+            return await conn.QueryAsync<TenantAdminDropdownEntity>(
+                "sp_GetAllTenantAdmins",
+                commandType: CommandType.StoredProcedure
+            );
+        }
     }
 }

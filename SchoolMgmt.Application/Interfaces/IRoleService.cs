@@ -18,5 +18,7 @@ namespace SchoolMgmt.Application.Interfaces
         /// Updates the allowed roles for an admin (Upsert AdminRoleScope).
         /// </summary>
         Task<bool> UpsertRoleScopeAsync(int adminUserId, List<int> allowedRoleIds, int createdBy);
+
+        Task<IEnumerable<TenantAdminDropdownDto>> GetTenantAdminsAsync();
     }
 }

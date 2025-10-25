@@ -35,6 +35,15 @@ namespace SchoolMgmt.API.Controllers
                 ? OkResponse("Role scope updated successfully.")
                 : ServerErrorResponse("Failed to update role scope.");
         }
+        /// <summary>
+        /// Get all tenant admins (SuperAdmin-only)
+        /// </summary>
+        [HttpGet("tenant-admins")]
+        public async Task<IActionResult> GetTenantAdmins()
+        {
+            var admins = await _roleService.GetTenantAdminsAsync();
+            return OkResponse(admins, "Fetched successfully");
+        }
 
         private int GetCurrentUserId()
         {

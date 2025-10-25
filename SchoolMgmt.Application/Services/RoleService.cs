@@ -42,5 +42,18 @@ namespace SchoolMgmt.Application.Services
             var res = await _repo.UpsertRoleScopeAsync(adminUserId, allowedRoleIds, createdBy);
             return res;
         }
+        public async Task<IEnumerable<TenantAdminDropdownDto>> GetTenantAdminsAsync()
+        {
+            var data = await _repo.GetTenantAdminsAsync();
+            return data.Select(d => new TenantAdminDropdownDto
+            {
+                AdminUserId = d.AdminUserId,
+                AdminName = d.AdminName,
+                OrganizationName = d.OrganizationName,
+                RoleName = d.RoleName,
+                Email = d.Email,
+                Username = d.Username
+            });
+        }
     }
 }
