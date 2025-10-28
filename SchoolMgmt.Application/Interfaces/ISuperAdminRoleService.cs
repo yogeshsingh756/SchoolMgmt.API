@@ -1,4 +1,5 @@
 ﻿using SchoolMgmt.Application.DTOs.SuperAdmin;
+using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Shared.Models.Permission;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,6 @@ namespace SchoolMgmt.Application.Interfaces
         Task<(bool Success, string Message)> SoftDeleteRoleAsync(int roleId, int modifiedBy);
         Task<IEnumerable<DTOs.SuperAdmin.RolePermissionDto>> GetRolePermissionsAsync(int roleId);
         Task<(bool Success, string Message)> AssignPermissionAsync(RolePermissionUpdateDto req, int modifiedBy);
+        Task<IEnumerable<Permission>> GetAllPermissionsAsync();
     }
 }

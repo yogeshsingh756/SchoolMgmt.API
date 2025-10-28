@@ -64,6 +64,13 @@ namespace SchoolMgmt.API.Controllers
             return success ? OkResponse<object>(null, msg) : BadRequestResponse(msg);
         }
 
+        [HttpGet("GetAllPermissions")]
+        public async Task<IActionResult> GetAllPermissions()
+        {
+            var result = await _service.GetAllPermissionsAsync();
+            return OkResponse(result, "Fetched all permissions successfully.");
+        }
+
         private int GetCurrentUserId()
         {
             var claim = User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)

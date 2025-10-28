@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Shared.Interfaces;
 using SchoolMgmt.Shared.Models.Permission;
@@ -79,6 +80,13 @@ namespace SchoolMgmt.Infrastructure.Repositories
             p.Add("p_ModifiedBy", modifiedBy);
             var result = await conn.QueryFirstAsync<dynamic>("sp_Role_AssignPermission", p, commandType: CommandType.StoredProcedure);
             return ((int)result.SuccessFlag == 1, (string)result.Message);
+        }
+
+        public async Task<IEnumerable<Permission>> GetAllPermissionsAsync()
+        {
+            using var conn = _dbFactory.CreateConnection();
+            return await conn.QueryAsync<Permission>("sp_Permissions_GetAll", commandType: CommandType.StoredProcedure);
+            
         }
     }
 }

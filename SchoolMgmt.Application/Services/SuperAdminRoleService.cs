@@ -1,7 +1,9 @@
 ﻿using SchoolMgmt.Application.DTOs.SuperAdmin;
 using SchoolMgmt.Application.Interfaces;
+using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Infrastructure.Repositories;
 using SchoolMgmt.Shared.Models.Permission;
+using SchoolMgmt.Shared.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +58,12 @@ namespace SchoolMgmt.Application.Services
         {
             return await _repo.AssignPermissionAsync(
                 req.RoleId, req.PermissionId, req.CanView, req.CanCreate, req.CanEdit, req.CanDelete, modifiedBy);
+        }
+
+        public async Task<IEnumerable<Permission>> GetAllPermissionsAsync()
+        {
+            var result = await _repo.GetAllPermissionsAsync();
+            return result;
         }
     }
 }
