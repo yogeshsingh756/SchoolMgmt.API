@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SchoolMgmt.Application.DTOs.Admin;
 using SchoolMgmt.Application.Interfaces;
 
 namespace SchoolMgmt.API.Controllers
@@ -26,16 +27,20 @@ namespace SchoolMgmt.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AssignSubject(int teacherId, [FromBody] dynamic body)
+        public async Task<IActionResult> AssignSubject(int teacherId, [FromBody] AssignSubjectRequest body)
         {
-            int classId = (int)body.classId;
-            int? sectionId = (int?)body.sectionId;
-            int subjectId = (int)body.subjectId;
-            bool isPrimary = body.isPrimary;
             var orgId = GetOrgIdFromClaims();
             var userId = GetCurrentUserId();
 
-            var id = await _service.AssignAsync(orgId, teacherId, classId, sectionId, subjectId, isPrimary, userId);
+            var id = await _service.AssignAsync(
+        orgId,
+        teacherId,
+        body.ClassId,
+        body.SectionId,
+        body.SubjectId,
+        body.IsPrimary,
+        userId);
+
             return OkResponse(new { TeacherSubjectId = id }, "Teacher assigned successfully.");
         }
 
