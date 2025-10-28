@@ -1,4 +1,5 @@
 ﻿using SchoolMgmt.Application.DTOs.Admin;
+using SchoolMgmt.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,7 @@ namespace SchoolMgmt.Application.Interfaces
         Task<(int SectionId, string Message)> CreateSectionAsync(SectionDto dto, int organizationId, int createdBy);
         Task<(bool Success, string Message)> UpdateSectionAsync(SectionDto dto, int organizationId, int modifiedBy);
         Task<(bool Success, string Message)> DeleteSectionAsync(int sectionId, int organizationId, int modifiedBy);
+
+        Task<IEnumerable<TeacherDropdown>> GetTeachersByOrganizationAsync(int organizationId);
     }
 }

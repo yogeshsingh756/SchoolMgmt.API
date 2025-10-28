@@ -117,5 +117,10 @@ namespace SchoolMgmt.Application.Services
 
         public Task<(bool Success, string Message)> DeleteSectionAsync(int sectionId, int organizationId, int modifiedBy)
             => _repo.DeleteSectionAsync(sectionId, organizationId, modifiedBy);
+        public async Task<IEnumerable<TeacherDropdown>> GetTeachersByOrganizationAsync(int organizationId)
+        {
+            var teachers = await _repo.GetTeachersByOrganizationAsync(organizationId);
+            return teachers;
+        }
     }
 }

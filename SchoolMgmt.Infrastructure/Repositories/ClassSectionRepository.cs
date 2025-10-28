@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Shared.Interfaces;
 using System;
@@ -28,6 +29,8 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 new { p_OrganizationId = organizationId },
                 commandType: CommandType.StoredProcedure);
         }
+
+
 
         // 🔹 Create new class
         public async Task<(int ClassId, string Message)> CreateClassAsync(ClassEntity entity)
@@ -149,6 +152,16 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 new { p_SectionId = sectionId, p_OrganizationId = organizationId, p_ModifiedBy = modifiedBy },
                 commandType: CommandType.StoredProcedure);
             return (true, result.Message);
+        }
+
+        public async Task<IEnumerable<TeacherDropdown>> GetTeachersByOrganizationAsync(int organizationId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            return await conn.QueryAsync<TeacherDropdown>(
+                "sp_Teachers_GetByOrganization",
+                new { p_OrganizationId = organizationId },
+                commandType: CommandType.StoredProcedure);
+
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolMgmt.Application.DTOs.Admin;
 using SchoolMgmt.Application.Interfaces;
+using SchoolMgmt.Application.Services;
 
 namespace SchoolMgmt.API.Controllers
 {
@@ -89,6 +90,14 @@ namespace SchoolMgmt.API.Controllers
             int userId = GetCurrentUserId();
             var (success, msg) = await _service.DeleteSectionAsync(id, orgId, userId);
             return success ? OkResponse(msg) : FailResponse(msg);
+        }
+
+        [HttpGet("teachers")]
+        public async Task<IActionResult> GetTeachersByOrganization()
+        {
+            int orgId = GetOrgIdFromClaims();
+            var result = await _service.GetTeachersByOrganizationAsync(orgId);
+            return OkResponse(result, "Fetched teachers successfully.");
         }
         private int GetOrgIdFromClaims()
         {
