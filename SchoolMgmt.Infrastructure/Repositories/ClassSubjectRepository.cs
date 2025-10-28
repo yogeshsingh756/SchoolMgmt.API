@@ -32,13 +32,13 @@ namespace SchoolMgmt.Infrastructure.Repositories
                     p_CreatedBy = entity.CreatedBy
                 },
                 commandType: CommandType.StoredProcedure);
-            return result?.ClassSubjectId ?? 0;
+            return result != null ? Convert.ToInt32(result.ClassSubjectId) : 0;
         }
 
-        public async Task<IEnumerable<ClassSubjectEntity>> GetByClassAsync(int organizationId, int classId)
+        public async Task<IEnumerable<dynamic>> GetByClassAsync(int organizationId, int classId)
         {
             using var conn = _dbFactory.CreateConnection();
-            return await conn.QueryAsync<ClassSubjectEntity>(
+            return await conn.QueryAsync<dynamic>(
                 "sp_Admin_ClassSubjects_GetByClass",
                 new { p_OrganizationId = organizationId, p_ClassId = classId },
                 commandType: CommandType.StoredProcedure);

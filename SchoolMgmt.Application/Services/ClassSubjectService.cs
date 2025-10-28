@@ -27,7 +27,8 @@ namespace SchoolMgmt.Application.Services
                 ClassSubjectId = x.ClassSubjectId,
                 ClassId = x.ClassId,
                 SubjectId = x.SubjectId,
-                IsActive = x.IsActive
+                IsActive = x.IsActive,
+                SubjectName = x.SubjectName
             });
         }
 
