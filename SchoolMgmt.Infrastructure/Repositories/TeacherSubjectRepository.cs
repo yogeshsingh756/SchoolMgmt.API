@@ -35,7 +35,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
                     p_CreatedBy = entity.CreatedBy
                 },
                 commandType: CommandType.StoredProcedure);
-            return result?.TeacherSubjectId ?? 0;
+           return Convert.ToInt32(result?.TeacherSubjectId ?? 0);
         }
 
         public async Task<IEnumerable<TeacherSubjectEntity>> GetByTeacherAsync(int organizationId, int teacherId)
