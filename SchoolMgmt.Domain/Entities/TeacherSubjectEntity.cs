@@ -18,5 +18,8 @@ namespace SchoolMgmt.Domain.Entities
         public bool IsActive { get; set; }
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
+        public string? SectionName { get; set; }
+        public string? SubjectName { get; set; }
+
     }
 }

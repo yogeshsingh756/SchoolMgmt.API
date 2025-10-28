@@ -30,7 +30,9 @@ namespace SchoolMgmt.Application.Services
                 SectionId = x.SectionId,
                 SubjectId = x.SubjectId,
                 IsPrimary = x.IsPrimary,
-                IsActive = x.IsActive
+                IsActive = x.IsActive,
+                SubjectName = x.SubjectName,
+                SectionName = x.SectionName
             });
         }
 
