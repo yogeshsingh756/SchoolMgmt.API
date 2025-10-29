@@ -28,7 +28,13 @@ namespace SchoolMgmt.Application.Services
                 RoutePath = m.RoutePath,
                 OrderNo = m.OrderNo,
                 IsActive = m.IsActive,
-                CreatedOn = m.CreatedOn
+                CreatedOn = m.CreatedOn,
+                AssignedRoleIds = !string.IsNullOrEmpty(m.AssignedRoleIds)
+            ? m.AssignedRoleIds.Split(',')
+                .Where(x => int.TryParse(x, out _))
+                .Select(int.Parse)
+                .ToList()
+            : new List<int>()
             });
         }
 
@@ -60,7 +66,13 @@ namespace SchoolMgmt.Application.Services
                 RoutePath = s.RoutePath,
                 OrderNo = s.OrderNo,
                 IsActive = s.IsActive,
-                CreatedOn = s.CreatedOn
+                CreatedOn = s.CreatedOn,
+                AssignedRoleIds = !string.IsNullOrEmpty(s.AssignedRoleIds)
+            ? s.AssignedRoleIds.Split(',')
+                .Where(x => int.TryParse(x, out _))
+                .Select(int.Parse)
+                .ToList()
+            : new List<int>()
             });
         }
 

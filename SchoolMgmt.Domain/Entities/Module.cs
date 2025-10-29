@@ -16,5 +16,6 @@ namespace SchoolMgmt.Domain.Entities
         public int OrderNo { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedOn { get; set; }
+        public string AssignedRoleIds { get; set; }
     }
 }
