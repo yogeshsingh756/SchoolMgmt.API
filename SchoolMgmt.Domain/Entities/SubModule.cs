@@ -15,7 +15,7 @@ namespace SchoolMgmt.Domain.Entities
         public string? RoutePath { get; set; }
         public int OrderNo { get; set; }
         public bool IsActive { get; set; }
-        public DateTime CreatedOn { get; set; }
+        public DateTime  CreatedOn { get; set; }
         public string AssignedRoleIds { get; set; }
     }
 }
