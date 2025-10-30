@@ -77,7 +77,6 @@ namespace SchoolMgmt.Infrastructure.Repositories
         public async Task<bool> UpsertUserPermissionsAsync(int userId, IEnumerable<UserPermissionDtoV2> permissions, int modifiedBy)
         {
             using var conn = _dbFactory.CreateConnection();
-            using var tran = conn.BeginTransaction();
 
             try
             {
@@ -88,8 +87,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 // This ensures clean sync between UI state and DB.
                 await conn.ExecuteAsync(
                     "DELETE FROM UserPermissions WHERE UserId = @UserId AND PermissionId NOT IN @PermissionIds;",
-                    new { UserId = userId, PermissionIds = assignedIds },
-                    transaction: tran
+                    new { UserId = userId, PermissionIds = assignedIds }
                 );
 
                 // ✅ Insert/Update permissions
@@ -107,17 +105,13 @@ namespace SchoolMgmt.Infrastructure.Repositories
                             p_CanDelete = p.CanDelete,
                             p_ModifiedBy = modifiedBy
                         },
-                        transaction: tran,
                         commandType: CommandType.StoredProcedure
                     );
                 }
-
-                tran.Commit();
                 return true;
             }
             catch (Exception ex)
             {
-                tran.Rollback();
                 // 🔥 Optional: log exception here
                 Console.WriteLine("Error in UpsertUserPermissionsAsync: " + ex.Message);
                 return false;
