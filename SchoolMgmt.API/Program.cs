@@ -114,6 +114,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
         };
     });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy
+            .WithOrigins(
+                "https://sfms.abhiworld.in",   
+                "http://localhost:3000",      
+                "http://localhost:5173"        
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();  // only if you send cookies/auth headers
+    });
+});
 
 var app = builder.Build();
 
