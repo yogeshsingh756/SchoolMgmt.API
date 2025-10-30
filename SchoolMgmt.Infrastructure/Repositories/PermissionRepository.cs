@@ -64,47 +64,74 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 commandType: CommandType.StoredProcedure);
             return result;
         }
-
-        public async Task<bool> UpsertUserPermissionsAsync(int userId, IEnumerable<UserPermissionDto> permissions, int modifiedBy)
+        public async Task<IEnumerable<PermissionDtoV2>> GetEffectivePermissionsV2Async(int userId)
         {
             using var conn = _dbFactory.CreateConnection();
-
-            foreach (var p in permissions)
-            {
-                await conn.ExecuteAsync(
-                    @"INSERT INTO UserPermissions 
-              (UserId, PermissionId, CanView, CanCreate, CanEdit, CanDelete, ModifiedBy)
-              VALUES (@UserId, @PermissionId, @CanView, @CanCreate, @CanEdit, @CanDelete, @ModifiedBy)
-              ON DUPLICATE KEY UPDATE 
-                CanView = VALUES(CanView),
-                CanCreate = VALUES(CanCreate),
-                CanEdit = VALUES(CanEdit),
-                CanDelete = VALUES(CanDelete),
-                ModifiedOn = NOW(),
-                ModifiedBy = @ModifiedBy;",
-                    new
-                    {
-                        UserId = userId,
-                        p.PermissionId,
-                        p.CanView,
-                        p.CanCreate,
-                        p.CanEdit,
-                        p.CanDelete,
-                        ModifiedBy = modifiedBy
-                    });
-            }
-
-            return true;
+            var result = await conn.QueryAsync<PermissionDtoV2>(
+                "sp_User_GetEffectivePermissions",
+                new { p_UserId = userId },
+                commandType: CommandType.StoredProcedure);
+            return result;
         }
 
-        public async Task<IEnumerable<UserPermissionDto>> GetUserPermissionsAsync(int userId,int adminId)
+        public async Task<bool> UpsertUserPermissionsAsync(int userId, IEnumerable<UserPermissionDtoV2> permissions, int modifiedBy)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            using var tran = conn.BeginTransaction();
+
+            try
+            {
+                // ✅ Optional: clear existing permissions that are no longer assigned
+                var assignedIds = permissions.Where(p => p.IsAssigned).Select(p => p.PermissionId).ToList();
+
+                // Remove any old user-specific permission records that are NOT in the current list
+                // This ensures clean sync between UI state and DB.
+                await conn.ExecuteAsync(
+                    "DELETE FROM UserPermissions WHERE UserId = @UserId AND PermissionId NOT IN @PermissionIds;",
+                    new { UserId = userId, PermissionIds = assignedIds },
+                    transaction: tran
+                );
+
+                // ✅ Insert/Update permissions
+                foreach (var p in permissions.Where(x => x.IsAssigned))
+                {
+                    await conn.ExecuteAsync(
+                        "sp_UserPermissions_Upsert",
+                        new
+                        {
+                            p_UserId = userId,
+                            p_PermissionId = p.PermissionId,
+                            p_CanView = p.CanView,
+                            p_CanCreate = p.CanCreate,
+                            p_CanEdit = p.CanEdit,
+                            p_CanDelete = p.CanDelete,
+                            p_ModifiedBy = modifiedBy
+                        },
+                        transaction: tran,
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+
+                tran.Commit();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                tran.Rollback();
+                // 🔥 Optional: log exception here
+                Console.WriteLine("Error in UpsertUserPermissionsAsync: " + ex.Message);
+                return false;
+            }
+        }
+
+        public async Task<IEnumerable<UserPermissionDtoV2>> GetUserPermissionsAsync(int userId,int adminId)
         {
             using var conn = _dbFactory.CreateConnection();
             var p = new DynamicParameters();
             p.Add("p_UserId", userId);
             p.Add("p_AdminId", adminId);
 
-            var list = await conn.QueryAsync<UserPermissionDto>(
+            var list = await conn.QueryAsync<UserPermissionDtoV2>(
                 "sp_UserPermissions_GetByUserId",
                 p,
                 commandType: CommandType.StoredProcedure

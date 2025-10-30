@@ -43,7 +43,7 @@ namespace SchoolMgmt.API.Controllers
         /// Called when Admin saves the permission toggle grid.
         /// </summary>
         [HttpPost("user/{userId}")]
-        public async Task<IActionResult> UpdateUserPermissions(int userId, [FromBody] List<UserPermissionDto> permissions)
+        public async Task<IActionResult> UpdateUserPermissions(int userId, [FromBody] List<UserPermissionDtoV2> permissions)
         {
             if (userId <= 0)
                 return BadRequestResponse("Invalid user ID.");
@@ -69,7 +69,7 @@ namespace SchoolMgmt.API.Controllers
             if (userId <= 0)
                 return BadRequestResponse("Invalid user ID.");
 
-            var result = await _permissionService.GetEffectivePermissionsAsync(userId);
+            var result = await _permissionService.GetEffectivePermissionsV2Async(userId);
 
             if (result == null || !result.Any())
                 return NotFoundResponse("No effective permissions found.");

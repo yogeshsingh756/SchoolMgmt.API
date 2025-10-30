@@ -15,9 +15,10 @@ namespace SchoolMgmt.Shared.Interfaces
 
         // New
         Task<IEnumerable<PermissionDto>> GetEffectivePermissionsAsync(int userId);
-        Task<bool> UpsertUserPermissionsAsync(int userId, IEnumerable<UserPermissionDto> permissions, int modifiedBy);
+        Task<IEnumerable<PermissionDtoV2>> GetEffectivePermissionsV2Async(int userId);
+        Task<bool> UpsertUserPermissionsAsync(int userId, IEnumerable<UserPermissionDtoV2> permissions, int modifiedBy);
         Task<bool> UpsertUserPermissionsV2Async(int userId, IEnumerable<UserPermissionDto> permissions, int modifiedBy);
-        Task<IEnumerable<UserPermissionDto>> GetUserPermissionsAsync(int userId,int adminId);
+        Task<IEnumerable<UserPermissionDtoV2>> GetUserPermissionsAsync(int userId,int adminId);
         Task<IEnumerable<dynamic>> GetEffectivePermissionsAtLoginAsync(int userId);
     }
 }
