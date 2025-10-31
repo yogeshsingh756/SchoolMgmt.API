@@ -16,7 +16,7 @@ namespace SchoolMgmt.Application.Interfaces
         Task<(bool Success, string Message)> UpdateRoleAsync(int roleId, string roleName, int modifiedBy);
         Task<(bool Success, string Message)> SoftDeleteRoleAsync(int roleId, int modifiedBy);
         Task<IEnumerable<DTOs.SuperAdmin.RolePermissionDto>> GetRolePermissionsAsync(int roleId);
-        Task<(bool Success, string Message)> AssignPermissionAsync(RolePermissionUpdateDto req, int modifiedBy);
+        Task<(bool Success, string Message)> AssignPermissionsBulkAsync(List<Shared.Models.Permission.RolePermissionUpdateDto> permissions, int modifiedBy);
         Task<IEnumerable<Permission>> GetAllPermissionsAsync();
     }
 }

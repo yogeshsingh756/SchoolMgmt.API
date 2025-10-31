@@ -65,21 +65,33 @@ namespace SchoolMgmt.Infrastructure.Repositories
             return await conn.QueryAsync<DbRolePermission>("sp_Role_GetPermissions", p, commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<(bool, string)> AssignPermissionAsync(
-            int roleId, int permissionId,
-            bool canView, bool canCreate, bool canEdit, bool canDelete, int modifiedBy)
+        public async Task<(bool Success, string Message)> AssignPermissionsBulkAsync(List<RolePermissionUpdateDto> permissions, int modifiedBy)
         {
+            // Open single DB connection for efficiency
             using var conn = _dbFactory.CreateConnection();
-            var p = new DynamicParameters();
-            p.Add("p_RoleId", roleId);
-            p.Add("p_PermissionId", permissionId);
-            p.Add("p_CanView", canView);
-            p.Add("p_CanCreate", canCreate);
-            p.Add("p_CanEdit", canEdit);
-            p.Add("p_CanDelete", canDelete);
-            p.Add("p_ModifiedBy", modifiedBy);
-            var result = await conn.QueryFirstAsync<dynamic>("sp_Role_AssignPermission", p, commandType: CommandType.StoredProcedure);
-            return ((int)result.SuccessFlag == 1, (string)result.Message);
+
+            try
+            {
+                foreach (var item in permissions)
+                {
+                    var p = new DynamicParameters();
+                    p.Add("p_RoleId", item.RoleId);
+                    p.Add("p_PermissionId", item.PermissionId);
+                    p.Add("p_CanView", item.CanView);
+                    p.Add("p_CanCreate", item.CanCreate);
+                    p.Add("p_CanEdit", item.CanEdit);
+                    p.Add("p_CanDelete", item.CanDelete);
+                    p.Add("p_ModifiedBy", modifiedBy);
+
+                    await conn.ExecuteAsync("sp_Role_AssignPermission", p, commandType: CommandType.StoredProcedure);
+                }
+
+                return (true, "Permissions assigned successfully.");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Failed to assign permissions: {ex.Message}");
+            }
         }
 
         public async Task<IEnumerable<Permission>> GetAllPermissionsAsync()

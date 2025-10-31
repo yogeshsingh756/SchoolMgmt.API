@@ -56,12 +56,18 @@ namespace SchoolMgmt.API.Controllers
             return OkResponse(result, "Fetched role permissions successfully.");
         }
 
-        [HttpPost("assign-permission")]
-        public async Task<IActionResult> AssignPermission([FromBody] RolePermissionUpdateDto req)
+        [HttpPost("assign-permissions")]
+        public async Task<IActionResult> AssignPermissions([FromBody] List<Shared.Models.Permission.RolePermissionUpdateDto> reqList)
         {
-            var userId = GetCurrentUserId();
-            var (success, msg) = await _service.AssignPermissionAsync(req, userId);
-            return success ? OkResponse<object>(null, msg) : BadRequestResponse(msg);
+            var modifiedBy = GetCurrentUserId();
+
+            if (reqList == null || reqList.Count == 0)
+                return BadRequestResponse("No permissions provided.");
+
+            var (success, message) = await _service.AssignPermissionsBulkAsync(reqList, modifiedBy);
+
+            return success ? OkResponse<object>(null, message)
+                           : FailResponse(message);
         }
 
         [HttpGet("GetAllPermissions")]

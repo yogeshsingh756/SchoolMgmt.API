@@ -54,10 +54,10 @@ namespace SchoolMgmt.Application.Services
             }).ToList();
         }
 
-        public async Task<(bool Success, string Message)> AssignPermissionAsync(RolePermissionUpdateDto req, int modifiedBy)
+        public async Task<(bool Success, string Message)> AssignPermissionsBulkAsync(List<Shared.Models.Permission.RolePermissionUpdateDto> req, int modifiedBy)
         {
-            return await _repo.AssignPermissionAsync(
-                req.RoleId, req.PermissionId, req.CanView, req.CanCreate, req.CanEdit, req.CanDelete, modifiedBy);
+            return await _repo.AssignPermissionsBulkAsync(
+               req , modifiedBy);
         }
 
         public async Task<IEnumerable<Permission>> GetAllPermissionsAsync()
