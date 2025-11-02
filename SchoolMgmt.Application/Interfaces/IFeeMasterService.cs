@@ -9,12 +9,22 @@ namespace SchoolMgmt.Application.Interfaces
 {
     public interface IFeeMasterService
     {
+        // Fee Types
         Task<IEnumerable<FeeTypeEntity>> GetFeeTypesAsync(int organizationId);
-        Task<IEnumerable<AcademicTermEntity>> GetTermsAsync(int organizationId);
-        Task<IEnumerable<AcademicSessionEntity>> GetSessionsAsync(int organizationId);
+        Task<FeeTypeEntity?> GetFeeTypeByIdAsync(int feeTypeId, int organizationId);
+        Task<int> UpsertFeeTypeAsync(FeeTypeEntity entity, int modifiedBy);
+        Task<bool> DeleteFeeTypeAsync(int feeTypeId, int organizationId, int modifiedBy);
 
-        Task<bool> UpsertFeeTypeAsync(FeeTypeEntity entity, int modifiedBy);
-        Task<bool> UpsertTermAsync(AcademicTermEntity entity, int modifiedBy);
-        Task<bool> UpsertSessionAsync(AcademicSessionEntity entity, int modifiedBy);
+        // Terms
+        Task<IEnumerable<AcademicTermEntity>> GetTermsAsync(int organizationId);
+        Task<AcademicTermEntity?> GetTermByIdAsync(int termId, int organizationId);
+        Task<int> UpsertTermAsync(AcademicTermEntity entity, int modifiedBy);
+        Task<bool> DeleteTermAsync(int termId, int organizationId, int modifiedBy);
+
+        // Sessions
+        Task<IEnumerable<AcademicSessionEntity>> GetSessionsAsync(int organizationId);
+        Task<AcademicSessionEntity?> GetSessionByIdAsync(int sessionId, int organizationId);
+        Task<int> UpsertSessionAsync(AcademicSessionEntity entity, int modifiedBy);
+        Task<bool> DeleteSessionAsync(int sessionId, int organizationId, int modifiedBy);
     }
 }
