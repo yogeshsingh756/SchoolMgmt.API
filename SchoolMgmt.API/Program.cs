@@ -122,7 +122,8 @@ builder.Services.AddCors(options =>
             .WithOrigins(
                 "https://sfms.abhiworld.in",   
                 "http://localhost:3000",      
-                "http://localhost:5173"        
+                "http://localhost:5173",
+                "http://localhost:5174"
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
