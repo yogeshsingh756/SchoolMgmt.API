@@ -184,6 +184,16 @@ namespace SchoolMgmt.API.Controllers
             var roles = await _adminService.GetAssignableRolesForAdminAsync(adminId);
             return OkResponse(roles, "Fetched Role details successfully.");
         }
+
+        [HttpGet]
+        [Route("list")]
+        public async Task<IActionResult> GetParents([FromQuery] ParentSearchRequest request)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var result = await _adminService.GetParentsAsync(request, orgId);
+
+            return OkResponse(result, "Parents fetched successfully.");
+        }
     }
 
 }

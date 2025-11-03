@@ -1,7 +1,9 @@
-﻿using Dapper;
+﻿using Azure.Core;
+using Dapper;
 using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Shared.Interfaces;
 using SchoolMgmt.Shared.Models;
+using SchoolMgmt.Shared.Responses;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -172,6 +174,28 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 p,
                 commandType: CommandType.StoredProcedure
             );
+        }
+        public async Task<PaginatedResponse<ParentDto>> GetParentsAsync(int PageNumber, int PageSize, string SearchTerm, int orgId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            var p = new DynamicParameters();
+            p.Add("p_OrgId", orgId);
+            p.Add("p_PageNumber", PageNumber);
+            p.Add("p_PageSize", PageSize);
+            p.Add("p_Search", SearchTerm);
+
+            using var multi = await conn.QueryMultipleAsync("sp_Admin_Parents_GetAll", p, commandType: CommandType.StoredProcedure);
+
+            var items = multi.Read<ParentDto>().ToList();
+            var total = multi.ReadFirst<int>();
+
+            return new PaginatedResponse<ParentDto>
+            {
+                Data = items,
+                PageNumber = PageNumber,
+                PageSize = PageSize,
+                TotalCount = total
+            };
         }
     }
 }

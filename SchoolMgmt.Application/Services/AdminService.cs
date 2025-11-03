@@ -3,9 +3,11 @@ using SchoolMgmt.Application.DTOs.Admin;
 using SchoolMgmt.Application.DTOs.SuperAdmin;
 using SchoolMgmt.Application.DTOs.User;
 using SchoolMgmt.Application.Interfaces;
+using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Infrastructure.Repositories;
 using SchoolMgmt.Shared.Interfaces;
 using SchoolMgmt.Shared.Models;
+using SchoolMgmt.Shared.Responses;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -121,6 +123,11 @@ namespace SchoolMgmt.Application.Services
                 RoleId = r.RoleId,
                 RoleName = r.RoleName
             });
+        }
+
+        public async Task<PaginatedResponse<ParentDto>> GetParentsAsync(ParentSearchRequest request, int organizationId)
+        {
+            return await _repo.GetParentsAsync(request.PageNumber,request.PageSize,request.SearchTerm, organizationId);
         }
     }
 }
