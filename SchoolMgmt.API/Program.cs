@@ -85,6 +85,7 @@ builder.Services.AddScoped<IClassSubjectService, ClassSubjectService>();
 builder.Services.AddScoped<ITeacherSubjectService, TeacherSubjectService>();
 builder.Services.AddScoped<IFeeService, FeeService>();
 builder.Services.AddScoped<IFeeMasterService, FeeMasterService>();
+builder.Services.AddScoped<IFeeBillingRepository, FeeBillingRepository>();
 builder.Services.AddScoped<FeeMasterRepository>();
 builder.Services.AddScoped<FeeRepository>();
 builder.Services.AddScoped<SubjectRepository>();
