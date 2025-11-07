@@ -114,6 +114,13 @@ namespace SchoolMgmt.API.Controllers
             return OkResponse(result, "Payment created & allocated.");
         }
 
+        [HttpGet("students")]
+        public async Task<IActionResult> GetAllStudents(int page = 1, int pageSize = 10, string search = "")
+        {
+            var orgId = GetOrgIdFromClaims();
+            var response = await _svc.GetAllStudentsAsync(orgId, page, pageSize, search);
+            return OkResponse(response, "Student Fetched Successfully");
+        }
         [HttpGet("payments")]
         public async Task<IActionResult> GetPayments([FromQuery] int page = 1, [FromQuery] int size = 10, [FromQuery] string? search = null)
         {

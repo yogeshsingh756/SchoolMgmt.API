@@ -1,4 +1,5 @@
 ﻿using SchoolMgmt.Shared.Models.Fee;
+using SchoolMgmt.Shared.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +23,7 @@ namespace SchoolMgmt.Shared.Interfaces
 
         Task<(int PaymentId, string ReceiptNo, decimal Allocated, decimal Unallocated)> CreatePaymentAsync(int orgId, PaymentCreateRequest req, int userId);
         Task<IEnumerable<dynamic>> GetPaymentsAsync(int orgId, int page, int size, string search);
+        Task<PaginatedResponse<StudentListModel>> GetAllStudentsAsync(
+        int organizationId, int pageNumber, int pageSize, string search);
     }
 }

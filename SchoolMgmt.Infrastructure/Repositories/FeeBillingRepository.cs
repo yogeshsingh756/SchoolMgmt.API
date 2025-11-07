@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using SchoolMgmt.Shared.Interfaces;
 using SchoolMgmt.Shared.Models.Fee;
+using SchoolMgmt.Shared.Responses;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -200,5 +201,34 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 },
                 commandType: CommandType.StoredProcedure);
         }
+
+        public async Task<PaginatedResponse<StudentListModel>> GetAllStudentsAsync(
+    int organizationId, int pageNumber, int pageSize, string search)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            var parameters = new DynamicParameters();
+
+            parameters.Add("p_OrganizationId", organizationId);
+            parameters.Add("p_PageNumber", pageNumber);
+            parameters.Add("p_PageSize", pageSize);
+            parameters.Add("p_Search", search);
+
+            using var multi = await conn.QueryMultipleAsync(
+                "sp_Admin_Students_GetAll",
+                parameters,
+                commandType: CommandType.StoredProcedure);
+
+            var students = (await multi.ReadAsync<StudentListModel>()).ToList();
+            var totalRecords = (await multi.ReadAsync<int>()).FirstOrDefault();
+
+            return PaginatedResponse<StudentListModel>.Create(
+                students,
+                totalRecords,
+                pageNumber,
+                pageSize
+            );
+        }
+
     }
 }
+
