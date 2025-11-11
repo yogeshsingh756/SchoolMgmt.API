@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolMgmt.Application.Interfaces;
+using SchoolMgmt.Application.Services;
 using SchoolMgmt.Shared.Interfaces;
 using SchoolMgmt.Shared.Models.Fee;
 
@@ -101,7 +102,15 @@ namespace SchoolMgmt.API.Controllers
         {
             var orgId = GetOrgIdFromClaims();
             var result = await _svc.GetInvoiceByIdAsync(orgId, invoiceId);
-            return OkResponse(result, "Fetched invoice.");
+
+            var response = new
+            {
+                Header = result.header,
+                Items = result.items,
+                Allocations = result.allocations
+            };
+
+            return OkResponse(response, "Fetched invoice successfully.");
         }
 
         // PAYMENTS

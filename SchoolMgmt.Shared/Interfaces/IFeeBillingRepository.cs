@@ -19,7 +19,8 @@ namespace SchoolMgmt.Shared.Interfaces
 
         Task<(int InvoiceId, string InvoiceNo)> GenerateInvoiceAsync(int orgId, InvoiceGenerateRequest req, int userId);
         Task<IEnumerable<dynamic>> GetInvoicesAsync(int orgId, int page, int size, string search);
-        Task<(dynamic header, IEnumerable<dynamic> items, IEnumerable<dynamic> allocations)> GetInvoiceByIdAsync(int orgId, int invoiceId);
+        Task<(InvoiceHeaderDto header, IEnumerable<InvoiceItemDto> items, IEnumerable<PaymentAllocationDto> allocations)>
+    GetInvoiceByIdAsync(int orgId, int invoiceId);
 
         Task<(int PaymentId, string ReceiptNo, decimal Allocated, decimal Unallocated)> CreatePaymentAsync(int orgId, PaymentCreateRequest req, int userId);
         Task<IEnumerable<dynamic>> GetPaymentsAsync(int orgId, int page, int size, string search);

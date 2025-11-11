@@ -143,7 +143,8 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<(dynamic header, IEnumerable<dynamic> items, IEnumerable<dynamic> allocations)> GetInvoiceByIdAsync(int orgId, int invoiceId)
+        public async Task<(InvoiceHeaderDto header, IEnumerable<InvoiceItemDto> items, IEnumerable<PaymentAllocationDto> allocations)>
+    GetInvoiceByIdAsync(int orgId, int invoiceId)
         {
             using var conn = _dbFactory.CreateConnection();
             using var multi = await conn.QueryMultipleAsync(
@@ -151,9 +152,9 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 new { p_OrganizationId = orgId, p_InvoiceId = invoiceId },
                 commandType: CommandType.StoredProcedure);
 
-            var header = await multi.ReadFirstOrDefaultAsync();
-            var items = await multi.ReadAsync();
-            var allocations = await multi.ReadAsync();
+            var header = await multi.ReadFirstOrDefaultAsync<InvoiceHeaderDto>();
+            var items = await multi.ReadAsync<InvoiceItemDto>();
+            var allocations = await multi.ReadAsync<PaymentAllocationDto>();
 
             return (header, items, allocations);
         }
