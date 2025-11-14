@@ -21,6 +21,7 @@ namespace SchoolMgmt.Application.Services
         {
             var entity = new PaymentMethodEntity
             {
+                PaymentMethodId = dto.PaymentMethodId,
                 OrganizationId = dto.OrganizationId,
                 MethodType = dto.MethodType,
                 UpiId = dto.UpiId,

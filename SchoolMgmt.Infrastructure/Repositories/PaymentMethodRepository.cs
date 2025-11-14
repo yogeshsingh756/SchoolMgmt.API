@@ -20,18 +20,21 @@ namespace SchoolMgmt.Infrastructure.Repositories
             using var conn = _dbFactory.CreateConnection();
 
             string sql = @"
-                INSERT INTO OrganizationPaymentMethods 
-                (OrganizationId, MethodType, UpiId, QrImageUrl, CreatedBy)
-                VALUES (@OrganizationId, @MethodType, @UpiId, @QrImageUrl, @CreatedBy)
-                ON DUPLICATE KEY UPDATE
-                    UpiId = VALUES(UpiId),
-                    QrImageUrl = VALUES(QrImageUrl),
-                    ModifiedBy = @CreatedBy,
-                    ModifiedOn = NOW();
-            ";
+        INSERT INTO OrganizationPaymentMethods
+        (PaymentMethodId, OrganizationId, MethodType, UpiId, QrImageUrl, CreatedBy)
+        VALUES
+        (@PaymentMethodId, @OrganizationId, @MethodType, @UpiId, @QrImageUrl, @CreatedBy)
+        ON DUPLICATE KEY UPDATE
+            MethodType = VALUES(MethodType),
+            UpiId = VALUES(UpiId),
+            QrImageUrl = VALUES(QrImageUrl),
+            ModifiedBy = @CreatedBy,
+            ModifiedOn = NOW();
+    ";
 
             await conn.ExecuteAsync(sql, new
             {
+                entity.PaymentMethodId,    // ⭐ NEW
                 entity.OrganizationId,
                 entity.MethodType,
                 entity.UpiId,
