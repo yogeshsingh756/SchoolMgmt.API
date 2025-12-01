@@ -23,6 +23,6 @@ namespace SchoolMgmt.Shared.Responses
                 PageNumber = page,
                 PageSize = size
             };
-        }
+        }     
     }
 }

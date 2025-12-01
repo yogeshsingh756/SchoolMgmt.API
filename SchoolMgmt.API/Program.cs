@@ -87,6 +87,8 @@ builder.Services.AddScoped<IFeeService, FeeService>();
 builder.Services.AddScoped<IFeeMasterService, FeeMasterService>();
 builder.Services.AddScoped<IFeeBillingRepository, FeeBillingRepository>();
 builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
+builder.Services.AddScoped<IFeeReportService, FeeReportService>();
+builder.Services.AddScoped<FeeReportsRepository>();
 builder.Services.AddScoped<PaymentMethodRepository>();
 builder.Services.AddScoped<FeeMasterRepository>();
 builder.Services.AddScoped<FeeRepository>();
