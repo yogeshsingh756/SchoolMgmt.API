@@ -414,5 +414,49 @@ namespace SchoolMgmt.Application.Services
             await conn.ExecuteAsync("sp_RefreshToken_Revoke", p, commandType: CommandType.StoredProcedure);
             return true;
         }
+        public async Task<VerifyUsernameResponseDto?> VerifyUsernameAsync(string usernameOrEmail)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            var result = await conn.QueryFirstOrDefaultAsync<dynamic>(
+                "sp_User_VerifyByUsername",
+                new { p_Username = usernameOrEmail },
+                commandType: CommandType.StoredProcedure);
+
+            if (result == null)
+                return null;
+
+            return new VerifyUsernameResponseDto
+            {
+                UserId = (int)result.UserId,
+                OrganizationId = (int)result.OrganizationId,
+                FirstName = (string)(result.FirstName ?? ""),
+                LastName = (string)(result.LastName ?? ""),
+                Email = (string)(result.Email ?? ""),
+                Username = (string)(result.Username ?? ""),
+                IsActive = Convert.ToBoolean(result.IsActive)
+            };
+        }
+
+        public async Task<(bool Success, string Message)> ChangePasswordAsync(ChangePasswordRequestDto req)
+        {
+            if (req.UserId <= 0 || string.IsNullOrWhiteSpace(req.NewPassword))
+                return (false, "Invalid request.");
+
+            // Hash password here
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(req.NewPassword, workFactor: 12);
+            using var conn = _dbFactory.CreateConnection();
+            var result = await conn.QueryFirstAsync<dynamic>(
+                "sp_User_ChangePassword",
+                new
+                {
+                    p_UserId = req.UserId,
+                    p_PasswordHash = passwordHash,
+                    p_ModifiedBy = req.UserId
+                },
+                commandType: CommandType.StoredProcedure);
+
+            return ((int)result.SuccessFlag == 1, (string)result.Message);
+        }
     }
 }

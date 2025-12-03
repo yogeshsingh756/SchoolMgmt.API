@@ -112,5 +112,33 @@ namespace SchoolMgmt.API.Controllers
 
             return OkResponse<object>(null, "Logged out successfully.");
         }
+
+        // 1) Verify username
+        [HttpPost("verify-username")]
+        [AllowAnonymous] // or require Admin depending on flow
+        public async Task<IActionResult> VerifyUsername([FromBody] VerifyUsernameRequestDto req)
+        {
+            if (string.IsNullOrWhiteSpace(req.UsernameOrEmail))
+                return BadRequestResponse("Username or email is required.");
+
+            var user = await _authService.VerifyUsernameAsync(req.UsernameOrEmail);
+            if (user == null)
+                return NotFoundResponse("User not found.");
+
+            // return minimal info. Avoid returning any sensitive field.
+            return OkResponse(user, "User found.");
+        }
+
+        // 2) Change password
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDto req)
+        {
+            if (req == null || req.UserId <= 0 || string.IsNullOrWhiteSpace(req.NewPassword))
+                return BadRequestResponse("Invalid request.");
+
+            var (success, msg) = await _authService.ChangePasswordAsync(req);
+
+            return success ? OkResponse<object>(null, msg) : FailResponse(msg);
+        }
     }
 }

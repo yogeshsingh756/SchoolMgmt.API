@@ -13,5 +13,7 @@ namespace SchoolMgmt.Application.Interfaces
         Task<(bool Success, string? Message, AuthResponse? Response)> LoginAsync(LoginRequest req);
         Task<(bool Success, string? Message, AuthResponse? Response)> RefreshAsync(string refreshToken);
         Task<bool> LogoutAsync(string refreshToken, int performedByUserId);
+        Task<VerifyUsernameResponseDto?> VerifyUsernameAsync(string usernameOrEmail);
+        Task<(bool Success, string Message)> ChangePasswordAsync(ChangePasswordRequestDto req);
     }
 }
