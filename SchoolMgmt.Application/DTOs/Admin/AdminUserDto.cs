@@ -18,6 +18,18 @@ namespace SchoolMgmt.Application.DTOs.Admin
         public DateTime CreatedOn { get; set; }
         public DateTime LastModified { get; set; }
         public string ModifiedByName { get; set; } = string.Empty;
+
+        // CHANGED: role-specific fields
+        public string? Occupation { get; set; }          
+        public string? Address { get; set; }             
+
+        public string? Qualification { get; set; }       
+        public string? Designation { get; set; }         
+        public decimal? Salary { get; set; }             
+
+        public string? AdmissionNo { get; set; }         
+        public int? CurrentClassId { get; set; }         
+        public string? ClassName { get; set; }
     }
 
     public class PaginatedUserResponse

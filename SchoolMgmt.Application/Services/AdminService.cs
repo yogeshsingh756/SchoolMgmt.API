@@ -103,7 +103,17 @@ namespace SchoolMgmt.Application.Services
                 Status = u.Status,
                 CreatedOn = u.CreatedOn,
                 LastModified = u.LastModified,
-                ModifiedByName = u.ModifiedByName
+                ModifiedByName = u.ModifiedByName,
+
+                // CHANGED: pass through role-specific properties
+                Occupation = u.Occupation,
+                Address = u.Address,
+                Qualification = u.Qualification,
+                Designation = u.Designation,
+                Salary = u.Salary,
+                AdmissionNo = u.AdmissionNo,
+                CurrentClassId = u.CurrentClassId,
+                ClassName = u.ClassName
             });
 
             return new PaginatedUserResponse
