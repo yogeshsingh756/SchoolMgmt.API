@@ -8,7 +8,7 @@ namespace SchoolMgmt.API.Controllers
 {
     [ApiController]
     [Route("api/admin/fees")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class AdminFeeController : BaseController
     {
         private readonly IFeeService _feeService;

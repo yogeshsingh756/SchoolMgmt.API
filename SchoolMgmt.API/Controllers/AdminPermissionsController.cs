@@ -8,7 +8,7 @@ namespace SchoolMgmt.API.Controllers
 {
     [ApiController]
     [Route("api/admin/permissions")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class AdminPermissionsController : BaseController
     {
         private readonly IPermissionService _permissionService;

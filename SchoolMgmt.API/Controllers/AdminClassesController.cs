@@ -9,7 +9,7 @@ namespace SchoolMgmt.API.Controllers
 {
     [ApiController]
     [Route("api/admin/classes")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class AdminClassesController : BaseController
     {
         private readonly IClassSectionService _service;

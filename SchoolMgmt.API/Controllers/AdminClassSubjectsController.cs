@@ -7,7 +7,7 @@ namespace SchoolMgmt.API.Controllers
 {
     [ApiController]
     [Route("api/admin/classes/{classId}/subjects")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class AdminClassSubjectsController : BaseController
     {
         private readonly IClassSubjectService _service;

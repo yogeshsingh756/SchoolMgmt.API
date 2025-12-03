@@ -7,7 +7,7 @@ namespace SchoolMgmt.API.Controllers
 {
     [ApiController]
     [Route("api/admin/auditlogs")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class AdminAuditLogsController : BaseController
     {
         private readonly IAuditLogService _service;
