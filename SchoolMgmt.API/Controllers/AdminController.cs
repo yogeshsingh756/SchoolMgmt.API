@@ -194,6 +194,23 @@ namespace SchoolMgmt.API.Controllers
 
             return OkResponse(result, "Parents fetched successfully.");
         }
+
+        /// <summary>
+        /// Get the current organization details.
+        /// </summary>
+        [HttpGet("org")]
+        public async Task<IActionResult> GetOrgDetails()
+        {
+            var orgId = GetOrgIdFromClaims();
+            if (orgId == 0)
+                return BadRequestResponse("Invalid organization context.", "INVALID_ORG");
+
+            var result = await _tenantService.GetTenantByIdAsync(orgId);
+            if (result == null)
+                return NotFoundResponse("organization details not found.");
+
+            return OkResponse(result, "Fetched organization details successfully.");
+        }
     }
 
 }

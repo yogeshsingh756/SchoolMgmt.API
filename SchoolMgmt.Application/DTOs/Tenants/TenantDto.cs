@@ -16,5 +16,6 @@ namespace SchoolMgmt.Application.DTOs.Tenants
         public DateTime? SubscriptionStartDate { get; set; }
         public DateTime? SubscriptionEndDate { get; set; }
         public bool IsActive { get; set; }
+        public string? LogoUrl { get; set; } = string.Empty;
     }
 }
