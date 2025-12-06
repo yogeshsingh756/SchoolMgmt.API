@@ -3,6 +3,7 @@ using Dapper;
 using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Shared.Interfaces;
 using SchoolMgmt.Shared.Models;
+using SchoolMgmt.Shared.Models.Admin;
 using SchoolMgmt.Shared.Responses;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,61 @@ namespace SchoolMgmt.Infrastructure.Repositories
         public AdminRepository(IDbConnectionFactory dbFactory)
         {
             _dbFactory = dbFactory;
+        }
+        public async Task<CreateStudentWithParentResponse> CreateStudentWithParentAsync(CreateStudentWithParentRequest model)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            var result = await conn.QueryFirstOrDefaultAsync<dynamic>(
+                "sp_User_CreateStudentWithParent",
+                new
+                {
+                    p_OrganizationId = model.OrganizationId,
+                    p_CreatedBy = model.CreatedBy,
+
+                    // Parent fields – only used when ParentId is null
+                    p_ParentFirstName = model.IsExistingParent ? null : model.ParentFirstName,
+                    p_ParentLastName = model.IsExistingParent ? null : model.ParentLastName,
+                    p_ParentUsername = model.IsExistingParent ? null : model.ParentUsername,
+                    p_ParentEmail = model.IsExistingParent ? null : model.ParentEmail,
+                    p_ParentPasswordHash = model.IsExistingParent ? null : model.ParentPasswordHash,
+                    p_ParentPhoneNumber = model.IsExistingParent ? null : model.ParentPhoneNumber,
+                    p_ParentOccupation = model.IsExistingParent ? null : model.ParentOccupation,
+                    p_ParentAddress = model.IsExistingParent ? null : model.ParentAddress,
+
+                    // Student fields – always used
+                    p_StudentFirstName = model.StudentFirstName,
+                    p_StudentLastName = model.StudentLastName,
+                    p_StudentUsername = model.StudentUsername,
+                    p_StudentEmail = model.StudentEmail,
+                    p_StudentPasswordHash = model.StudentPasswordHash,
+                    p_StudentPhoneNumber = model.StudentPhoneNumber,
+                    p_AdmissionNo = model.AdmissionNo,
+                    p_ClassId = model.ClassId,
+
+                    // Parent mode selector
+                    p_ParentId = model.ParentId
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            if (result == null)
+            {
+                return new CreateStudentWithParentResponse
+                {
+                    Success = false,
+                    Message = "No response from stored procedure."
+                };
+            }
+
+            return new CreateStudentWithParentResponse
+            {
+                Success = result.SuccessFlag == 1,
+                Message = (string?)result.Message,
+                ParentId = (int?)result.ParentId,
+                NewParentUserId = (int?)result.NewParentUserId,   // null if existing parent
+                StudentUserId = (int?)result.StudentUserId
+            };
         }
         public async Task<(bool Success, string Message)> CreateUserAsync(
     int organizationId, string roleName, string firstName, string lastName,
@@ -129,6 +185,48 @@ namespace SchoolMgmt.Infrastructure.Repositories
 
             using var multi = await conn.QueryMultipleAsync(
                 "sp_Admin_User_GetAll",
+                new
+                {
+                    p_OrganizationId = organizationId,
+                    p_PageNumber = pageNumber,
+                    p_PageSize = pageSize,
+                    p_Search = search,
+                    p_StatusFilter = statusFilter
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            var users = await multi.ReadAsync<AdminUserDbEntity>();
+            var total = await multi.ReadFirstAsync<int>();
+
+            return (users, total);
+        }
+
+        public async Task<StudentEditDto?> GetStudentByIdAsync(int organizationId, int studentUserId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            var result = await conn.QueryFirstOrDefaultAsync<StudentEditDto>(
+                "sp_Admin_Student_GetById",
+                new
+                {
+                    p_OrganizationId = organizationId,
+                    p_StudentUserId = studentUserId
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            // null => not found or inactive or not a student in this org
+            return result;
+        }
+
+        public async Task<(IEnumerable<AdminUserDbEntity> Users, int TotalCount)> GetAllStudentUsersAsync(
+            int organizationId, int pageNumber, int pageSize, string? search, string? statusFilter)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            using var multi = await conn.QueryMultipleAsync(
+                "sp_Admin_Student_GetAll",
                 new
                 {
                     p_OrganizationId = organizationId,

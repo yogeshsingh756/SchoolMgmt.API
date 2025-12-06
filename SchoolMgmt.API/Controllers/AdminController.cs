@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolMgmt.Application.DTOs.Admin;
 using SchoolMgmt.Application.DTOs.User;
 using SchoolMgmt.Application.Interfaces;
+using SchoolMgmt.Shared.Models.Admin;
 using SchoolMgmt.Shared.Responses;
 
 namespace SchoolMgmt.API.Controllers
@@ -68,7 +69,57 @@ namespace SchoolMgmt.API.Controllers
         // -----------------------------------------------
         // 👥 USER MANAGEMENT (Tenant-level Admin)
         // -----------------------------------------------
+        [HttpPost("create-with-parent")]
+        public async Task<IActionResult> CreateWithParent([FromBody] CreateStudentWithParentRequest model)
+        {
+            var orgId = GetOrgIdFromClaims();
+            if (orgId == 0)
+                return BadRequestResponse("Invalid organization context.", "INVALID_ORG");
 
+            var createdBy = GetCurrentUserId();
+            model.OrganizationId = orgId;
+            model.CreatedBy = createdBy;
+            var res = await _adminService.CreateStudentWithParentAsync(model);
+
+            if (!res.Success)
+                return BadRequest(res);
+
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Get single student for edit mode (Admin).
+        /// </summary>
+        [HttpGet("student-get-by-id/{id:int}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var orgId = GetOrgIdFromClaims();
+            if (orgId <= 0)
+            {
+                return Unauthorized(new
+                {
+                    success = false,
+                    message = "Invalid organization context."
+                });
+            }
+
+            StudentEditDto? dto = await _adminService.GetStudentByIdAsync(orgId, id);
+
+            if (dto == null)
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    message = "Student not found or inactive for this organization."
+                });
+            }
+
+            return Ok(new
+            {
+                success = true,
+                data = dto
+            });
+        }
         /// <summary>
         /// Add a tenant-level user (Teacher/Student/Parent).
         /// </summary>
@@ -175,6 +226,21 @@ namespace SchoolMgmt.API.Controllers
                 return NotFoundResponse("No users found for the current organization.");
 
             return OkResponse(result, "Fetched users successfully.");
+        }
+
+        [HttpGet("student-users")]
+        public async Task<IActionResult> GetAllStudentUsers([FromQuery] GetUsersRequest req)
+        {
+            var orgId = GetOrgIdFromClaims();
+            if (orgId == 0)
+                return BadRequestResponse("Invalid organization context.", "INVALID_ORG");
+
+            var result = await _adminService.GetAllStudentUsersAsync(orgId, req);
+
+            if (!result.Users.Any())
+                return NotFoundResponse("No users found for the current organization.");
+
+            return OkResponse(result, "Fetched student users successfully.");
         }
 
         [HttpGet("roles/available")]

@@ -2,6 +2,7 @@
 using SchoolMgmt.Application.DTOs.SuperAdmin;
 using SchoolMgmt.Application.DTOs.User;
 using SchoolMgmt.Domain.Entities;
+using SchoolMgmt.Shared.Models.Admin;
 using SchoolMgmt.Shared.Responses;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace SchoolMgmt.Application.Interfaces
 {
     public interface IAdminService
     {
+        Task<StudentEditDto?> GetStudentByIdAsync(int organizationId, int studentUserId);
+        Task<CreateStudentWithParentResponse> CreateStudentWithParentAsync(CreateStudentWithParentRequest model);
         Task<(bool Success, string Message)> CreateUserAsync(int organizationId, CreateUserRequest req, int createdBy);
         Task<AdminDashboardDto> GetDashboardAsync(int organizationId);
         Task<PaginatedUserResponse> GetAllUsersAsync(int organizationId, GetUsersRequest req);
@@ -20,5 +23,6 @@ namespace SchoolMgmt.Application.Interfaces
         Task<(bool Success, string Message)> SoftDeleteUserAsync(int organizationId, int userId, int modifiedBy);
         Task<IEnumerable<RoleDto>> GetAssignableRolesForAdminAsync(int adminId);
         Task<PaginatedResponse<ParentDto>> GetParentsAsync(ParentSearchRequest request, int organizationId);
+        Task<PaginatedUserResponse> GetAllStudentUsersAsync(int organizationId, GetUsersRequest req);
     }
 }

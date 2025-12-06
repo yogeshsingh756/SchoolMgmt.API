@@ -7,6 +7,7 @@ using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Infrastructure.Repositories;
 using SchoolMgmt.Shared.Interfaces;
 using SchoolMgmt.Shared.Models;
+using SchoolMgmt.Shared.Models.Admin;
 using SchoolMgmt.Shared.Responses;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,14 @@ namespace SchoolMgmt.Application.Services
         {
             _repo = adminRepository;
         }
-
+        public async Task<CreateStudentWithParentResponse> CreateStudentWithParentAsync(Shared.Models.Admin.CreateStudentWithParentRequest model)
+        {
+            var ParentPasswordHash = BCrypt.Net.BCrypt.HashPassword(model.ParentPasswordHash, workFactor: 11);
+            var StudentPasswordHash = BCrypt.Net.BCrypt.HashPassword(model.StudentPasswordHash, workFactor: 11);
+            model.ParentPasswordHash = ParentPasswordHash;
+            model.StudentPasswordHash = StudentPasswordHash;
+            return await _repo.CreateStudentWithParentAsync(model);
+        }
         public async Task<(bool Success, string Message)> CreateUserAsync(int organizationId, CreateUserRequest req, int createdBy)
         {
             // Hash password securely
@@ -87,9 +95,51 @@ namespace SchoolMgmt.Application.Services
         {
             return await _repo.SoftDeleteUserAsync(organizationId, userId, modifiedBy);
         }
+        public async Task<StudentEditDto?> GetStudentByIdAsync(int organizationId, int studentUserId)
+        {
+            return await _repo.GetStudentByIdAsync(organizationId, studentUserId);
+        }
         public async Task<PaginatedUserResponse> GetAllUsersAsync(int organizationId, GetUsersRequest req)
         {
             var (usersDb, total) = await _repo.GetAllUsersAsync(
+                organizationId, req.PageNumber, req.PageSize, req.Search, req.StatusFilter);
+
+            var mapped = usersDb.Select(u => new AdminUserDto
+            {
+                UserId = u.UserId,
+                FullName = u.FullName,
+                Username = u.Username,
+                Email = u.Email,
+                Phone = u.Phone,
+                RoleName = u.RoleName,
+                Status = u.Status,
+                CreatedOn = u.CreatedOn,
+                LastModified = u.LastModified,
+                ModifiedByName = u.ModifiedByName,
+
+                // CHANGED: pass through role-specific properties
+                Occupation = u.Occupation,
+                Address = u.Address,
+                Qualification = u.Qualification,
+                Designation = u.Designation,
+                Salary = u.Salary,
+                AdmissionNo = u.AdmissionNo,
+                CurrentClassId = u.CurrentClassId,
+                ClassName = u.ClassName
+            });
+
+            return new PaginatedUserResponse
+            {
+                Users = mapped,
+                TotalCount = total,
+                PageNumber = req.PageNumber,
+                PageSize = req.PageSize
+            };
+        }
+
+        public async Task<PaginatedUserResponse> GetAllStudentUsersAsync(int organizationId, GetUsersRequest req)
+        {
+            var (usersDb, total) = await _repo.GetAllStudentUsersAsync(
                 organizationId, req.PageNumber, req.PageSize, req.Search, req.StatusFilter);
 
             var mapped = usersDb.Select(u => new AdminUserDto
