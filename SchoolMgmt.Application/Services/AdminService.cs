@@ -99,6 +99,14 @@ namespace SchoolMgmt.Application.Services
         {
             return await _repo.GetStudentByIdAsync(organizationId, studentUserId);
         }
+        public async Task<ParentEditModel?> GetParentByIdAsync(int organizationId, int parentUserId)
+        {
+            return await _repo.GetParentByIdAsync(organizationId, parentUserId);
+        }
+        public async Task<TeacherEditModel?> GetTeacherByIdAsync(int organizationId, int teacherUserId)
+        {
+            return await _repo.GetTeacherByIdAsync(organizationId, teacherUserId);
+        }
         public async Task<PaginatedUserResponse> GetAllUsersAsync(int organizationId, GetUsersRequest req)
         {
             var (usersDb, total) = await _repo.GetAllUsersAsync(
@@ -140,6 +148,81 @@ namespace SchoolMgmt.Application.Services
         public async Task<PaginatedUserResponse> GetAllStudentUsersAsync(int organizationId, GetUsersRequest req)
         {
             var (usersDb, total) = await _repo.GetAllStudentUsersAsync(
+                organizationId, req.PageNumber, req.PageSize, req.Search, req.StatusFilter);
+
+            var mapped = usersDb.Select(u => new AdminUserDto
+            {
+                UserId = u.UserId,
+                FullName = u.FullName,
+                Username = u.Username,
+                Email = u.Email,
+                Phone = u.Phone,
+                RoleName = u.RoleName,
+                Status = u.Status,
+                CreatedOn = u.CreatedOn,
+                LastModified = u.LastModified,
+                ModifiedByName = u.ModifiedByName,
+
+                // CHANGED: pass through role-specific properties
+                Occupation = u.Occupation,
+                Address = u.Address,
+                Qualification = u.Qualification,
+                Designation = u.Designation,
+                Salary = u.Salary,
+                AdmissionNo = u.AdmissionNo,
+                CurrentClassId = u.CurrentClassId,
+                ClassName = u.ClassName
+            });
+
+            return new PaginatedUserResponse
+            {
+                Users = mapped,
+                TotalCount = total,
+                PageNumber = req.PageNumber,
+                PageSize = req.PageSize
+            };
+        }
+        public async Task<PaginatedUserResponse> GetAllParentUsersAsync(int organizationId, GetUsersRequest req)
+        {
+            var (usersDb, total) = await _repo.GetAllParentsUsersAsync(
+                organizationId, req.PageNumber, req.PageSize, req.Search, req.StatusFilter);
+
+            var mapped = usersDb.Select(u => new AdminUserDto
+            {
+                UserId = u.UserId,
+                FullName = u.FullName,
+                Username = u.Username,
+                Email = u.Email,
+                Phone = u.Phone,
+                RoleName = u.RoleName,
+                Status = u.Status,
+                CreatedOn = u.CreatedOn,
+                LastModified = u.LastModified,
+                ModifiedByName = u.ModifiedByName,
+
+                // CHANGED: pass through role-specific properties
+                Occupation = u.Occupation,
+                Address = u.Address,
+                Qualification = u.Qualification,
+                Designation = u.Designation,
+                Salary = u.Salary,
+                AdmissionNo = u.AdmissionNo,
+                CurrentClassId = u.CurrentClassId,
+                ClassName = u.ClassName
+            });
+
+            return new PaginatedUserResponse
+            {
+                Users = mapped,
+                TotalCount = total,
+                PageNumber = req.PageNumber,
+                PageSize = req.PageSize
+            };
+        }
+
+        public async Task<PaginatedUserResponse> GetAllTeacherUsersAsync(int organizationId, GetUsersRequest req)
+        {
+            var (usersDb, total) = await _repo.GetAllTeachersUsersAsync(
                 organizationId, req.PageNumber, req.PageSize, req.Search, req.StatusFilter);
 
             var mapped = usersDb.Select(u => new AdminUserDto

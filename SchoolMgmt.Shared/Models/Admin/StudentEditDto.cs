@@ -26,5 +26,6 @@ namespace SchoolMgmt.Shared.Models.Admin
 
         // 🔹 for dropdown selected value
         public int? ParentId { get; set; }
+        public string? Address { get; set; }
     }
 }

@@ -15,10 +15,15 @@ namespace SchoolMgmt.Application.Interfaces
     public interface IAdminService
     {
         Task<StudentEditDto?> GetStudentByIdAsync(int organizationId, int studentUserId);
+        Task<ParentEditModel?> GetParentByIdAsync(int organizationId, int parentUserId);
+        Task<TeacherEditModel?> GetTeacherByIdAsync(int organizationId, int teacherUserId);
         Task<CreateStudentWithParentResponse> CreateStudentWithParentAsync(CreateStudentWithParentRequest model);
         Task<(bool Success, string Message)> CreateUserAsync(int organizationId, CreateUserRequest req, int createdBy);
         Task<AdminDashboardDto> GetDashboardAsync(int organizationId);
         Task<PaginatedUserResponse> GetAllUsersAsync(int organizationId, GetUsersRequest req);
+        Task<PaginatedUserResponse> GetAllParentUsersAsync(int organizationId, GetUsersRequest req);
+        Task<PaginatedUserResponse> GetAllTeacherUsersAsync(int organizationId, GetUsersRequest req);
+
         Task<(bool Success, string Message)> UpdateUserAsync(int organizationId, UpdateUserRequest req, int modifiedBy);
         Task<(bool Success, string Message)> SoftDeleteUserAsync(int organizationId, int userId, int modifiedBy);
         Task<IEnumerable<RoleDto>> GetAssignableRolesForAdminAsync(int adminId);

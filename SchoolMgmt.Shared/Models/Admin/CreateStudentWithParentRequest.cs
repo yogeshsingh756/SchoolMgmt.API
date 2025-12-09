@@ -36,6 +36,7 @@ namespace SchoolMgmt.Shared.Models.Admin
         public string StudentPhoneNumber { get; set; } = null!;
         public string? AdmissionNo { get; set; }
         public int? ClassId { get; set; }
+        public string? StudentAddress { get; set; }
 
         public bool IsExistingParent => ParentId.HasValue;
     }

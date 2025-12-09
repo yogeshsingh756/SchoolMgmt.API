@@ -120,6 +120,74 @@ namespace SchoolMgmt.API.Controllers
                 data = dto
             });
         }
+
+        /// <summary>
+        /// Get single parent for edit mode (Admin).
+        /// </summary>
+        [HttpGet("parent-get-by-id/{id:int}")]
+        public async Task<IActionResult> GetParentById(int id)
+        {
+            var orgId = GetOrgIdFromClaims();
+            if (orgId <= 0)
+            {
+                return Unauthorized(new
+                {
+                    success = false,
+                    message = "Invalid organization context."
+                });
+            }
+
+            ParentEditModel? dto = await _adminService.GetParentByIdAsync(orgId, id);
+
+            if (dto == null)
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    message = "Parent not found or inactive for this organization."
+                });
+            }
+
+            return Ok(new
+            {
+                success = true,
+                data = dto
+            });
+        }
+
+        /// <summary>
+        /// Get single teacher for edit mode (Admin).
+        /// </summary>
+        [HttpGet("teacher-get-by-id/{id:int}")]
+        public async Task<IActionResult> GetTeacherById(int id)
+        {
+            var orgId = GetOrgIdFromClaims();
+            if (orgId <= 0)
+            {
+                return Unauthorized(new
+                {
+                    success = false,
+                    message = "Invalid organization context."
+                });
+            }
+
+            TeacherEditModel? dto = await _adminService.GetTeacherByIdAsync(orgId, id);
+
+            if (dto == null)
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    message = "Teacher not found or inactive for this organization."
+                });
+            }
+
+            return Ok(new
+            {
+                success = true,
+                data = dto
+            });
+        }
         /// <summary>
         /// Add a tenant-level user (Teacher/Student/Parent).
         /// </summary>
@@ -241,6 +309,36 @@ namespace SchoolMgmt.API.Controllers
                 return NotFoundResponse("No users found for the current organization.");
 
             return OkResponse(result, "Fetched student users successfully.");
+        }
+
+        [HttpGet("parent-users")]
+        public async Task<IActionResult> GetAllParentUsers([FromQuery] GetUsersRequest req)
+        {
+            var orgId = GetOrgIdFromClaims();
+            if (orgId == 0)
+                return BadRequestResponse("Invalid organization context.", "INVALID_ORG");
+
+            var result = await _adminService.GetAllParentUsersAsync(orgId, req);
+
+            if (!result.Users.Any())
+                return NotFoundResponse("No users found for the current organization.");
+
+            return OkResponse(result, "Fetched parent users successfully.");
+        }
+
+        [HttpGet("teacher-users")]
+        public async Task<IActionResult> GetAllTeacherUsers([FromQuery] GetUsersRequest req)
+        {
+            var orgId = GetOrgIdFromClaims();
+            if (orgId == 0)
+                return BadRequestResponse("Invalid organization context.", "INVALID_ORG");
+
+            var result = await _adminService.GetAllTeacherUsersAsync(orgId, req);
+
+            if (!result.Users.Any())
+                return NotFoundResponse("No users found for the current organization.");
+
+            return OkResponse(result, "Fetched teacher users successfully.");
         }
 
         [HttpGet("roles/available")]

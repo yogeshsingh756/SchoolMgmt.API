@@ -51,7 +51,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
                     p_StudentPhoneNumber = model.StudentPhoneNumber,
                     p_AdmissionNo = model.AdmissionNo,
                     p_ClassId = model.ClassId,
-
+                    p_StudentAddress = model.StudentAddress,
                     // Parent mode selector
                     p_ParentId = model.ParentId
                 },
@@ -220,6 +220,42 @@ namespace SchoolMgmt.Infrastructure.Repositories
             return result;
         }
 
+        public async Task<ParentEditModel?> GetParentByIdAsync(int organizationId, int parentUserId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            var result = await conn.QueryFirstOrDefaultAsync<ParentEditModel>(
+                "sp_Admin_Parent_GetById",
+                new
+                {
+                    p_OrganizationId = organizationId,
+                    p_ParentUserId = parentUserId
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            // null => not found or inactive or not a student in this org
+            return result;
+        }
+
+        public async Task<TeacherEditModel?> GetTeacherByIdAsync(int organizationId, int teacherUserId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            var result = await conn.QueryFirstOrDefaultAsync<TeacherEditModel>(
+                "sp_Admin_Teacher_GetById",
+                new
+                {
+                    p_OrganizationId = organizationId,
+                    p_TeacherUserId = teacherUserId
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            // null => not found or inactive or not a student in this org
+            return result;
+        }
+
         public async Task<(IEnumerable<AdminUserDbEntity> Users, int TotalCount)> GetAllStudentUsersAsync(
             int organizationId, int pageNumber, int pageSize, string? search, string? statusFilter)
         {
@@ -227,6 +263,54 @@ namespace SchoolMgmt.Infrastructure.Repositories
 
             using var multi = await conn.QueryMultipleAsync(
                 "sp_Admin_Student_GetAll",
+                new
+                {
+                    p_OrganizationId = organizationId,
+                    p_PageNumber = pageNumber,
+                    p_PageSize = pageSize,
+                    p_Search = search,
+                    p_StatusFilter = statusFilter
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            var users = await multi.ReadAsync<AdminUserDbEntity>();
+            var total = await multi.ReadFirstAsync<int>();
+
+            return (users, total);
+        }
+
+        public async Task<(IEnumerable<AdminUserDbEntity> Users, int TotalCount)> GetAllParentsUsersAsync(
+           int organizationId, int pageNumber, int pageSize, string? search, string? statusFilter)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            using var multi = await conn.QueryMultipleAsync(
+                "sp_Admin_Parent_GetAll",
+                new
+                {
+                    p_OrganizationId = organizationId,
+                    p_PageNumber = pageNumber,
+                    p_PageSize = pageSize,
+                    p_Search = search,
+                    p_StatusFilter = statusFilter
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            var users = await multi.ReadAsync<AdminUserDbEntity>();
+            var total = await multi.ReadFirstAsync<int>();
+
+            return (users, total);
+        }
+
+        public async Task<(IEnumerable<AdminUserDbEntity> Users, int TotalCount)> GetAllTeachersUsersAsync(
+          int organizationId, int pageNumber, int pageSize, string? search, string? statusFilter)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            using var multi = await conn.QueryMultipleAsync(
+                "sp_Admin_Teacher_GetAll",
                 new
                 {
                     p_OrganizationId = organizationId,
