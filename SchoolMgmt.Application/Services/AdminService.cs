@@ -99,6 +99,18 @@ namespace SchoolMgmt.Application.Services
         {
             return await _repo.GetStudentByIdAsync(organizationId, studentUserId);
         }
+        public async Task<bool> CheckEmail(int organizationId, string email)
+        {
+            return await _repo.CheckEmailAsync(organizationId, email);
+        }
+        public async Task<bool> UsernameCheck(int organizationId, string username)
+        {
+            return await _repo.CheckUserNameAsync(organizationId, username);
+        }
+        public async Task<bool> AdmNoCheck(int organizationId, string admissionNo)
+        {
+            return await _repo.CheckAdmNoAsync(organizationId, admissionNo);
+        }
         public async Task<ParentEditModel?> GetParentByIdAsync(int organizationId, int parentUserId)
         {
             return await _repo.GetParentByIdAsync(organizationId, parentUserId);

@@ -156,6 +156,109 @@ namespace SchoolMgmt.API.Controllers
         }
 
         /// <summary>
+        /// Check Email Exist.
+        /// </summary>
+        [HttpGet("email-check")]
+        public async Task<IActionResult> EmailCheck(string email)
+        {
+            var orgId = GetOrgIdFromClaims();
+            if (orgId <= 0)
+            {
+                return Unauthorized(new
+                {
+                    success = false,
+                    message = "Invalid organization context."
+                });
+            }
+
+            var result = await _adminService.CheckEmail(orgId, email);
+
+            if (!result)
+            {
+                return NotFound(new
+                {
+                    success = result,
+                    message = "email not found."
+                });
+            }
+
+            return Ok(new
+            {
+                success = result,
+                message ="email found."
+            });
+        }
+
+        /// <summary>
+        /// Check Username Exist.
+        /// </summary>
+        [HttpGet("username-check")]
+        public async Task<IActionResult> UsernameCheck(string userName)
+        {
+            var orgId = GetOrgIdFromClaims();
+            if (orgId <= 0)
+            {
+                return Unauthorized(new
+                {
+                    success = false,
+                    message = "Invalid organization context."
+                });
+            }
+
+            var result = await _adminService.UsernameCheck(orgId, userName);
+
+            if (!result)
+            {
+                return NotFound(new
+                {
+                    success = result,
+                    message = "Username not found."
+                });
+            }
+
+            return Ok(new
+            {
+                success = result,
+                message = "Username found."
+            });
+        }
+
+        /// <summary>
+        /// Check AdmissionNumber Exist.
+        /// </summary>
+        [HttpGet("admissionno-check")]
+        public async Task<IActionResult> AdmNoCheck(string admissionNo)
+        {
+            var orgId = GetOrgIdFromClaims();
+            if (orgId <= 0)
+            {
+                return Unauthorized(new
+                {
+                    success = false,
+                    message = "Invalid organization context."
+                });
+            }
+
+            var result = await _adminService.AdmNoCheck(orgId, admissionNo);
+
+            if (!result)
+            {
+                return NotFound(new
+                {
+                    success = result,
+                    message = "AdmissionNo not found."
+                });
+            }
+
+            return Ok(new
+            {
+                success = result,
+                message = "AdmissionNo found."
+            });
+        }
+
+
+        /// <summary>
         /// Get single teacher for edit mode (Admin).
         /// </summary>
         [HttpGet("teacher-get-by-id/{id:int}")]

@@ -220,6 +220,58 @@ namespace SchoolMgmt.Infrastructure.Repositories
             return result;
         }
 
+        public async Task<bool> CheckEmailAsync(int organizationId, string email)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            var result = await conn.QueryFirstOrDefaultAsync<bool>(
+                "sp_user_check_email",
+                new
+                {
+                    p_OrganizationId = organizationId,
+                    p_Email = email
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result;
+        }
+
+        public async Task<bool> CheckUserNameAsync(int organizationId, string userName)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            var result = await conn.QueryFirstOrDefaultAsync<bool>(
+                "sp_user_check_username",
+                new
+                {
+                    p_OrganizationId = organizationId,
+                    p_UserName = userName
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result;
+        }
+
+        public async Task<bool> CheckAdmNoAsync(int organizationId, string admissionNumber)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            var result = await conn.QueryFirstOrDefaultAsync<bool>(
+                "sp_user_check_admissionnumber",
+                new
+                {
+                    p_OrganizationId = organizationId,
+                    p_AdmNo = admissionNumber
+                },
+                commandType: CommandType.StoredProcedure
+            );
+
+            // null => not found or inactive or not a student in this org
+            return result;
+        }
+
         public async Task<ParentEditModel?> GetParentByIdAsync(int organizationId, int parentUserId)
         {
             using var conn = _dbFactory.CreateConnection();

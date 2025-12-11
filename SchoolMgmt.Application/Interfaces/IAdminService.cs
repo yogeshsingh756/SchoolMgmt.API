@@ -17,6 +17,9 @@ namespace SchoolMgmt.Application.Interfaces
         Task<StudentEditDto?> GetStudentByIdAsync(int organizationId, int studentUserId);
         Task<ParentEditModel?> GetParentByIdAsync(int organizationId, int parentUserId);
         Task<TeacherEditModel?> GetTeacherByIdAsync(int organizationId, int teacherUserId);
+        Task<bool> CheckEmail(int organizationId, string email);
+        Task<bool> UsernameCheck(int organizationId, string username);
+        Task<bool> AdmNoCheck(int organizationId, string admissionNo);
         Task<CreateStudentWithParentResponse> CreateStudentWithParentAsync(CreateStudentWithParentRequest model);
         Task<(bool Success, string Message)> CreateUserAsync(int organizationId, CreateUserRequest req, int createdBy);
         Task<AdminDashboardDto> GetDashboardAsync(int organizationId);
