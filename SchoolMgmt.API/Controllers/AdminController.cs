@@ -175,7 +175,7 @@ namespace SchoolMgmt.API.Controllers
 
             if (!result)
             {
-                return NotFound(new
+                return Ok(new
                 {
                     success = result,
                     message = "email not found."
@@ -209,7 +209,7 @@ namespace SchoolMgmt.API.Controllers
 
             if (!result)
             {
-                return NotFound(new
+                return Ok(new
                 {
                     success = result,
                     message = "Username not found."
@@ -243,7 +243,7 @@ namespace SchoolMgmt.API.Controllers
 
             if (!result)
             {
-                return NotFound(new
+                return Ok(new
                 {
                     success = result,
                     message = "AdmissionNo not found."
