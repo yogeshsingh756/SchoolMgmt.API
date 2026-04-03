@@ -53,7 +53,11 @@ namespace SchoolMgmt.Infrastructure.Repositories
                     p_ClassId = model.ClassId,
                     p_StudentAddress = model.StudentAddress,
                     // Parent mode selector
-                    p_ParentId = model.ParentId
+                    p_ParentId = model.ParentId,
+
+                    p_Gender = model.Gender,
+                                        p_Category = model.Category,
+                                        p_MotherName = model.MotherName
                 },
                 commandType: CommandType.StoredProcedure
             );
