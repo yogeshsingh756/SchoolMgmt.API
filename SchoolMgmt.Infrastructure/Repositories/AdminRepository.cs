@@ -85,7 +85,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
     string? address = null,
     string? admissionNo = null,
     int? parentId = null,
-    int? classId = null)
+    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null)
         {
             using var conn = _dbFactory.CreateConnection();
 
@@ -109,6 +109,9 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("@p_AdmissionNo", admissionNo);
             parameters.Add("@p_ParentId", parentId);
             parameters.Add("@p_ClassId", classId);
+            parameters.Add("@p_Gender", Gender);
+            parameters.Add("@p_MotherName", MotherName);
+            parameters.Add("@p_Category", Category);
 
             var result = await conn.QueryFirstOrDefaultAsync<SpResult>(
                 "sp_User_Create", parameters, commandType: CommandType.StoredProcedure);
@@ -129,7 +132,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
     string? address = null,
     string? admissionNo = null,
     int? parentId = null,
-    int? classId = null)
+    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null)
         {
             using var conn = _dbFactory.CreateConnection();
             var parameters = new DynamicParameters();
@@ -151,6 +154,9 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("@p_AdmissionNo", admissionNo);
             parameters.Add("@p_ParentId", parentId);
             parameters.Add("@p_ClassId", classId);
+            parameters.Add("@p_Gender", Gender);
+            parameters.Add("@p_MotherName", MotherName);
+            parameters.Add("@p_Category", Category);
 
             var result = await conn.QueryFirstOrDefaultAsync<SpResult>(
                 "sp_User_Update", parameters, commandType: CommandType.StoredProcedure);

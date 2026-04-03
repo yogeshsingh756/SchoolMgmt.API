@@ -43,5 +43,8 @@ namespace SchoolMgmt.Application.DTOs.User
         public string? AdmissionNo { get; set; }
         public int? ParentId { get; set; }
         public int? ClassId { get; set; }
+        public string? Gender { get; set; }
+        public string? MotherName { get; set; }
+        public string? Category { get; set; }
     }
 }

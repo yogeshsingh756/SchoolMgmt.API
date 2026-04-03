@@ -54,7 +54,10 @@ namespace SchoolMgmt.Application.Services
         req.Address,
         req.AdmissionNo,
         req.ParentId,
-        req.ClassId
+        req.ClassId,
+        req.Gender,
+                req.MotherName,
+                req.Category
     );
         }
         public async Task<AdminDashboardDto> GetDashboardAsync(int organizationId)
@@ -87,7 +90,10 @@ namespace SchoolMgmt.Application.Services
         req.Address,
         req.AdmissionNo,
         req.ParentId,
-        req.ClassId
+        req.ClassId,
+        req.Gender,
+                req.MotherName,
+                req.Category
     );
         }
 
