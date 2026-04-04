@@ -33,14 +33,14 @@ namespace SchoolMgmt.Infrastructure.Repositories
                     p_CreatedBy = model.CreatedBy,
 
                     // Parent fields – only used when ParentId is null
-                    p_ParentFirstName = model.IsExistingParent ? null : model.ParentFirstName,
-                    p_ParentLastName = model.IsExistingParent ? null : model.ParentLastName,
-                    p_ParentUsername = model.IsExistingParent ? null : model.ParentUsername,
-                    p_ParentEmail = model.IsExistingParent ? null : model.ParentEmail,
-                    p_ParentPasswordHash = model.IsExistingParent ? null : model.ParentPasswordHash,
-                    p_ParentPhoneNumber = model.IsExistingParent ? null : model.ParentPhoneNumber,
-                    p_ParentOccupation = model.IsExistingParent ? null : model.ParentOccupation,
-                    p_ParentAddress = model.IsExistingParent ? null : model.ParentAddress,
+                    //p_ParentFirstName = model.IsExistingParent ? null : model.ParentFirstName,
+                    //p_ParentLastName = model.IsExistingParent ? null : model.ParentLastName,
+                    //p_ParentUsername = model.IsExistingParent ? null : model.ParentUsername,
+                    //p_ParentEmail = model.IsExistingParent ? null : model.ParentEmail,
+                    //p_ParentPasswordHash = model.IsExistingParent ? null : model.ParentPasswordHash,
+                    //p_ParentPhoneNumber = model.IsExistingParent ? null : model.ParentPhoneNumber,
+                    //p_ParentOccupation = model.IsExistingParent ? null : model.ParentOccupation,
+                    //p_ParentAddress = model.IsExistingParent ? null : model.ParentAddress,
 
                     // Student fields – always used
                     p_StudentFirstName = model.StudentFirstName,
@@ -53,11 +53,12 @@ namespace SchoolMgmt.Infrastructure.Repositories
                     p_ClassId = model.ClassId,
                     p_StudentAddress = model.StudentAddress,
                     // Parent mode selector
-                    p_ParentId = model.ParentId,
+                    //p_ParentId = model.ParentId,
 
                     p_Gender = model.Gender,
-                                        p_Category = model.Category,
-                                        p_MotherName = model.MotherName
+                    p_Category = model.Category,
+                    p_MotherName = model.MotherName,
+                    p_FatherName = model.FatherName
                 },
                 commandType: CommandType.StoredProcedure
             );
@@ -89,7 +90,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
     string? address = null,
     string? admissionNo = null,
     int? parentId = null,
-    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null)
+    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null, string? FatherName = null)
         {
             using var conn = _dbFactory.CreateConnection();
 
@@ -116,6 +117,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("@p_Gender", Gender);
             parameters.Add("@p_MotherName", MotherName);
             parameters.Add("@p_Category", Category);
+            parameters.Add("@p_FatherName", FatherName);
 
             var result = await conn.QueryFirstOrDefaultAsync<SpResult>(
                 "sp_User_Create", parameters, commandType: CommandType.StoredProcedure);
@@ -136,7 +138,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
     string? address = null,
     string? admissionNo = null,
     int? parentId = null,
-    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null)
+    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null, string? FatherName = null)
         {
             using var conn = _dbFactory.CreateConnection();
             var parameters = new DynamicParameters();
@@ -161,6 +163,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("@p_Gender", Gender);
             parameters.Add("@p_MotherName", MotherName);
             parameters.Add("@p_Category", Category);
+            parameters.Add("@p_FatherName", FatherName);
 
             var result = await conn.QueryFirstOrDefaultAsync<SpResult>(
                 "sp_User_Update", parameters, commandType: CommandType.StoredProcedure);

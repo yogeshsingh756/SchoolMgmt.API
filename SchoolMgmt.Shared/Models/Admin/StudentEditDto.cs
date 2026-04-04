@@ -30,5 +30,6 @@ namespace SchoolMgmt.Shared.Models.Admin
         public string? Gender { get; set; } = string.Empty;
         public string? Category { get; set; } = string.Empty;
         public string? MotherName { get; set; } = string.Empty;
+        public string? FatherName { get; set; } = string.Empty;
     }
 }

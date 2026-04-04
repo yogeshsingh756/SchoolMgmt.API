@@ -57,7 +57,8 @@ namespace SchoolMgmt.Application.Services
         req.ClassId,
         req.Gender,
                 req.MotherName,
-                req.Category
+                req.Category,
+                req.FatherName
     );
         }
         public async Task<AdminDashboardDto> GetDashboardAsync(int organizationId)
@@ -93,7 +94,8 @@ namespace SchoolMgmt.Application.Services
         req.ClassId,
         req.Gender,
                 req.MotherName,
-                req.Category
+                req.Category,
+                req.FatherName
     );
         }
 
@@ -189,7 +191,11 @@ namespace SchoolMgmt.Application.Services
                 Salary = u.Salary,
                 AdmissionNo = u.AdmissionNo,
                 CurrentClassId = u.CurrentClassId,
-                ClassName = u.ClassName
+                ClassName = u.ClassName,
+                Gender = u.Gender,
+                Category = u.Category,
+                MotherName = u.MotherName,
+                FatherName = u.FatherName
             });
 
             return new PaginatedUserResponse

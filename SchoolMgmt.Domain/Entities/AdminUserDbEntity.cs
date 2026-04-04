@@ -30,5 +30,10 @@ namespace SchoolMgmt.Domain.Entities
         public int? CurrentClassId { get; set; }
 
         public string? ClassName { get; set; }
+
+        public string? Gender { get; set; }
+        public string? Category { get; set; }
+        public string? MotherName { get; set; }
+        public string? FatherName { get; set; }
     }
 }
