@@ -21,7 +21,7 @@ namespace SchoolMgmt.Application.DTOs.Admin
         public string Email { get; set; } = string.Empty;
 
         [Phone]
-        public string? Phone { get; set; }
+        public string? PhoneNumber { get; set; }
 
         // Optional Role-Specific Fields (same as Create)
         public string? Qualification { get; set; }

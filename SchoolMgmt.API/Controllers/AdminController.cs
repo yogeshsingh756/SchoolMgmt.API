@@ -386,7 +386,7 @@ namespace SchoolMgmt.API.Controllers
         /// </summary>
         [HttpGet("users")]
         public async Task<IActionResult> GetAllUsers([FromQuery] GetUsersRequest req)
-        {
+      {
             var orgId = GetOrgIdFromClaims();
             if (orgId == 0)
                 return BadRequestResponse("Invalid organization context.", "INVALID_ORG");
@@ -394,7 +394,7 @@ namespace SchoolMgmt.API.Controllers
             var result = await _adminService.GetAllUsersAsync(orgId, req);
 
             if (!result.Users.Any())
-                return NotFoundResponse("No users found for the current organization.");
+                return OkResponse("No users found for the current organization.");
 
             return OkResponse(result, "Fetched users successfully.");
         }

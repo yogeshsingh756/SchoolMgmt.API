@@ -82,7 +82,7 @@ namespace SchoolMgmt.Application.Services
         req.FirstName,
         req.LastName,
         req.Email,
-        req.Phone,
+        req.PhoneNumber,
         modifiedBy,
         req.Qualification,
         req.Designation,
@@ -136,6 +136,8 @@ namespace SchoolMgmt.Application.Services
             {
                 UserId = u.UserId,
                 FullName = u.FullName,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
                 Username = u.Username,
                 Email = u.Email,
                 Phone = u.Phone,
@@ -153,7 +155,11 @@ namespace SchoolMgmt.Application.Services
                 Salary = u.Salary,
                 AdmissionNo = u.AdmissionNo,
                 CurrentClassId = u.CurrentClassId,
-                ClassName = u.ClassName
+                ClassName = u.ClassName,
+                Gender = u.Gender,
+                Category = u.Category,
+                MotherName = u.MotherName,
+                FatherName = u.FatherName
             });
 
             return new PaginatedUserResponse

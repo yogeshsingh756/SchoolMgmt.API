@@ -130,7 +130,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
 
         public async Task<(bool Success, string Message)> UpdateUserAsync(
     int organizationId, int userId, string firstName, string lastName,
-    string email, string phone, int modifiedBy,
+    string email, string PhoneNumber, int modifiedBy,
     string? qualification = null,
     string? designation = null,
     decimal? salary = null,
@@ -148,7 +148,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("@p_FirstName", firstName);
             parameters.Add("@p_LastName", lastName);
             parameters.Add("@p_Email", email);
-            parameters.Add("@p_Phone", phone);
+            parameters.Add("@p_Phone", PhoneNumber);
             parameters.Add("@p_ModifiedBy", modifiedBy);
 
             // Optional role-specific fields
