@@ -113,6 +113,15 @@ namespace SchoolMgmt.API.Controllers
             return OkResponse(response, "Fetched invoice successfully.");
         }
 
+        [HttpGet("invoice/{userId}")]
+        public async Task<IActionResult> GetInvoiceByUserId(int userId)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var result = await _svc.GetInvoicesByUserIdAsync(orgId, userId);
+
+            return OkResponse(result, "Fetched invoices.");
+        }
+
         // PAYMENTS
         [HttpPost("payments")]
         public async Task<IActionResult> CreatePayment([FromBody] PaymentCreateRequest req)
@@ -124,10 +133,10 @@ namespace SchoolMgmt.API.Controllers
         }
 
         [HttpGet("students")]
-        public async Task<IActionResult> GetAllStudents(int page = 1, int pageSize = 10, string search = "")
+        public async Task<IActionResult> GetAllStudents(int page = 0, int pageSize = 0, string search = "")
         {
             var orgId = GetOrgIdFromClaims();
-            var response = await _svc.GetAllStudentsAsync(orgId, page, pageSize, search);
+            var response = await _svc.GetAllStudentsAsync(orgId, page, pageSize, search,1);
             return OkResponse(response, "Student Fetched Successfully");
         }
         [HttpGet("payments")]

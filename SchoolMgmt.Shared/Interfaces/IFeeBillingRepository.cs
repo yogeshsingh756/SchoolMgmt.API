@@ -21,10 +21,11 @@ namespace SchoolMgmt.Shared.Interfaces
         Task<IEnumerable<dynamic>> GetInvoicesAsync(int orgId, int page, int size, string search);
         Task<(InvoiceHeaderDto header, IEnumerable<InvoiceItemDto> items, IEnumerable<PaymentAllocationDto> allocations)>
     GetInvoiceByIdAsync(int orgId, int invoiceId);
+        Task<IEnumerable<dynamic>>  GetInvoicesByUserIdAsync(int orgId, int userId);
 
         Task<(int PaymentId, string ReceiptNo, decimal Allocated, decimal Unallocated)> CreatePaymentAsync(int orgId, PaymentCreateRequest req, int userId);
         Task<IEnumerable<dynamic>> GetPaymentsAsync(int orgId, int page, int size, string search);
         Task<PaginatedResponse<StudentListModel>> GetAllStudentsAsync(
-        int organizationId, int pageNumber, int pageSize, string search);
+        int organizationId, int pageNumber, int pageSize, string search, int isDropdown = 0);
     }
 }

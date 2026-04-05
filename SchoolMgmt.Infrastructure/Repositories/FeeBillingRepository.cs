@@ -1,10 +1,12 @@
-﻿using Dapper;
+﻿using Azure;
+using Dapper;
 using SchoolMgmt.Shared.Interfaces;
 using SchoolMgmt.Shared.Models.Fee;
 using SchoolMgmt.Shared.Responses;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -143,6 +145,20 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<IEnumerable<dynamic>> GetInvoicesByUserIdAsync(int orgId, int userId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            return await conn.QueryAsync(
+                "sp_Admin_Invoices_ByUserId",
+                new
+                {
+                    p_OrganizationId = orgId,
+                    p_UserId = userId
+
+                },
+                commandType: CommandType.StoredProcedure);
+        }
+
         public async Task<(InvoiceHeaderDto header, IEnumerable<InvoiceItemDto> items, IEnumerable<PaymentAllocationDto> allocations)>
     GetInvoiceByIdAsync(int orgId, int invoiceId)
         {
@@ -204,7 +220,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
         }
 
         public async Task<PaginatedResponse<StudentListModel>> GetAllStudentsAsync(
-    int organizationId, int pageNumber, int pageSize, string search)
+    int organizationId, int pageNumber, int pageSize, string search, int isDropdown = 0)
         {
             using var conn = _dbFactory.CreateConnection();
             var parameters = new DynamicParameters();
@@ -213,6 +229,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("p_PageNumber", pageNumber);
             parameters.Add("p_PageSize", pageSize);
             parameters.Add("p_Search", search);
+            parameters.Add("p_IsDropdown", isDropdown);
 
             using var multi = await conn.QueryMultipleAsync(
                 "sp_Admin_Students_GetAll",
@@ -220,7 +237,17 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 commandType: CommandType.StoredProcedure);
 
             var students = (await multi.ReadAsync<StudentListModel>()).ToList();
-            var totalRecords = (await multi.ReadAsync<int>()).FirstOrDefault();
+            int totalRecords;
+
+            // ✅ HANDLE DROPDOWN MODE
+            if (isDropdown == 1)
+            {
+                totalRecords = students.Count;
+            }
+            else
+            {
+                totalRecords = (await multi.ReadAsync<int>()).FirstOrDefault();
+            }
 
             return PaginatedResponse<StudentListModel>.Create(
                 students,

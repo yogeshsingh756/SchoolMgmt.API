@@ -334,7 +334,8 @@ namespace SchoolMgmt.Infrastructure.Repositories
                     p_PageNumber = pageNumber,
                     p_PageSize = pageSize,
                     p_Search = search,
-                    p_StatusFilter = statusFilter
+                    p_StatusFilter = statusFilter,
+                    p_IsDropdown = 0
                 },
                 commandType: CommandType.StoredProcedure
             );
