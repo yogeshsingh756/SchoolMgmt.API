@@ -81,7 +81,7 @@ namespace SchoolMgmt.Application.Services
                 RoleName = "Admin"
             };
 
-            var expiryMinutes = int.Parse(_config["Jwt:ExpiryMinutes"] ?? "60");
+            var expiryMinutes = int.Parse(_config["Jwt:AccessTokenMinutes"] ?? "60");
             var tokenUser = new UserTokenModel
             {
                 UserId = user.UserId,
@@ -223,7 +223,7 @@ namespace SchoolMgmt.Application.Services
                 RoleName = roleName
             };
 
-            var expiryMinutes = int.Parse(_config["Jwt:ExpiryMinutes"] ?? "60");
+            var expiryMinutes = int.Parse(_config["Jwt:AccessTokenMinutes"] ?? "60");
             var tokenUser = new UserTokenModel
             {
                 UserId = user.UserId,
@@ -368,7 +368,7 @@ namespace SchoolMgmt.Application.Services
                 RoleName = userRow.RoleName
             };
 
-            var expiryMinutes = int.Parse(_config["Jwt:ExpiryMinutes"] ?? "60");
+            var expiryMinutes = int.Parse(_config["Jwt:AccessTokenMinutes"] ?? "60");
             var tokenUser = new UserTokenModel
             {
                 UserId = user.UserId,
