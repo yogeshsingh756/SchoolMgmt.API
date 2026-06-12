@@ -130,21 +130,70 @@ namespace SchoolMgmt.Infrastructure.Repositories
             return ((int)result.InvoiceId, (string)result.InvoiceNo);
         }
 
-        public async Task<IEnumerable<dynamic>> GetInvoicesAsync(int orgId, int page, int size, string search)
+        public async Task UpdateInvoiceAsync(
+    int orgId,
+    int invoiceId,
+    InvoiceUpdateRequest req,
+    int userId)
         {
             using var conn = _dbFactory.CreateConnection();
-            return await conn.QueryAsync(
-                "sp_Admin_Invoices_GetAll",
+
+            await conn.ExecuteAsync(
+                "sp_Admin_Invoices_Update",
                 new
                 {
                     p_OrganizationId = orgId,
-                    p_PageNumber = page,
-                    p_PageSize = size,
-                    p_Search = search
+                    p_InvoiceId = invoiceId,
+                    p_DueDate = req.DueDate,
+                    p_Notes = req.Notes,
+                    p_ModifiedBy = userId
                 },
                 commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<PaginatedResponse<dynamic>> GetInvoicesAsync(int orgId, int page, int size, string search)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            using var multi = await conn.QueryMultipleAsync(
+     "sp_Admin_Invoices_GetAll",
+     new
+     {
+         p_OrganizationId = orgId,
+         p_PageNumber = page,
+         p_PageSize = size,
+         p_Search = search
+     },
+     commandType: CommandType.StoredProcedure);
+
+            var invoices = (await multi.ReadAsync<dynamic>()).ToList();
+            var totalRows = await multi.ReadFirstAsync<int>();
+
+            return new PaginatedResponse<dynamic>
+            {
+                Data = invoices,
+                TotalCount = totalRows,
+                PageNumber = page,
+                PageSize = size
+            };
+        }
+
+        public async Task DeleteInvoiceAsync(
+    int orgId,
+    int invoiceId,
+    int userId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            await conn.ExecuteAsync(
+                "sp_Admin_Invoices_Delete",
+                new
+                {
+                    p_OrganizationId = orgId,
+                    p_InvoiceId = invoiceId,
+                    p_DeletedBy = userId
+                },
+                commandType: CommandType.StoredProcedure);
+        }
         public async Task<IEnumerable<dynamic>> GetInvoicesByUserIdAsync(int orgId, int userId)
         {
             using var conn = _dbFactory.CreateConnection();
@@ -174,6 +223,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
 
             return (header, items, allocations);
         }
+
 
         //-------------------------------------------------
         // 4️⃣ PAYMENTS

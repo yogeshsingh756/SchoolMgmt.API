@@ -17,4 +17,10 @@ namespace SchoolMgmt.Shared.Models.Fee
 
     public record PaymentCreateRequest(
         int StudentId, DateTime PaymentDate, string PaymentMode, string? ReferenceNo, string? Notes, decimal TotalPaidAmount);
+    public class InvoiceUpdateRequest
+    {
+        public DateTime DueDate { get; set; }
+
+        public string? Notes { get; set; }
+    }
 }

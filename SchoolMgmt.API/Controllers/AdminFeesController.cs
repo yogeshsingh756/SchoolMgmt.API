@@ -113,6 +113,23 @@ namespace SchoolMgmt.API.Controllers
             return OkResponse(response, "Fetched invoice successfully.");
         }
 
+        [HttpPut("invoices/{invoiceId}")]
+        public async Task<IActionResult> UpdateInvoice(
+    int invoiceId,
+    [FromBody] InvoiceUpdateRequest req)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var userId = GetCurrentUserId();
+
+            await _svc.UpdateInvoiceAsync(
+                orgId,
+                invoiceId,
+                req,
+                userId);
+
+            return OkResponse(new object(), "Invoice updated successfully.");
+        }
+
         [HttpGet("invoice/{userId}")]
         public async Task<IActionResult> GetInvoiceByUserId(int userId)
         {
@@ -120,6 +137,17 @@ namespace SchoolMgmt.API.Controllers
             var result = await _svc.GetInvoicesByUserIdAsync(orgId, userId);
 
             return OkResponse(result, "Fetched invoices.");
+        }
+
+        [HttpDelete("invoices/{invoiceId}")]
+        public async Task<IActionResult> DeleteInvoice(int invoiceId)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var userId = GetCurrentUserId();
+
+            await _svc.DeleteInvoiceAsync(orgId, invoiceId, userId);
+
+            return OkResponse(new { InvoiceId = invoiceId }, "Invoice deleted successfully.");
         }
 
         // PAYMENTS

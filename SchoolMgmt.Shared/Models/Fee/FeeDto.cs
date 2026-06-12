@@ -44,6 +44,10 @@ namespace SchoolMgmt.Shared.Models.Fee
 
         public string Status { get; set; }
         public string Notes { get; set; }
+
+        public int? ClassId { get; set; }
+
+        public string? ClassName { get; set; }
     }
 
     public class InvoiceItemDto
