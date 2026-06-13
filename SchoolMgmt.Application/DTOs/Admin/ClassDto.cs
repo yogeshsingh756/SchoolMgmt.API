@@ -16,5 +16,6 @@ namespace SchoolMgmt.Application.DTOs.Admin
         public string? AcademicYear { get; set; }
         public int? OrderNo { get; set; }
         public bool IsActive { get; set; } = true;
+        public bool HasSections { get; set; }
     }
 }

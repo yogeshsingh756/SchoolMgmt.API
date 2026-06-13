@@ -41,6 +41,7 @@ namespace SchoolMgmt.Shared.Models.Admin
         public string ? Category { get; set; } = string.Empty;
         public string? MotherName { get; set; } = string.Empty;
         public string? FatherName { get; set; } = string.Empty;
+        public int? SectionId { get; set; }
 
         public bool IsExistingParent => ParentId.HasValue;
     }

@@ -44,7 +44,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
             p.Add("p_AcademicYear", entity.AcademicYear);
             p.Add("p_OrderNo", entity.OrderNo);
             p.Add("p_CreatedBy", entity.CreatedBy);
-
+            p.Add("p_HasSections", entity.HasSections);
             var result = await conn.QueryFirstAsync<dynamic>(
                 "sp_Admin_Classes_Create", p, commandType: CommandType.StoredProcedure);
 
@@ -65,7 +65,8 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 p_AcademicYear = entity.AcademicYear,
                 p_OrderNo = entity.OrderNo,
                 p_IsActive = entity.IsActive,
-                p_ModifiedBy = entity.ModifiedBy
+                p_ModifiedBy = entity.ModifiedBy,
+                p_HasSections = entity.HasSections
             };
 
             var result = await conn.QueryFirstAsync<dynamic>(

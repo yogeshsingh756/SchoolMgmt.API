@@ -20,7 +20,7 @@ namespace SchoolMgmt.Application.DTOs.Admin
 
         public string Email { get; set; } = string.Empty;
 
-        [Phone]
+        //[Phone]
         public string? PhoneNumber { get; set; }
 
         // Optional Role-Specific Fields (same as Create)
@@ -36,6 +36,7 @@ namespace SchoolMgmt.Application.DTOs.Admin
         public string? MotherName { get; set; }
         public string? Category { get; set; }
         public string? FatherName { get; set; }
+        public int? SectionId { get; set; }
 
     }
 }

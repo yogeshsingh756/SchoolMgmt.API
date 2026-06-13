@@ -31,7 +31,8 @@ namespace SchoolMgmt.Application.Services
                 ClassTeacherId = c.ClassTeacherId,
                 ClassTeacherName = c.ClassTeacherName,
                 OrderNo = c.OrderNo,
-                IsActive = c.IsActive
+                IsActive = c.IsActive,
+                HasSections = c.HasSections
             });
         }
 
@@ -45,7 +46,8 @@ namespace SchoolMgmt.Application.Services
                 ClassTeacherId = dto.ClassTeacherId,
                 AcademicYear = dto.AcademicYear,
                 OrderNo = dto.OrderNo,
-                CreatedBy = createdBy
+                CreatedBy = createdBy,
+                HasSections = dto.HasSections
             };
             return await _repo.CreateClassAsync(entity);
         }
@@ -62,7 +64,8 @@ namespace SchoolMgmt.Application.Services
                 AcademicYear = dto.AcademicYear,
                 OrderNo = dto.OrderNo,
                 IsActive = dto.IsActive,
-                ModifiedBy = modifiedBy
+                ModifiedBy = modifiedBy,
+                HasSections = dto.HasSections
             };
             return await _repo.UpdateClassAsync(entity);
         }

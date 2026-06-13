@@ -58,7 +58,8 @@ namespace SchoolMgmt.Infrastructure.Repositories
                     p_Gender = model.Gender,
                     p_Category = model.Category,
                     p_MotherName = model.MotherName,
-                    p_FatherName = model.FatherName
+                    p_FatherName = model.FatherName,
+                    p_SectionId = model.SectionId
                 },
                 commandType: CommandType.StoredProcedure
             );
@@ -90,7 +91,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
     string? address = null,
     string? admissionNo = null,
     int? parentId = null,
-    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null, string? FatherName = null)
+    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null, string? FatherName = null, int? SectionId = null)
         {
             using var conn = _dbFactory.CreateConnection();
 
@@ -118,6 +119,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("@p_MotherName", MotherName);
             parameters.Add("@p_Category", Category);
             parameters.Add("@p_FatherName", FatherName);
+            parameters.Add("@p_SectionId", SectionId);
 
             var result = await conn.QueryFirstOrDefaultAsync<SpResult>(
                 "sp_User_Create", parameters, commandType: CommandType.StoredProcedure);
@@ -138,7 +140,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
     string? address = null,
     string? admissionNo = null,
     int? parentId = null,
-    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null, string? FatherName = null)
+    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null, string? FatherName = null, int? SectionId = null)
         {
             using var conn = _dbFactory.CreateConnection();
             var parameters = new DynamicParameters();
@@ -164,7 +166,7 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("@p_MotherName", MotherName);
             parameters.Add("@p_Category", Category);
             parameters.Add("@p_FatherName", FatherName);
-
+            parameters.Add("@p_SectionId", SectionId);
             var result = await conn.QueryFirstOrDefaultAsync<SpResult>(
                 "sp_User_Update", parameters, commandType: CommandType.StoredProcedure);
 

@@ -28,7 +28,8 @@ namespace SchoolMgmt.API.Controllers
         public async Task<IActionResult> GetDropdowns()
         {
             var orgId = GetOrgIdFromClaims();
-            var classes = await _service.GetAllClassesAsync(orgId);
+            var classes = (await _service.GetAllClassesAsync(orgId))
+                    .Where(x => x.IsActive); ;
             var feeTypes = await _feeMasterService.GetFeeTypesAsync(orgId);
             var terms = await _feeMasterService.GetTermsAsync(orgId);
             var sessions = await _feeMasterService.GetSessionsAsync(orgId);
@@ -161,10 +162,11 @@ namespace SchoolMgmt.API.Controllers
         }
 
         [HttpGet("students")]
-        public async Task<IActionResult> GetAllStudents(int page = 0, int pageSize = 0, string search = "")
+        public async Task<IActionResult> GetAllStudents(int page = 0, int pageSize = 0, string search = "",
+    bool isDropDown = true)
         {
             var orgId = GetOrgIdFromClaims();
-            var response = await _svc.GetAllStudentsAsync(orgId, page, pageSize, search,1);
+            var response = await _svc.GetAllStudentsAsync(orgId, page, pageSize, search, Convert.ToInt32(isDropDown));
             return OkResponse(response, "Student Fetched Successfully");
         }
         [HttpGet("payments")]

@@ -58,7 +58,8 @@ namespace SchoolMgmt.Application.Services
         req.Gender,
                 req.MotherName,
                 req.Category,
-                req.FatherName
+                req.FatherName,
+                req.SectionId
     );
         }
         public async Task<AdminDashboardDto> GetDashboardAsync(int organizationId)
@@ -95,7 +96,8 @@ namespace SchoolMgmt.Application.Services
         req.Gender,
                 req.MotherName,
                 req.Category,
-                req.FatherName
+                req.FatherName,
+                req.SectionId
     );
         }
 
@@ -159,7 +161,9 @@ namespace SchoolMgmt.Application.Services
                 Gender = u.Gender,
                 Category = u.Category,
                 MotherName = u.MotherName,
-                FatherName = u.FatherName
+                FatherName = u.FatherName,
+                SectionId = u.SectionId,
+                SectionName = u.SectionName
             });
 
             return new PaginatedUserResponse
@@ -201,7 +205,9 @@ namespace SchoolMgmt.Application.Services
                 Gender = u.Gender,
                 Category = u.Category,
                 MotherName = u.MotherName,
-                FatherName = u.FatherName
+                FatherName = u.FatherName,
+                SectionId = u.SectionId,
+                SectionName = u.SectionName
             });
 
             return new PaginatedUserResponse

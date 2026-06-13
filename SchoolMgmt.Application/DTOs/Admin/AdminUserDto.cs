@@ -37,6 +37,9 @@ namespace SchoolMgmt.Application.DTOs.Admin
         public string? Category { get; set; }
         public string? MotherName { get; set; }
         public string? FatherName { get; set; }
+        public int? SectionId { get; set; }
+        public string? SectionName { get; set; }
+
     }
 
     public class PaginatedUserResponse

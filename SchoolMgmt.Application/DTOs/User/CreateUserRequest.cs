@@ -27,7 +27,7 @@ namespace SchoolMgmt.Application.DTOs.User
         [Required, StringLength(20, MinimumLength = 6)]
         public string Password { get; set; } = string.Empty;
 
-        [Phone]
+        //[Phone]
         public string? PhoneNumber { get; set; }
 
         // 🧑‍🏫 Optional Teacher fields
@@ -47,5 +47,6 @@ namespace SchoolMgmt.Application.DTOs.User
         public string? MotherName { get; set; }
         public string? Category { get; set; }
         public string? FatherName { get; set; }
+        public int? SectionId { get; set; }
     }
 }
