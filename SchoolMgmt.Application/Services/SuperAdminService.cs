@@ -4,6 +4,7 @@ using SchoolMgmt.Application.Interfaces;
 using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Infrastructure.Repositories;
 using SchoolMgmt.Shared.Interfaces;
+using SchoolMgmt.Shared.Models.Tenant;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -110,7 +111,30 @@ namespace SchoolMgmt.Application.Services
                 ExpiresAt = entity.ExpiresAt,
                 SubscriptionStatus = entity.SubscriptionStatus,
                 IsActive = entity.IsActive,
-                UserCount = entity.UserCount
+                UserCount = entity.UserCount,
+                TenantStatus = entity.TenantStatus
+            };
+        }
+
+        public async Task<PaginatedTenantResponse>
+    GetAllTenantsAsync(GetTenantsRequest request)
+        {
+            var (tenants, total) =
+                await _repo.GetAllTenantsAsync(
+                    request.PageNumber,
+                    request.PageSize,
+                    request.Search,
+                    request.IsActive,
+                    request.SubscriptionStatus,
+                    request.PlanId,
+                    request.TenantStatus);
+
+            return new PaginatedTenantResponse
+            {
+                Tenants = tenants,
+                TotalCount = total,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize
             };
         }
     }

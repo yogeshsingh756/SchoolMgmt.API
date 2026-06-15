@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolMgmt.Application.DTOs.SuperAdmin;
 using SchoolMgmt.Application.Interfaces;
+using SchoolMgmt.Application.Services;
+using SchoolMgmt.Shared.Models.Tenant;
 using SchoolMgmt.Shared.Responses;
 
 namespace SchoolMgmt.API.Controllers
@@ -134,6 +136,18 @@ namespace SchoolMgmt.API.Controllers
                 return NotFoundResponse("Tenant not found.");
 
             return OkResponse(result, "Fetched tenant details successfully.");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllTenants(
+    [FromQuery] GetTenantsRequest request)
+        {
+            var result =
+                await _superAdminService.GetAllTenantsAsync(request);
+
+            return OkResponse(
+                result,
+                "Tenants fetched successfully.");
         }
 
         // -----------------------------------------------

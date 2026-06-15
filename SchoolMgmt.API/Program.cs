@@ -88,6 +88,8 @@ builder.Services.AddScoped<IFeeMasterService, FeeMasterService>();
 builder.Services.AddScoped<IFeeBillingRepository, FeeBillingRepository>();
 builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
 builder.Services.AddScoped<IFeeReportService, FeeReportService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+builder.Services.AddScoped<AttendanceRepository>();
 builder.Services.AddScoped<FeeReportsRepository>();
 builder.Services.AddScoped<PaymentMethodRepository>();
 builder.Services.AddScoped<FeeMasterRepository>();
@@ -116,7 +118,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+            ValidateLifetime = true, // Ensure this is true
+            ClockSkew = TimeSpan.Zero // Set to zero for strict expiration
         };
     });
 builder.Services.AddCors(options =>

@@ -18,5 +18,6 @@ namespace SchoolMgmt.Application.DTOs.SuperAdmin
         public string SubscriptionStatus { get; set; } = string.Empty;
         public bool IsActive { get; set; }
         public int UserCount { get; set; }
+        public string? TenantStatus { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SchoolMgmt.Application.DTOs.SuperAdmin;
+using SchoolMgmt.Shared.Models.Tenant;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,7 @@ namespace SchoolMgmt.Application.Interfaces
         Task<SuperAdminAnalyticsDto> GetAnalyticsOverviewAsync();
         Task<IEnumerable<PlanUsageDto>> GetPlanUsageAsync();
         Task<TenantDetailDto?> GetTenantDetailAsync(int organizationId);
+        Task<PaginatedTenantResponse>
+    GetAllTenantsAsync(GetTenantsRequest request);
     }
 }

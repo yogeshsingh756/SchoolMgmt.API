@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Shared.Interfaces;
+using SchoolMgmt.Shared.Models.Tenant;
 using System.Data;
 
 namespace SchoolMgmt.Infrastructure.Repositories
@@ -89,6 +90,41 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 "sp_Tenant_GetDetailById",
                 new { p_OrganizationId = organizationId },
                 commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<(IEnumerable<TenantListDto> Tenants, int TotalCount)>
+    GetAllTenantsAsync(
+        int pageNumber,
+        int pageSize,
+        string? search,
+        bool? isActive,
+        string? subscriptionStatus,
+        int? planId,
+        string? tenantStatus)
+        {
+            using var conn = _dbFactory.CreateConnection();
+
+            using var multi = await conn.QueryMultipleAsync(
+                "sp_Tenant_GetAll",
+                new
+                {
+                    p_PageNumber = pageNumber,
+                    p_PageSize = pageSize,
+                    p_Search = search,
+                    p_IsActive = isActive,
+                    p_SubscriptionStatus = subscriptionStatus,
+                    p_PlanId = planId,
+                    p_TenantStatus = tenantStatus
+                },
+                commandType: CommandType.StoredProcedure);
+
+            var tenants =
+                await multi.ReadAsync<TenantListDto>();
+
+            var total =
+                await multi.ReadFirstAsync<int>();
+
+            return (tenants, total);
         }
     }
 }
