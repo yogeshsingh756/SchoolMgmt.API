@@ -15,11 +15,11 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // fix for render
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
-    serverOptions.ListenAnyIP(int.Parse(port));
-});
+//builder.WebHost.ConfigureKestrel(serverOptions =>
+//{
+//    var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+//    serverOptions.ListenAnyIP(int.Parse(port));
+//});
 // fix for render close
 
 // Add DbContext
