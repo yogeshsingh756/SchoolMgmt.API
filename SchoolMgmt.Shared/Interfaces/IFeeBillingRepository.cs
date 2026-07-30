@@ -18,7 +18,11 @@ namespace SchoolMgmt.Shared.Interfaces
         Task<int> UpsertConcessionAsync(int orgId, ConcessionUpsert dto, int userId);
 
         Task<(int InvoiceId, string InvoiceNo)> GenerateInvoiceAsync(int orgId, InvoiceGenerateRequest req, int userId);
-        Task<IEnumerable<dynamic>> GetInvoicesAsync(int orgId, int page, int size, string search);
+        Task<(IEnumerable<dynamic> Invoices, int TotalCount)> GetInvoicesAsync(
+            int orgId, int page, int size, string? search,
+            int? classId = null, string? status = null,
+            DateTime? fromDate = null, DateTime? toDate = null,
+            int? termId = null, int? sessionId = null);
         Task<(InvoiceHeaderDto header, IEnumerable<InvoiceItemDto> items, IEnumerable<PaymentAllocationDto> allocations)>
     GetInvoiceByIdAsync(int orgId, int invoiceId);
         Task<IEnumerable<dynamic>>  GetInvoicesByUserIdAsync(int orgId, int userId);

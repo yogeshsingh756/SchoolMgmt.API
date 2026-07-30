@@ -130,19 +130,33 @@ namespace SchoolMgmt.Infrastructure.Repositories
             return ((int)result.InvoiceId, (string)result.InvoiceNo);
         }
 
-        public async Task<IEnumerable<dynamic>> GetInvoicesAsync(int orgId, int page, int size, string search)
+        public async Task<(IEnumerable<dynamic> Invoices, int TotalCount)> GetInvoicesAsync(
+            int orgId, int page, int size, string? search,
+            int? classId = null, string? status = null,
+            DateTime? fromDate = null, DateTime? toDate = null,
+            int? termId = null, int? sessionId = null)
         {
             using var conn = _dbFactory.CreateConnection();
-            return await conn.QueryAsync(
+            using var multi = await conn.QueryMultipleAsync(
                 "sp_Admin_Invoices_GetAll",
                 new
                 {
                     p_OrganizationId = orgId,
                     p_PageNumber = page,
                     p_PageSize = size,
-                    p_Search = search
+                    p_Search = search,
+                    p_ClassId = classId,
+                    p_Status = status,
+                    p_FromDate = fromDate?.Date,
+                    p_ToDate = toDate?.Date,
+                    p_TermId = termId,
+                    p_SessionId = sessionId
                 },
                 commandType: CommandType.StoredProcedure);
+
+            var invoices = (await multi.ReadAsync<dynamic>()).ToList();
+            var totalCount = (await multi.ReadFirstOrDefaultAsync<int?>()) ?? invoices.Count;
+            return (invoices, totalCount);
         }
 
         public async Task<IEnumerable<dynamic>> GetInvoicesByUserIdAsync(int orgId, int userId)

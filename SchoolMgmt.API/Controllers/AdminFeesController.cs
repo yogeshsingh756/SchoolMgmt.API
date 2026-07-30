@@ -90,11 +90,21 @@ namespace SchoolMgmt.API.Controllers
         }
 
         [HttpGet("invoices")]
-        public async Task<IActionResult> GetInvoices([FromQuery] int page = 1, [FromQuery] int size = 10, [FromQuery] string? search = null)
+        public async Task<IActionResult> GetInvoices(
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10,
+            [FromQuery] string? search = null,
+            [FromQuery] int? classId = null,
+            [FromQuery] string? status = null,
+            [FromQuery] DateTime? fromDate = null,
+            [FromQuery] DateTime? toDate = null,
+            [FromQuery] int? termId = null,
+            [FromQuery] int? sessionId = null)
         {
             var orgId = GetOrgIdFromClaims();
-            var result = await _svc.GetInvoicesAsync(orgId, page, size, search);
-            return OkResponse(result, "Fetched invoices.");
+            var result = await _svc.GetInvoicesAsync(
+                orgId, page, size, search, classId, status, fromDate, toDate, termId, sessionId);
+            return OkResponse(new { invoices = result.Invoices, totalCount = result.TotalCount }, "Fetched invoices.");
         }
 
         [HttpGet("invoices/{invoiceId}")]
