@@ -44,9 +44,11 @@ namespace SchoolMgmt.API.Middlewares
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unhandled");
-                var isDev = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
-                var msg = isDev ? ex.Message : "Something went wrong.";
-                await Write(ctx, HttpStatusCode.InternalServerError, ApiResponse<object?>.Fail(msg, "SERVER_ERROR"));
+                // Return real exception text so server/deploy issues are diagnosable (e.g. SP / DB / JWT).
+                var detail = ex.InnerException != null
+                    ? $"{ex.GetType().Name}: {ex.Message} | Inner: {ex.InnerException.Message}"
+                    : $"{ex.GetType().Name}: {ex.Message}";
+                await Write(ctx, HttpStatusCode.InternalServerError, ApiResponse<object?>.Fail(detail, "SERVER_ERROR"));
             }
         }
 

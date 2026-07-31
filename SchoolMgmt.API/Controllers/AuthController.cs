@@ -62,15 +62,25 @@ namespace SchoolMgmt.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginRequest req)
         {
-            if (string.IsNullOrWhiteSpace(req.Username) || string.IsNullOrWhiteSpace(req.Password))
-                return BadRequestResponse("Username and password are required", "VALIDATION_ERROR");
+            try
+            {
+                if (req == null || string.IsNullOrWhiteSpace(req.Username) || string.IsNullOrWhiteSpace(req.Password))
+                    return BadRequestResponse("Username and password are required", "VALIDATION_ERROR");
 
-            var (success, message, response) = await _authService.LoginAsync(req);
+                var (success, message, response) = await _authService.LoginAsync(req);
 
-            if (!success)
-                return UnauthorizedResponse(message ?? "Invalid credentials", "LOGIN_FAILED");
+                if (!success)
+                    return UnauthorizedResponse(message ?? "Invalid credentials", "LOGIN_FAILED");
 
-            return OkResponse(response, message ?? "Login successful");
+                return OkResponse(response, message ?? "Login successful");
+            }
+            catch (Exception ex)
+            {
+                var detail = ex.InnerException != null
+                    ? $"{ex.GetType().Name}: {ex.Message} | Inner: {ex.InnerException.Message}"
+                    : $"{ex.GetType().Name}: {ex.Message}";
+                return ServerErrorResponse(detail, "LOGIN_EXCEPTION");
+            }
         }
 
         /// <summary>

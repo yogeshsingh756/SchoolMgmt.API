@@ -186,6 +186,8 @@ namespace SchoolMgmt.Application.Services
 
         public async Task<(bool Success, string? Message, AuthResponse? Response)> LoginAsync(LoginRequest req)
         {
+            try
+            {
             using var conn = _dbFactory.CreateConnection();
 
             var p = new DynamicParameters();
@@ -322,6 +324,14 @@ namespace SchoolMgmt.Application.Services
             };
 
             return (true, null, response);
+            }
+            catch (Exception ex)
+            {
+                var detail = ex.InnerException != null
+                    ? $"{ex.GetType().Name}: {ex.Message} | Inner: {ex.InnerException.Message}"
+                    : $"{ex.GetType().Name}: {ex.Message}";
+                throw new Exception($"Login failed: {detail}", ex);
+            }
         }
 
         public async Task<(bool Success, string? Message, AuthResponse? Response)> RefreshAsync(string refreshToken)
