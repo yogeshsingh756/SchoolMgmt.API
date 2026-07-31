@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Dashboard_GetOverview`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Dashboard_GetOverview` (IN `p_OrganizationId` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Dashboard_GetOverview` (IN `p_OrganizationId` INT)   BEGIN
   SELECT 
     -- ???? Students
     (SELECT COUNT(*) 

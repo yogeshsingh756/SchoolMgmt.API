@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_user_check_email`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_user_check_email` (IN `p_OrganizationId` INT, IN `p_Email` VARCHAR(100))   exit_block: BEGIN
+CREATE PROCEDURE `sp_user_check_email` (IN `p_OrganizationId` INT, IN `p_Email` VARCHAR(100))   exit_block: BEGIN
     DECLARE v_Flag INT DEFAULT 0;
 
     IF p_Email IS NULL OR TRIM(p_Email) = '' THEN

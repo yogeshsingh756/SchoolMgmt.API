@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_TeacherSubjects_Create`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_TeacherSubjects_Create` (IN `p_OrganizationId` INT, IN `p_TeacherId` INT, IN `p_ClassId` INT, IN `p_SectionId` INT, IN `p_SubjectId` INT, IN `p_IsPrimary` TINYINT(1), IN `p_CreatedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_TeacherSubjects_Create` (IN `p_OrganizationId` INT, IN `p_TeacherId` INT, IN `p_ClassId` INT, IN `p_SectionId` INT, IN `p_SubjectId` INT, IN `p_IsPrimary` TINYINT(1), IN `p_CreatedBy` INT)   BEGIN
   DECLARE v_teacher_exists INT DEFAULT 0;
   DECLARE v_class_exists INT DEFAULT 0;
   DECLARE v_subject_exists INT DEFAULT 0;

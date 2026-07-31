@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Classes_GetAll`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Classes_GetAll` (IN `p_OrganizationId` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Classes_GetAll` (IN `p_OrganizationId` INT)   BEGIN
     SELECT 
         c.ClassId,
         c.ClassName,

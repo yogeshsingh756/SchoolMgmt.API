@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_User_ChangePassword`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_User_ChangePassword` (IN `p_UserId` INT, IN `p_PasswordHash` VARCHAR(255), IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_User_ChangePassword` (IN `p_UserId` INT, IN `p_PasswordHash` VARCHAR(255), IN `p_ModifiedBy` INT)   BEGIN
   DECLARE v_exists INT DEFAULT 0;
 
   SELECT COUNT(*) INTO v_exists

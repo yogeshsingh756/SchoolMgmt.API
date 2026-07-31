@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Org_Register`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Org_Register` (IN `p_SchoolName` VARCHAR(150), IN `p_Address` VARCHAR(255), IN `p_Phone` VARCHAR(20), IN `p_Email` VARCHAR(100), IN `p_PlanId` INT, IN `p_IsTrial` TINYINT(1), IN `p_TrialDays` INT, IN `p_AdminFirstName` VARCHAR(100), IN `p_AdminLastName` VARCHAR(100), IN `p_AdminUsername` VARCHAR(50), IN `p_AdminEmail` VARCHAR(100), IN `p_AdminPasswordHash` VARCHAR(255), IN `p_CreatedBy` INT, IN `p_AdminPhone` VARCHAR(20), IN `p_LogoUrl` LONGTEXT, OUT `o_OrganizationId` INT, OUT `o_AdminUserId` INT, OUT `o_Status` VARCHAR(50))   BEGIN
+CREATE PROCEDURE `sp_Org_Register` (IN `p_SchoolName` VARCHAR(150), IN `p_Address` VARCHAR(255), IN `p_Phone` VARCHAR(20), IN `p_Email` VARCHAR(100), IN `p_PlanId` INT, IN `p_IsTrial` TINYINT(1), IN `p_TrialDays` INT, IN `p_AdminFirstName` VARCHAR(100), IN `p_AdminLastName` VARCHAR(100), IN `p_AdminUsername` VARCHAR(50), IN `p_AdminEmail` VARCHAR(100), IN `p_AdminPasswordHash` VARCHAR(255), IN `p_CreatedBy` INT, IN `p_AdminPhone` VARCHAR(20), IN `p_LogoUrl` LONGTEXT, OUT `o_OrganizationId` INT, OUT `o_AdminUserId` INT, OUT `o_Status` VARCHAR(50))   BEGIN
   -- ✅ DECLARE ALL VARIABLES FIRST
   DECLARE v_AdminRoleId INT DEFAULT NULL;
   DECLARE v_PlanBilling VARCHAR(20);

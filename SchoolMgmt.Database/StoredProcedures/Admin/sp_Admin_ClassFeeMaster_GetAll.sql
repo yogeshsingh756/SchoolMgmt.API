@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_ClassFeeMaster_GetAll`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_ClassFeeMaster_GetAll` (IN `p_OrganizationId` INT, IN `p_PageNumber` INT, IN `p_PageSize` INT, IN `p_Search` VARCHAR(100))   BEGIN
+CREATE PROCEDURE `sp_Admin_ClassFeeMaster_GetAll` (IN `p_OrganizationId` INT, IN `p_PageNumber` INT, IN `p_PageSize` INT, IN `p_Search` VARCHAR(100))   BEGIN
   DECLARE v_PageNumber INT DEFAULT 1;
   DECLARE v_PageSize   INT DEFAULT 10;
   DECLARE v_Offset     INT DEFAULT 0;

@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Invoices_GetById`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Invoices_GetById` (IN `p_OrganizationId` INT, IN `p_InvoiceId` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Invoices_GetById` (IN `p_OrganizationId` INT, IN `p_InvoiceId` INT)   BEGIN
     /* 1️⃣ INVOICE HEADER DETAILS */
     SELECT 
         i.InvoiceId,

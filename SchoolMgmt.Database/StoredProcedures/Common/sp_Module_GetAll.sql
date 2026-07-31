@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Module_GetAll`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Module_GetAll` ()   BEGIN
+CREATE PROCEDURE `sp_Module_GetAll` ()   BEGIN
   SELECT 
       m.ModuleId,
       m.ModuleName,

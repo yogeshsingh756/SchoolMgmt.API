@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Report_ClassWiseOutstanding`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Report_ClassWiseOutstanding` (IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_TermId` INT, IN `p_SessionId` INT)   BEGIN
+CREATE PROCEDURE `sp_Report_ClassWiseOutstanding` (IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_TermId` INT, IN `p_SessionId` INT)   BEGIN
   SELECT
     s.CurrentClassId AS ClassId,
     IFNULL(c.ClassName,'-') AS ClassName,

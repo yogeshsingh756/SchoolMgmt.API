@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Report_FeeTypeCollection`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Report_FeeTypeCollection` (IN `p_OrganizationId` INT, IN `p_FromDate` DATE, IN `p_ToDate` DATE, IN `p_TermId` INT, IN `p_SessionId` INT)   BEGIN
+CREATE PROCEDURE `sp_Report_FeeTypeCollection` (IN `p_OrganizationId` INT, IN `p_FromDate` DATE, IN `p_ToDate` DATE, IN `p_TermId` INT, IN `p_SessionId` INT)   BEGIN
   SELECT
     ft.FeeTypeId,
     ft.FeeTypeName,

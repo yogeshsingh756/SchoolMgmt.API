@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Concessions_GetByStudent`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Concessions_GetByStudent` (IN `p_OrganizationId` INT, IN `p_StudentId` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Concessions_GetByStudent` (IN `p_OrganizationId` INT, IN `p_StudentId` INT)   BEGIN
   SELECT c.ConcessionId, c.FeeTypeId, ft.FeeTypeName, c.DiscountType, c.DiscountValue, c.Remark, c.IsActive
   FROM StudentFeeConcessions c
   INNER JOIN FeeTypes ft ON ft.FeeTypeId = c.FeeTypeId

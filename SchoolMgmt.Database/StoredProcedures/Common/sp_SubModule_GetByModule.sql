@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_SubModule_GetByModule`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_SubModule_GetByModule` (IN `p_ModuleId` INT)   BEGIN
+CREATE PROCEDURE `sp_SubModule_GetByModule` (IN `p_ModuleId` INT)   BEGIN
   SELECT 
       s.SubModuleId,
       s.ModuleId,

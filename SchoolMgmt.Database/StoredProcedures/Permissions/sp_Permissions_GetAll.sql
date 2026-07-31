@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Permissions_GetAll`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Permissions_GetAll` ()   BEGIN
+CREATE PROCEDURE `sp_Permissions_GetAll` ()   BEGIN
     SELECT 
         p.PermissionId,
         p.PermissionKey,

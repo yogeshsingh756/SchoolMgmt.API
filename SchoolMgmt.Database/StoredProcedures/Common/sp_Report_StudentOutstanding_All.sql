@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Report_StudentOutstanding_All`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Report_StudentOutstanding_All` (IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_Search` VARCHAR(100))   BEGIN
+CREATE PROCEDURE `sp_Report_StudentOutstanding_All` (IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_Search` VARCHAR(100))   BEGIN
     /*
       Returns per-student outstanding summary for the given organization.
       - If p_ClassId IS NULL or 0 => ignore class filter.

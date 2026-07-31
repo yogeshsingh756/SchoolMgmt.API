@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_SuperAdmin_Analytics_GetOverview`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_SuperAdmin_Analytics_GetOverview` ()   BEGIN
+CREATE PROCEDURE `sp_SuperAdmin_Analytics_GetOverview` ()   BEGIN
   SELECT 
     (SELECT COUNT(*) FROM Organizations) AS TotalTenants,
     (SELECT COUNT(*) FROM Organizations WHERE IsActive = 1 AND IsDeleted = 0) AS ActiveTenants,

@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Parent_GetAll`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Parent_GetAll` (IN `p_OrganizationId` INT, IN `p_PageNumber` INT, IN `p_PageSize` INT, IN `p_Search` VARCHAR(100), IN `p_StatusFilter` VARCHAR(10))   BEGIN
+CREATE PROCEDURE `sp_Admin_Parent_GetAll` (IN `p_OrganizationId` INT, IN `p_PageNumber` INT, IN `p_PageSize` INT, IN `p_Search` VARCHAR(100), IN `p_StatusFilter` VARCHAR(10))   BEGIN
     DECLARE v_Offset INT DEFAULT (p_PageNumber - 1) * p_PageSize;
 
     -- Result set: parent users (paged)

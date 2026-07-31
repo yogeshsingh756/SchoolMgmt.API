@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Classes_Create`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Classes_Create` (IN `p_OrganizationId` INT, IN `p_ClassName` VARCHAR(100), IN `p_Description` VARCHAR(255), IN `p_ClassTeacherId` INT, IN `p_AcademicYear` VARCHAR(20), IN `p_OrderNo` INT, IN `p_CreatedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Classes_Create` (IN `p_OrganizationId` INT, IN `p_ClassName` VARCHAR(100), IN `p_Description` VARCHAR(255), IN `p_ClassTeacherId` INT, IN `p_AcademicYear` VARCHAR(20), IN `p_OrderNo` INT, IN `p_CreatedBy` INT)   BEGIN
     DECLARE v_TeacherExists INT DEFAULT 0;
 
     -- ✅ Validation: ensure teacher belongs to same organization

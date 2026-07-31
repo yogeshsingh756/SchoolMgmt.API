@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_ClassFeeMaster_Delete`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_ClassFeeMaster_Delete` (IN `p_OrganizationId` INT, IN `p_ClassFeeId` INT, IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_ClassFeeMaster_Delete` (IN `p_OrganizationId` INT, IN `p_ClassFeeId` INT, IN `p_ModifiedBy` INT)   BEGIN
   UPDATE ClassFeeMaster
      SET IsDeleted = 1,
          IsActive = 0,

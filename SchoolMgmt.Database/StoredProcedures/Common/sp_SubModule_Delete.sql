@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_SubModule_Delete`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_SubModule_Delete` (IN `p_SubModuleId` INT, IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_SubModule_Delete` (IN `p_SubModuleId` INT, IN `p_ModifiedBy` INT)   BEGIN
   UPDATE SubModules
   SET IsActive = 0, ModifiedBy = p_ModifiedBy, ModifiedOn = NOW()
   WHERE SubModuleId = p_SubModuleId;

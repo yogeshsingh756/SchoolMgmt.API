@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Concessions_Upsert`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Concessions_Upsert` (IN `p_OrganizationId` INT, IN `p_ConcessionId` INT, IN `p_StudentId` INT, IN `p_FeeTypeId` INT, IN `p_DiscountType` ENUM('Flat','Percent'), IN `p_DiscountValue` DECIMAL(10,2), IN `p_Remark` VARCHAR(255), IN `p_IsActive` TINYINT(1), IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Concessions_Upsert` (IN `p_OrganizationId` INT, IN `p_ConcessionId` INT, IN `p_StudentId` INT, IN `p_FeeTypeId` INT, IN `p_DiscountType` ENUM('Flat','Percent'), IN `p_DiscountValue` DECIMAL(10,2), IN `p_Remark` VARCHAR(255), IN `p_IsActive` TINYINT(1), IN `p_ModifiedBy` INT)   BEGIN
   IF IFNULL(p_ConcessionId,0)=0 THEN
     INSERT INTO StudentFeeConcessions
       (OrganizationId, StudentId, FeeTypeId, DiscountType, DiscountValue, Remark, IsActive, CreatedBy)

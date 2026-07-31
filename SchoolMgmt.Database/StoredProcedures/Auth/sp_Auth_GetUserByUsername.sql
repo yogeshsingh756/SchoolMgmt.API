@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Auth_GetUserByUsername`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Auth_GetUserByUsername` (IN `p_Username` VARCHAR(100))   BEGIN
+CREATE PROCEDURE `sp_Auth_GetUserByUsername` (IN `p_Username` VARCHAR(100))   BEGIN
   SELECT u.UserId, u.OrganizationId, u.RoleId, r.RoleName, u.FirstName, u.LastName, u.Email, u.Username, u.PasswordHash, u.IsActive, u.IsDeleted
   FROM Users u
   LEFT JOIN Roles r ON u.RoleId = r.RoleId

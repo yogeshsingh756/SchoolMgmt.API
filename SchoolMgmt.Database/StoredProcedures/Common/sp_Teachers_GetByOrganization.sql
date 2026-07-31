@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Teachers_GetByOrganization`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Teachers_GetByOrganization` (IN `p_OrganizationId` INT)   BEGIN
+CREATE PROCEDURE `sp_Teachers_GetByOrganization` (IN `p_OrganizationId` INT)   BEGIN
     SELECT 
         T.TeacherId,
         U.UserId,

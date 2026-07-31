@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_GetAllTenantAdmins`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_GetAllTenantAdmins` ()   BEGIN
+CREATE PROCEDURE `sp_GetAllTenantAdmins` ()   BEGIN
     SELECT 
         u.UserId AS AdminUserId,
         CONCAT(u.FirstName, ' ', u.LastName) AS AdminName,

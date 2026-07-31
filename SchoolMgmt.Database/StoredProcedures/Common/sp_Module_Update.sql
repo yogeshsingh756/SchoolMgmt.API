@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Module_Update`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Module_Update` (IN `p_ModuleId` INT, IN `p_ModuleName` VARCHAR(100), IN `p_Description` VARCHAR(255), IN `p_Icon` VARCHAR(100), IN `p_RoutePath` VARCHAR(200), IN `p_OrderNo` INT, IN `p_IsActive` TINYINT(1), IN `p_ModifiedBy` INT, IN `p_AssignedRoleIds` TEXT)   BEGIN
+CREATE PROCEDURE `sp_Module_Update` (IN `p_ModuleId` INT, IN `p_ModuleName` VARCHAR(100), IN `p_Description` VARCHAR(255), IN `p_Icon` VARCHAR(100), IN `p_RoutePath` VARCHAR(200), IN `p_OrderNo` INT, IN `p_IsActive` TINYINT(1), IN `p_ModifiedBy` INT, IN `p_AssignedRoleIds` TEXT)   BEGIN
     -- ???? Variable Declarations
     DECLARE v_OldModuleName VARCHAR(100);
     DECLARE v_RoleId INT;

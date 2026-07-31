@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_ClassSubjects_GetByClass`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_ClassSubjects_GetByClass` (IN `p_OrganizationId` INT, IN `p_ClassId` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_ClassSubjects_GetByClass` (IN `p_OrganizationId` INT, IN `p_ClassId` INT)   BEGIN
   SELECT cs.ClassSubjectId, cs.ClassId, cs.SubjectId, s.SubjectName, s.SubjectCode, cs.IsActive, cs.CreatedOn
   FROM ClassSubjects cs
   JOIN Subjects s ON cs.SubjectId = s.SubjectId

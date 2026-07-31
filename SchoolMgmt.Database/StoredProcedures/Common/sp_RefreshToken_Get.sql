@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_RefreshToken_Get`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_RefreshToken_Get` (IN `p_Token` VARCHAR(255))   BEGIN
+CREATE PROCEDURE `sp_RefreshToken_Get` (IN `p_Token` VARCHAR(255))   BEGIN
   SELECT RefreshTokenId, OrganizationId, UserId, Token, ExpiresAt, RevokedAt, IsDeleted
   FROM RefreshTokens
   WHERE Token = p_Token

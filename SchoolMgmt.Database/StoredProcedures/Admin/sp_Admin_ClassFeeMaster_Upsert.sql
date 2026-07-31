@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_ClassFeeMaster_Upsert`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_ClassFeeMaster_Upsert` (IN `p_ClassFeeId` INT, IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_Section` VARCHAR(10), IN `p_TermId` INT, IN `p_SessionId` INT, IN `p_FeeTypeId` INT, IN `p_Amount` DECIMAL(10,2), IN `p_DueDate` DATE, IN `p_IsActive` TINYINT(1), IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_ClassFeeMaster_Upsert` (IN `p_ClassFeeId` INT, IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_Section` VARCHAR(10), IN `p_TermId` INT, IN `p_SessionId` INT, IN `p_FeeTypeId` INT, IN `p_Amount` DECIMAL(10,2), IN `p_DueDate` DATE, IN `p_IsActive` TINYINT(1), IN `p_ModifiedBy` INT)   BEGIN
   IF IFNULL(p_ClassFeeId, 0) = 0 THEN
     -- Insert new record
     INSERT INTO ClassFeeMaster

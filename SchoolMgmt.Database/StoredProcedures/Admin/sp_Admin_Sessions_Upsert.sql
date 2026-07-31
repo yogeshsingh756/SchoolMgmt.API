@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Sessions_Upsert`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Sessions_Upsert` (IN `p_SessionId` INT, IN `p_OrganizationId` INT, IN `p_SessionName` VARCHAR(50), IN `p_StartDate` DATE, IN `p_EndDate` DATE, IN `p_IsActive` TINYINT(1), IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Sessions_Upsert` (IN `p_SessionId` INT, IN `p_OrganizationId` INT, IN `p_SessionName` VARCHAR(50), IN `p_StartDate` DATE, IN `p_EndDate` DATE, IN `p_IsActive` TINYINT(1), IN `p_ModifiedBy` INT)   BEGIN
     IF IFNULL(p_SessionId,0) = 0 THEN
         INSERT INTO AcademicSessions (OrganizationId, SessionName, StartDate, EndDate, IsActive, IsDeleted, CreatedBy, CreatedOn)
         VALUES (p_OrganizationId, p_SessionName, p_StartDate, p_EndDate, IFNULL(p_IsActive,1), 0, p_ModifiedBy, NOW());

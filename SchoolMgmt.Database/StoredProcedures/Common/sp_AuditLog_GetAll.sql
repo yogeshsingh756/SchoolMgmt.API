@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_AuditLog_GetAll`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_AuditLog_GetAll` (IN `p_OrganizationId` INT, IN `p_SearchText` VARCHAR(100))   BEGIN
+CREATE PROCEDURE `sp_AuditLog_GetAll` (IN `p_OrganizationId` INT, IN `p_SearchText` VARCHAR(100))   BEGIN
     SELECT 
         al.AuditLogId,
         al.OrganizationId,

@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Fees_Upsert`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Fees_Upsert` (IN `p_FeeId` INT, IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_FeeType` VARCHAR(50), IN `p_Amount` DECIMAL(10,2), IN `p_DueDate` DATE, IN `p_Term` VARCHAR(20), IN `p_Session` VARCHAR(20), IN `p_Status` ENUM('Pending','Paid','Overdue'), IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Fees_Upsert` (IN `p_FeeId` INT, IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_FeeType` VARCHAR(50), IN `p_Amount` DECIMAL(10,2), IN `p_DueDate` DATE, IN `p_Term` VARCHAR(20), IN `p_Session` VARCHAR(20), IN `p_Status` ENUM('Pending','Paid','Overdue'), IN `p_ModifiedBy` INT)   BEGIN
     IF p_FeeId = 0 THEN
         INSERT INTO Fees (
             OrganizationId, ClassId, FeeType, Amount, DueDate,

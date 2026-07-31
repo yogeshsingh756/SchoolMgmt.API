@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Teacher_GetById`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Teacher_GetById` (IN `p_OrganizationId` INT, IN `p_TeacherUserId` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Teacher_GetById` (IN `p_OrganizationId` INT, IN `p_TeacherUserId` INT)   BEGIN
     /*
       Returns teacher info ready for edit binding.
       Mirrors style of sp_Admin_Student_GetById / sp_Admin_Parent_GetById.

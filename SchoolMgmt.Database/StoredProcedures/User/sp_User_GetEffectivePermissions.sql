@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_User_GetEffectivePermissions`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_User_GetEffectivePermissions` (IN `p_UserId` INT)   BEGIN
+CREATE PROCEDURE `sp_User_GetEffectivePermissions` (IN `p_UserId` INT)   BEGIN
     /*
         ✅ PURPOSE:
         Combine RolePermissions + UserPermissions (user overrides)

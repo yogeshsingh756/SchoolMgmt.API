@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_user_check_username`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_user_check_username` (IN `p_OrganizationId` INT, IN `p_UserName` VARCHAR(50))   exit_block: BEGIN
+CREATE PROCEDURE `sp_user_check_username` (IN `p_OrganizationId` INT, IN `p_UserName` VARCHAR(50))   exit_block: BEGIN
     DECLARE v_Flag INT DEFAULT 0;
 
     IF p_UserName IS NULL OR TRIM(p_UserName) = '' THEN

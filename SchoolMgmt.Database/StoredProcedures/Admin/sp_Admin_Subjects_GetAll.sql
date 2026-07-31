@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Subjects_GetAll`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Subjects_GetAll` (IN `p_OrganizationId` INT, IN `p_PageNumber` INT, IN `p_PageSize` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Subjects_GetAll` (IN `p_OrganizationId` INT, IN `p_PageNumber` INT, IN `p_PageSize` INT)   BEGIN
   DECLARE v_Offset INT DEFAULT 0;
 
   -- calculate offset for pagination

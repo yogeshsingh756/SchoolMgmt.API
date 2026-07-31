@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Role_GetAll`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Role_GetAll` ()   BEGIN
+CREATE PROCEDURE `sp_Role_GetAll` ()   BEGIN
     SELECT RoleId, RoleName, CreatedOn, ModifiedOn, IsDeleted
     FROM Roles
     WHERE IsDeleted = 0

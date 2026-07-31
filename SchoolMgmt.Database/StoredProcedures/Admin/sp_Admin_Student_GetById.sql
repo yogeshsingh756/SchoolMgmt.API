@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Student_GetById`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Student_GetById` (IN `p_OrganizationId` INT, IN `p_StudentUserId` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Student_GetById` (IN `p_OrganizationId` INT, IN `p_StudentUserId` INT)   BEGIN
     /*
       Returns student info ONLY + ParentId for dropdown.
     */

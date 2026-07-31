@@ -6,7 +6,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Invoices_GetAll`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Invoices_GetAll` (
+CREATE PROCEDURE `sp_Admin_Invoices_GetAll` (
   IN `p_OrganizationId` INT,
   IN `p_PageNumber` INT,
   IN `p_PageSize` INT,

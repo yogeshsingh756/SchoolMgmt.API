@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Role_GetPermissions`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Role_GetPermissions` (IN `p_RoleId` INT)   BEGIN
+CREATE PROCEDURE `sp_Role_GetPermissions` (IN `p_RoleId` INT)   BEGIN
     SELECT 
         p.PermissionId,
         p.PermissionKey,

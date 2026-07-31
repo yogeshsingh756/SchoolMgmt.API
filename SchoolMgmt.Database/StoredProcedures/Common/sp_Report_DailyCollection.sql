@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Report_DailyCollection`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Report_DailyCollection` (IN `p_OrganizationId` INT, IN `p_FromDate` DATE, IN `p_ToDate` DATE, IN `p_PaymentMode` VARCHAR(20))   BEGIN
+CREATE PROCEDURE `sp_Report_DailyCollection` (IN `p_OrganizationId` INT, IN `p_FromDate` DATE, IN `p_ToDate` DATE, IN `p_PaymentMode` VARCHAR(20))   BEGIN
   -- default dates if caller passed NULL (optional behaviour)
   SET p_FromDate = IFNULL(p_FromDate, CURDATE());
   SET p_ToDate   = IFNULL(p_ToDate, CURDATE());

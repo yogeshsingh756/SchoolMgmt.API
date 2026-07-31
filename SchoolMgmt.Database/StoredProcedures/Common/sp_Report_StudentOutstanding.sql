@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Report_StudentOutstanding`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Report_StudentOutstanding` (IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_Search` VARCHAR(100), IN `p_PageNumber` INT, IN `p_PageSize` INT)   BEGIN
+CREATE PROCEDURE `sp_Report_StudentOutstanding` (IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_Search` VARCHAR(100), IN `p_PageNumber` INT, IN `p_PageSize` INT)   BEGIN
   DECLARE v_offset INT DEFAULT 0;
 
   SET p_PageNumber = IFNULL(p_PageNumber, 1);

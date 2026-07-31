@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_User_VerifyByUsername`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_User_VerifyByUsername` (IN `p_Username` VARCHAR(100))   BEGIN
+CREATE PROCEDURE `sp_User_VerifyByUsername` (IN `p_Username` VARCHAR(100))   BEGIN
   SELECT u.UserId, u.OrganizationId, u.FirstName, u.LastName, u.Email, u.Username, u.IsActive
   FROM Users u
   WHERE (u.Username = p_Username OR u.Email = p_Username)

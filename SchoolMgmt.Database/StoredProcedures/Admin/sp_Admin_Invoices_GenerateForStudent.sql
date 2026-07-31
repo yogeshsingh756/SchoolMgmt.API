@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Invoices_GenerateForStudent`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Invoices_GenerateForStudent` (IN `p_OrganizationId` INT, IN `p_StudentId` INT, IN `p_ClassId` INT, IN `p_TermId` INT, IN `p_SessionId` INT, IN `p_InvoiceDate` DATE, IN `p_DueDate` DATE, IN `p_Notes` VARCHAR(255), IN `p_CreatedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Invoices_GenerateForStudent` (IN `p_OrganizationId` INT, IN `p_StudentId` INT, IN `p_ClassId` INT, IN `p_TermId` INT, IN `p_SessionId` INT, IN `p_InvoiceDate` DATE, IN `p_DueDate` DATE, IN `p_Notes` VARCHAR(255), IN `p_CreatedBy` INT)   BEGIN
   DECLARE v_InvoiceId INT;
   DECLARE v_InvoiceNo VARCHAR(50);
   DECLARE v_Total DECIMAL(10,2) DEFAULT 0;

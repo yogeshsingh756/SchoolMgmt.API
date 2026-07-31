@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Subjects_Delete`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Subjects_Delete` (IN `p_OrganizationId` INT, IN `p_SubjectId` INT, IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Subjects_Delete` (IN `p_OrganizationId` INT, IN `p_SubjectId` INT, IN `p_ModifiedBy` INT)   BEGIN
   DECLARE v_exists INT DEFAULT 0;
   SELECT COUNT(*) INTO v_exists FROM Subjects WHERE OrganizationId = p_OrganizationId AND SubjectId = p_SubjectId AND IsDeleted = 0;
   IF v_exists = 0 THEN

@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Tenant_GetById`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Tenant_GetById` (IN `p_OrganizationId` INT)   BEGIN
+CREATE PROCEDURE `sp_Tenant_GetById` (IN `p_OrganizationId` INT)   BEGIN
     SELECT 
         o.OrganizationId,
         o.SchoolName,

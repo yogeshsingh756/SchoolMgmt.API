@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Report_StudentLedger`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Report_StudentLedger` (IN `p_OrganizationId` INT, IN `p_StudentId` INT, IN `p_FromDate` DATE, IN `p_ToDate` DATE)   BEGIN
+CREATE PROCEDURE `sp_Report_StudentLedger` (IN `p_OrganizationId` INT, IN `p_StudentId` INT, IN `p_FromDate` DATE, IN `p_ToDate` DATE)   BEGIN
   -- Invoices (debit)
   SELECT
     inv.InvoiceDate AS TxnDate,

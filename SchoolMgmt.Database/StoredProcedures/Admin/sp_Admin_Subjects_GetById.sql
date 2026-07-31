@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Subjects_GetById`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Subjects_GetById` (IN `p_OrganizationId` INT, IN `p_SubjectId` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Subjects_GetById` (IN `p_OrganizationId` INT, IN `p_SubjectId` INT)   BEGIN
   SELECT SubjectId, SubjectName, SubjectCode, Description, IsActive, CreatedOn, ModifiedOn
   FROM Subjects
   WHERE OrganizationId = p_OrganizationId AND SubjectId = p_SubjectId AND IsDeleted = 0

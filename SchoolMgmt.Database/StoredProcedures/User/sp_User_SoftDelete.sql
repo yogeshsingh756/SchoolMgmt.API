@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_User_SoftDelete`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_User_SoftDelete` (IN `p_OrganizationId` INT, IN `p_UserId` INT, IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_User_SoftDelete` (IN `p_OrganizationId` INT, IN `p_UserId` INT, IN `p_ModifiedBy` INT)   BEGIN
     DECLARE v_Exists INT DEFAULT 0;
     DECLARE v_RoleName VARCHAR(50);
 

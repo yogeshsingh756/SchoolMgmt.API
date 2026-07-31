@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_TenantSubscription_Create`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_TenantSubscription_Create` (IN `p_OrganizationId` INT, IN `p_PlanId` INT, IN `p_IsTrial` TINYINT(1), IN `p_StartAt` DATETIME, IN `p_CustomMonths` INT, IN `p_CreatedBy` INT, OUT `o_TenantSubscriptionId` INT)   BEGIN
+CREATE PROCEDURE `sp_TenantSubscription_Create` (IN `p_OrganizationId` INT, IN `p_PlanId` INT, IN `p_IsTrial` TINYINT(1), IN `p_StartAt` DATETIME, IN `p_CustomMonths` INT, IN `p_CreatedBy` INT, OUT `o_TenantSubscriptionId` INT)   BEGIN
   DECLARE v_BillingCycle VARCHAR(20);
   DECLARE v_CustomMonthsPlan INT DEFAULT NULL;
   DECLARE v_ExpiresAt DATETIME;

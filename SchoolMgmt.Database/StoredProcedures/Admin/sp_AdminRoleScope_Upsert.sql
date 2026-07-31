@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_AdminRoleScope_Upsert`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_AdminRoleScope_Upsert` (IN `p_AdminUserId` INT, IN `p_AllowedRoleIds` TEXT, IN `p_CreatedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_AdminRoleScope_Upsert` (IN `p_AdminUserId` INT, IN `p_AllowedRoleIds` TEXT, IN `p_CreatedBy` INT)   BEGIN
     DECLARE v_Pos INT DEFAULT 0;
     DECLARE v_Value VARCHAR(10);
     DECLARE v_Str TEXT;

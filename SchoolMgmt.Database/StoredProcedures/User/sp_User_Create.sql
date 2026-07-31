@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_User_Create`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_User_Create` (IN `p_OrganizationId` INT, IN `p_RoleName` VARCHAR(50), IN `p_FirstName` VARCHAR(100), IN `p_LastName` VARCHAR(100), IN `p_Username` VARCHAR(50), IN `p_Email` VARCHAR(100), IN `p_PasswordHash` VARCHAR(255), IN `p_CreatedBy` INT, IN `p_PhoneNumber` VARCHAR(20), IN `p_Qualification` VARCHAR(150), IN `p_Designation` VARCHAR(100), IN `p_Salary` DECIMAL(10,2), IN `p_Occupation` VARCHAR(100), IN `p_Address` VARCHAR(255), IN `p_AdmissionNo` VARCHAR(50), IN `p_ParentId` INT, IN `p_ClassId` INT, IN `p_Gender` VARCHAR(100), IN `p_MotherName` VARCHAR(100), IN `p_Category` VARCHAR(100), IN `p_FatherName` VARCHAR(100))   BEGIN
+CREATE PROCEDURE `sp_User_Create` (IN `p_OrganizationId` INT, IN `p_RoleName` VARCHAR(50), IN `p_FirstName` VARCHAR(100), IN `p_LastName` VARCHAR(100), IN `p_Username` VARCHAR(50), IN `p_Email` VARCHAR(100), IN `p_PasswordHash` VARCHAR(255), IN `p_CreatedBy` INT, IN `p_PhoneNumber` VARCHAR(20), IN `p_Qualification` VARCHAR(150), IN `p_Designation` VARCHAR(100), IN `p_Salary` DECIMAL(10,2), IN `p_Occupation` VARCHAR(100), IN `p_Address` VARCHAR(255), IN `p_AdmissionNo` VARCHAR(50), IN `p_ParentId` INT, IN `p_ClassId` INT, IN `p_Gender` VARCHAR(100), IN `p_MotherName` VARCHAR(100), IN `p_Category` VARCHAR(100), IN `p_FatherName` VARCHAR(100))   BEGIN
     DECLARE v_RoleId INT DEFAULT NULL;
     DECLARE v_Exists INT DEFAULT 0;
     DECLARE v_RoleName VARCHAR(50);

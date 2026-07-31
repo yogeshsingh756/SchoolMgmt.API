@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_User_GetEffectivePermissionsForLogin`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_User_GetEffectivePermissionsForLogin` (IN `p_UserId` INT)   BEGIN
+CREATE PROCEDURE `sp_User_GetEffectivePermissionsForLogin` (IN `p_UserId` INT)   BEGIN
     SELECT 
         m.ModuleId,
         m.ModuleName,

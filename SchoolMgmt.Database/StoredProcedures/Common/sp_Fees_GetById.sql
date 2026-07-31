@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Fees_GetById`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Fees_GetById` (IN `p_FeeId` INT, IN `p_OrganizationId` INT)   BEGIN
+CREATE PROCEDURE `sp_Fees_GetById` (IN `p_FeeId` INT, IN `p_OrganizationId` INT)   BEGIN
     SELECT 
         FeeId,
         OrganizationId,

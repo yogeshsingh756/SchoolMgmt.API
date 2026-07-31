@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_FeeTypes_Upsert`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_FeeTypes_Upsert` (IN `p_FeeTypeId` INT, IN `p_OrganizationId` INT, IN `p_FeeTypeName` VARCHAR(100), IN `p_Description` VARCHAR(255), IN `p_IsActive` TINYINT(1), IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_FeeTypes_Upsert` (IN `p_FeeTypeId` INT, IN `p_OrganizationId` INT, IN `p_FeeTypeName` VARCHAR(100), IN `p_Description` VARCHAR(255), IN `p_IsActive` TINYINT(1), IN `p_ModifiedBy` INT)   BEGIN
     IF IFNULL(p_FeeTypeId,0) = 0 THEN
         INSERT INTO FeeTypes (OrganizationId, FeeTypeName, DESCRIPTION, IsActive, IsDeleted, CreatedBy, CreatedOn)
         VALUES (p_OrganizationId, p_FeeTypeName, p_Description, IFNULL(p_IsActive,1), 0, p_ModifiedBy, NOW());

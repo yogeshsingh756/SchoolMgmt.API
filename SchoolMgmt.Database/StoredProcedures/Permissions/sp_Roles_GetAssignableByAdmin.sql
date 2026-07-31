@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Roles_GetAssignableByAdmin`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Roles_GetAssignableByAdmin` (IN `p_AdminId` INT)   BEGIN
+CREATE PROCEDURE `sp_Roles_GetAssignableByAdmin` (IN `p_AdminId` INT)   BEGIN
     SELECT r.RoleId, r.RoleName
     FROM Roles r
     WHERE r.IsDeleted = 0

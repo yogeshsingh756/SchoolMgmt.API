@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Sections_GetAll`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Sections_GetAll` (IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_IncludeInactive` TINYINT(1))   BEGIN
+CREATE PROCEDURE `sp_Admin_Sections_GetAll` (IN `p_OrganizationId` INT, IN `p_ClassId` INT, IN `p_IncludeInactive` TINYINT(1))   BEGIN
     SELECT 
         s.SectionId,
         s.SectionName,

@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_UserPermissions_GetByUserId`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_UserPermissions_GetByUserId` (IN `p_UserId` INT, IN `p_AdminId` INT)   BEGIN
+CREATE PROCEDURE `sp_UserPermissions_GetByUserId` (IN `p_UserId` INT, IN `p_AdminId` INT)   BEGIN
     /*
         ✅ PURPOSE:
         - If Admin is checking own permissions → return RolePermissions directly.

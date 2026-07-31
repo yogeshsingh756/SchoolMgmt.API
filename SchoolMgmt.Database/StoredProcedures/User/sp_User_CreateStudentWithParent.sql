@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_User_CreateStudentWithParent`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_User_CreateStudentWithParent` (IN `p_OrganizationId` INT, IN `p_CreatedBy` INT, IN `p_StudentFirstName` VARCHAR(100), IN `p_StudentLastName` VARCHAR(100), IN `p_StudentUsername` VARCHAR(50), IN `p_StudentEmail` VARCHAR(100), IN `p_StudentPasswordHash` VARCHAR(255), IN `p_StudentPhoneNumber` VARCHAR(20), IN `p_AdmissionNo` VARCHAR(50), IN `p_StudentAddress` VARCHAR(255), IN `p_ClassId` INT, IN `p_Gender` VARCHAR(100), IN `p_MotherName` VARCHAR(100), IN `p_Category` VARCHAR(100), IN `p_FatherName` VARCHAR(100))   BEGIN
+CREATE PROCEDURE `sp_User_CreateStudentWithParent` (IN `p_OrganizationId` INT, IN `p_CreatedBy` INT, IN `p_StudentFirstName` VARCHAR(100), IN `p_StudentLastName` VARCHAR(100), IN `p_StudentUsername` VARCHAR(50), IN `p_StudentEmail` VARCHAR(100), IN `p_StudentPasswordHash` VARCHAR(255), IN `p_StudentPhoneNumber` VARCHAR(20), IN `p_AdmissionNo` VARCHAR(50), IN `p_StudentAddress` VARCHAR(255), IN `p_ClassId` INT, IN `p_Gender` VARCHAR(100), IN `p_MotherName` VARCHAR(100), IN `p_Category` VARCHAR(100), IN `p_FatherName` VARCHAR(100))   BEGIN
     -- DECLARE v_ParentRoleId INT DEFAULT NULL;
     DECLARE v_StudentRoleId INT DEFAULT NULL;
   -- DECLARE v_ParentRoleName VARCHAR(50);

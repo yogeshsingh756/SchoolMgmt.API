@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Fees_Delete`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Fees_Delete` (IN `p_FeeId` INT, IN `p_OrganizationId` INT, IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Fees_Delete` (IN `p_FeeId` INT, IN `p_OrganizationId` INT, IN `p_ModifiedBy` INT)   BEGIN
     UPDATE Fees
     SET IsDeleted = 1,
         ModifiedOn = NOW(),

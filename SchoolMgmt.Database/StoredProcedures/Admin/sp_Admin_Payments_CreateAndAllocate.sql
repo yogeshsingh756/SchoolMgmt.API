@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Payments_CreateAndAllocate`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Payments_CreateAndAllocate` (IN `p_OrganizationId` INT, IN `p_StudentId` INT, IN `p_PaymentDate` DATETIME, IN `p_PaymentMode` VARCHAR(20), IN `p_ReferenceNo` VARCHAR(50), IN `p_Notes` VARCHAR(255), IN `p_TotalPaidAmount` DECIMAL(10,2), IN `p_CreatedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Payments_CreateAndAllocate` (IN `p_OrganizationId` INT, IN `p_StudentId` INT, IN `p_PaymentDate` DATETIME, IN `p_PaymentMode` VARCHAR(20), IN `p_ReferenceNo` VARCHAR(50), IN `p_Notes` VARCHAR(255), IN `p_TotalPaidAmount` DECIMAL(10,2), IN `p_CreatedBy` INT)   BEGIN
   DECLARE v_PaymentId INT;
   DECLARE v_ReceiptNo VARCHAR(50);
   DECLARE v_left DECIMAL(10,2);

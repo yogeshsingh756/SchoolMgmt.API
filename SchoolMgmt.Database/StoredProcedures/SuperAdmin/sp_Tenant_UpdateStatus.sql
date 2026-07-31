@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Tenant_UpdateStatus`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Tenant_UpdateStatus` (IN `p_OrganizationId` INT, IN `p_TenantStatus` ENUM('Pending','Active','Blocked'), IN `p_ModifiedBy` INT)   BEGIN
+CREATE PROCEDURE `sp_Tenant_UpdateStatus` (IN `p_OrganizationId` INT, IN `p_TenantStatus` ENUM('Pending','Active','Blocked'), IN `p_ModifiedBy` INT)   BEGIN
     -- ✅ Update tenant record
     UPDATE Organizations
     SET 

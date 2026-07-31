@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS `sp_Admin_Students_GetAll`;
 
 DELIMITER $$
 
-CREATE DEFINER=`erp`@`%` PROCEDURE `sp_Admin_Students_GetAll` (IN `p_OrganizationId` INT, IN `p_PageNumber` INT, IN `p_PageSize` INT, IN `p_Search` VARCHAR(100), IN `p_IsDropdown` INT)   BEGIN
+CREATE PROCEDURE `sp_Admin_Students_GetAll` (IN `p_OrganizationId` INT, IN `p_PageNumber` INT, IN `p_PageSize` INT, IN `p_Search` VARCHAR(100), IN `p_IsDropdown` INT)   BEGIN
 
     DECLARE v_Offset INT;
     DECLARE v_PageNumber INT;
