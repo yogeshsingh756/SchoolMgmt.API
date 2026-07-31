@@ -150,11 +150,19 @@ namespace SchoolMgmt.API.Controllers
             return OkResponse(response, "Student Fetched Successfully");
         }
         [HttpGet("payments")]
-        public async Task<IActionResult> GetPayments([FromQuery] int page = 1, [FromQuery] int size = 10, [FromQuery] string? search = null)
+        public async Task<IActionResult> GetPayments(
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10,
+            [FromQuery] string? search = null,
+            [FromQuery] int? classId = null,
+            [FromQuery] string? paymentMode = null,
+            [FromQuery] DateTime? fromDate = null,
+            [FromQuery] DateTime? toDate = null)
         {
             var orgId = GetOrgIdFromClaims();
-            var result = await _svc.GetPaymentsAsync(orgId, page, size, search);
-            return OkResponse(result, "Fetched payments.");
+            var result = await _svc.GetPaymentsAsync(
+                orgId, page, size, search, classId, paymentMode, fromDate, toDate);
+            return OkResponse(new { payments = result.Payments, totalCount = result.TotalCount }, "Fetched payments.");
         }
 
         private int GetOrgIdFromClaims()

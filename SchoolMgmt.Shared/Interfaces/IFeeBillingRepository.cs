@@ -28,7 +28,10 @@ namespace SchoolMgmt.Shared.Interfaces
         Task<IEnumerable<dynamic>>  GetInvoicesByUserIdAsync(int orgId, int userId);
 
         Task<(int PaymentId, string ReceiptNo, decimal Allocated, decimal Unallocated)> CreatePaymentAsync(int orgId, PaymentCreateRequest req, int userId);
-        Task<IEnumerable<dynamic>> GetPaymentsAsync(int orgId, int page, int size, string search);
+        Task<(IEnumerable<dynamic> Payments, int TotalCount)> GetPaymentsAsync(
+            int orgId, int page, int size, string? search,
+            int? classId = null, string? paymentMode = null,
+            DateTime? fromDate = null, DateTime? toDate = null);
         Task<PaginatedResponse<StudentListModel>> GetAllStudentsAsync(
         int organizationId, int pageNumber, int pageSize, string search, int isDropdown = 0);
     }

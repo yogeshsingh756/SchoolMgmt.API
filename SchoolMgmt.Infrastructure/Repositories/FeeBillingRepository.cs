@@ -218,19 +218,30 @@ namespace SchoolMgmt.Infrastructure.Repositories
             );
         }
 
-        public async Task<IEnumerable<dynamic>> GetPaymentsAsync(int orgId, int page, int size, string search)
+        public async Task<(IEnumerable<dynamic> Payments, int TotalCount)> GetPaymentsAsync(
+            int orgId, int page, int size, string? search,
+            int? classId = null, string? paymentMode = null,
+            DateTime? fromDate = null, DateTime? toDate = null)
         {
             using var conn = _dbFactory.CreateConnection();
-            return await conn.QueryAsync(
+            using var multi = await conn.QueryMultipleAsync(
                 "sp_Admin_Payments_GetAll",
                 new
                 {
                     p_OrganizationId = orgId,
                     p_PageNumber = page,
                     p_PageSize = size,
-                    p_Search = search
+                    p_Search = search,
+                    p_ClassId = classId,
+                    p_PaymentMode = paymentMode,
+                    p_FromDate = fromDate?.Date,
+                    p_ToDate = toDate?.Date
                 },
                 commandType: CommandType.StoredProcedure);
+
+            var payments = (await multi.ReadAsync<dynamic>()).ToList();
+            var totalCount = (await multi.ReadFirstOrDefaultAsync<int?>()) ?? payments.Count;
+            return (payments, totalCount);
         }
 
         public async Task<PaginatedResponse<StudentListModel>> GetAllStudentsAsync(
