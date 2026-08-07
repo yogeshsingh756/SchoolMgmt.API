@@ -10,6 +10,7 @@ This project is **not built** when you run the API (solution build skips it). Ap
 |--------|---------|
 | `Tables/` | One file per table (`CREATE` + indexes / `AUTO_INCREMENT` / FKs), plus `_00_CreateDatabase.sql` |
 | `StoredProcedures/` | One file per SP (`DROP` + `CREATE`), grouped under `Auth/`, `Admin/`, `SuperAdmin/`, `Org/`, `User/`, `Permissions/`, `Common/` |
+| `Migrations/` | One-shot MySQL `ALTER` scripts for existing DBs (apply manually; **not** loaded into the VS project to avoid SQL80001 noise) |
 
 ## Conventions
 
@@ -19,13 +20,13 @@ This project is **not built** when you run the API (solution build skips it). Ap
 
 ## SQL80001 / Error List noise
 
-These scripts are **MySQL** (backticks, `DELIMITER`, `ENGINE=InnoDB`, etc.). Visual Studio’s SQL language service validates them as **T-SQL**, which produces false `SQL80001` errors.
+These scripts are **MySQL** (backticks, `DELIMITER`, `ENGINE=InnoDB`, `ADD COLUMN`, etc.). Visual Studio’s SQL language service validates them as **T-SQL**, which produces false `SQL80001` errors.
 
-They are not real build failures (`dotnet build` on the API succeeds). To clear the Error List:
+They are **not** real build failures (`dotnet build` on the API succeeds). To clear the Error List:
 
-1. Set the Error List filter to **Build Only** (not Build + IntelliSense), or
+1. Close any open `.sql` files from this project, then set Error List to **Build Only** (not Build + IntelliSense), or
 2. Visual Studio: **Tools → Options → Text Editor → SQL Server → IntelliSense** → turn off **Enable IntelliSense**.
-
+3. `Migrations/` scripts are excluded from the `.csproj` so they do not appear under IntelliSense analysis.
 ## Workflow
 
 1. Keep `Tables/` and `StoredProcedures/` in sync when the live MySQL schema or SPs change.

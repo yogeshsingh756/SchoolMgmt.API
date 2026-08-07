@@ -31,6 +31,9 @@ CREATE PROCEDURE `sp_Admin_Student_GetById` (IN `p_OrganizationId` INT, IN `p_St
         s.AdmissionDate,
         s.CurrentClassId      AS ClassId,
         c.ClassName,
+        s.CurrentSectionId    AS SectionId,
+        sec.SectionName,
+        s.StudentType,
 
         -- for parent dropdown binding
         -- s.ParentId            AS ParentId,
@@ -46,6 +49,9 @@ CREATE PROCEDURE `sp_Admin_Student_GetById` (IN `p_OrganizationId` INT, IN `p_St
         LEFT JOIN Classes c
             ON c.ClassId = s.CurrentClassId
            AND c.OrganizationId = u.OrganizationId
+        LEFT JOIN Sections sec
+            ON sec.SectionId = s.CurrentSectionId
+           AND sec.OrganizationId = u.OrganizationId
 
     WHERE
         u.OrganizationId = p_OrganizationId

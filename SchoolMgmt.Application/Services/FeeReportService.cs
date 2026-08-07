@@ -1,4 +1,4 @@
-﻿using SchoolMgmt.Application.Interfaces;
+using SchoolMgmt.Application.Interfaces;
 using SchoolMgmt.Infrastructure.Repositories;
 using SchoolMgmt.Shared.Models.Reports;
 using SchoolMgmt.Shared.Responses;
@@ -29,6 +29,12 @@ namespace SchoolMgmt.Application.Services
 
         public Task<IEnumerable<StudentLedgerEntryDto>> GetStudentLedgerAsync(int orgId, int studentId, DateTime? from, DateTime? to)
             => _repo.GetStudentLedgerAsync(orgId, studentId, from, to);
+
+        public Task<(IEnumerable<dynamic> Dues, int TotalCount, dynamic? Summary)> GetStudentFeeDuesAsync(int orgId, int? classId, int? sectionId, int? sessionId, int page, int size, string? search = null, DateTime? fromDate = null, DateTime? toDate = null)
+            => _repo.GetStudentFeeDuesAsync(orgId, classId, sectionId, sessionId, page, size, search, fromDate, toDate);
+
+        public Task<IEnumerable<dynamic>> GetStudentPaymentDetailsAsync(int orgId, int studentId, int? sessionId)
+            => _repo.GetStudentPaymentDetailsAsync(orgId, studentId, sessionId);
 
         public Task StreamDailyCollectionCsvAsync(int orgId, DateTime from, DateTime to, string? mode, Stream output, CancellationToken ct = default)
        => _repo.StreamDailyCollectionCsvAsync(orgId, from, to, mode, output, ct);

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
@@ -14,8 +14,8 @@
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
   <ItemGroup>
-    <!-- Keep scripts visible in Solution Explorer; Build Action = None (not compiled). -->
-    <None Include="**\*.sql" Exclude="bin\**;obj\**" />
+    <!-- Build Action = None. Exclude Migrations so VS SQL IntelliSense does not flood Error List (SQL80001) on MySQL ALTER scripts. -->
+    <None Include="**\*.sql" Exclude="bin\**;obj\**;Migrations\**" />
     <None Include="README.md" />
   </ItemGroup>
 </Project>

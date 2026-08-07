@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolMgmt.Application.Interfaces;
@@ -57,6 +57,33 @@ namespace SchoolMgmt.API.Controllers
             var orgId = GetOrgIdFromClaims();
             var data = await _svc.GetStudentLedgerAsync(orgId, studentId, from, to);
             return OkResponse(data, "Student ledger fetched.");
+        }
+
+        [HttpGet("student-fee-dues")]
+        public async Task<IActionResult> GetStudentFeeDues(
+            [FromQuery] int? classId = null,
+            [FromQuery] int? sectionId = null,
+            [FromQuery] int? sessionId = null,
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10,
+            [FromQuery] string? search = null,
+            [FromQuery] DateTime? fromDate = null,
+            [FromQuery] DateTime? toDate = null)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var result = await _svc.GetStudentFeeDuesAsync(orgId, classId, sectionId, sessionId, page, size, search, fromDate, toDate);
+            return OkResponse(new { dues = result.Dues, totalCount = result.TotalCount, summary = result.Summary }, "Student fee dues fetched.");
+        }
+
+        [HttpGet("student-payment-details")]
+        public async Task<IActionResult> GetStudentPaymentDetails(
+            [FromQuery] int studentId,
+            [FromQuery] int? sessionId = null)
+        {
+            if (studentId <= 0) return BadRequestResponse("Invalid student id.");
+            var orgId = GetOrgIdFromClaims();
+            var data = await _svc.GetStudentPaymentDetailsAsync(orgId, studentId, sessionId);
+            return OkResponse(data, "Student payment details fetched.");
         }
 
         // ---------------- CSV STREAMING ENDPOINTS ---------------- //

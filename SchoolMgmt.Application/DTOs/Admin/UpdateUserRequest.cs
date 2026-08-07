@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -32,10 +32,12 @@ namespace SchoolMgmt.Application.DTOs.Admin
         public string? AdmissionNo { get; set; }
         public int? ParentId { get; set; }
         public int? ClassId { get; set; }
+        public int? SectionId { get; set; }
         public string? Gender { get; set; }
         public string? MotherName { get; set; }
         public string? Category { get; set; }
         public string? FatherName { get; set; }
+        public string? StudentType { get; set; }
 
     }
 }

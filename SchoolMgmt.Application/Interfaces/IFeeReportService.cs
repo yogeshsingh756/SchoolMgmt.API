@@ -1,4 +1,4 @@
-﻿using SchoolMgmt.Shared.Models.Reports;
+using SchoolMgmt.Shared.Models.Reports;
 using SchoolMgmt.Shared.Responses;
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,8 @@ namespace SchoolMgmt.Application.Interfaces
         Task<PaginatedResponse<StudentOutstandingDto>> GetStudentOutstandingAsync(int orgId, int classId, string? search, int page, int size);
         Task<IEnumerable<FeeTypeCollectionDto>> GetFeeTypeCollectionAsync(int orgId, DateTime? from, DateTime? to, int termId, int sessionId);
         Task<IEnumerable<StudentLedgerEntryDto>> GetStudentLedgerAsync(int orgId, int studentId, DateTime? from, DateTime? to);
+        Task<(IEnumerable<dynamic> Dues, int TotalCount, dynamic? Summary)> GetStudentFeeDuesAsync(int orgId, int? classId, int? sectionId, int? sessionId, int page, int size, string? search = null, DateTime? fromDate = null, DateTime? toDate = null);
+        Task<IEnumerable<dynamic>> GetStudentPaymentDetailsAsync(int orgId, int studentId, int? sessionId);
         Task StreamDailyCollectionCsvAsync(int orgId, DateTime from, DateTime to, string? mode, Stream output, CancellationToken ct = default);
         Task StreamClassOutstandingCsvAsync(int orgId, int classId, int termId, int sessionId, Stream output, CancellationToken ct = default);
         Task StreamStudentOutstandingCsvAsync(int orgId, int classId, string? search, Stream output, CancellationToken ct = default);

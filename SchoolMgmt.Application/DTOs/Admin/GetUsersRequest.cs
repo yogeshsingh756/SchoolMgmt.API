@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +12,8 @@ namespace SchoolMgmt.Application.DTOs.Admin
         public int PageSize { get; set; } = 10;
         public string? Search { get; set; }
         public string? StatusFilter { get; set; }
+        public int? ClassId { get; set; }
+        public string? StudentType { get; set; }
     }
     public class ParentSearchRequest
     {

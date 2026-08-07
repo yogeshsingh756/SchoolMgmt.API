@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using SchoolMgmt.Shared.Interfaces;
 using SchoolMgmt.Shared.Models.Reports;
 using SchoolMgmt.Shared.Responses;
@@ -63,6 +63,41 @@ namespace SchoolMgmt.Infrastructure.Repositories
             return await conn.QueryAsync<StudentLedgerEntryDto>(
                 "sp_Report_StudentLedger",
                 new { p_OrganizationId = orgId, p_StudentId = studentId, p_FromDate = from, p_ToDate = to },
+                commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<(IEnumerable<dynamic> Dues, int TotalCount, dynamic? Summary)> GetStudentFeeDuesAsync(int orgId, int? classId, int? sectionId, int? sessionId, int page, int size, string? search = null, DateTime? fromDate = null, DateTime? toDate = null)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            using var multi = await conn.QueryMultipleAsync(
+                "sp_Report_StudentFeeDues",
+                new
+                {
+                    p_OrganizationId = orgId,
+                    p_ClassId = classId,
+                    p_SectionId = sectionId,
+                    p_SessionId = sessionId,
+                    p_PageNumber = page,
+                    p_PageSize = size,
+                    p_Search = search ?? string.Empty,
+                    p_FromDate = fromDate?.Date,
+                    p_ToDate = toDate?.Date
+                },
+                commandType: CommandType.StoredProcedure);
+            var dues = (await multi.ReadAsync()).ToList();
+            var totalCount = (await multi.ReadFirstOrDefaultAsync<int?>()) ?? dues.Count;
+            dynamic? summary = null;
+            if (!multi.IsConsumed)
+                summary = await multi.ReadFirstOrDefaultAsync();
+            return (dues, totalCount, summary);
+        }
+
+        public async Task<IEnumerable<dynamic>> GetStudentPaymentDetailsAsync(int orgId, int studentId, int? sessionId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            return await conn.QueryAsync(
+                "sp_Report_StudentPaymentDetails",
+                new { p_OrganizationId = orgId, p_StudentId = studentId, p_SessionId = sessionId },
                 commandType: CommandType.StoredProcedure);
         }
 

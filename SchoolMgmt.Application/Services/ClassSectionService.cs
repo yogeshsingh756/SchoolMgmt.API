@@ -1,4 +1,4 @@
-﻿using SchoolMgmt.Application.DTOs.Admin;
+using SchoolMgmt.Application.DTOs.Admin;
 using SchoolMgmt.Application.Interfaces;
 using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Infrastructure.Repositories;
@@ -31,7 +31,9 @@ namespace SchoolMgmt.Application.Services
                 ClassTeacherId = c.ClassTeacherId,
                 ClassTeacherName = c.ClassTeacherName,
                 OrderNo = c.OrderNo,
-                IsActive = c.IsActive
+                IsActive = c.IsActive,
+                SectionCount = c.SectionCount,
+                SectionNames = c.SectionNames
             });
         }
 

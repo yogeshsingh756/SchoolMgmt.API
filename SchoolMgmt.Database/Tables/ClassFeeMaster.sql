@@ -1,11 +1,11 @@
--- Table: ClassFeeMaster
--- Extracted from phpMyAdmin structure dump
+-- Table: ClassFeeMaster (with SectionId)
 
 CREATE TABLE `ClassFeeMaster` (
   `ClassFeeId` int NOT NULL,
   `OrganizationId` int NOT NULL,
   `ClassId` int NOT NULL,
   `Section` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `SectionId` int DEFAULT NULL,
   `TermId` int DEFAULT NULL,
   `SessionId` int DEFAULT NULL,
   `FeeTypeId` int NOT NULL,
@@ -19,10 +19,10 @@ CREATE TABLE `ClassFeeMaster` (
   `ModifiedOn` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Indexes / AUTO_INCREMENT / Constraints
 ALTER TABLE `ClassFeeMaster`
   ADD PRIMARY KEY (`ClassFeeId`),
-  ADD KEY `ix_class` (`OrganizationId`,`ClassId`,`FeeTypeId`,`IsDeleted`);
+  ADD KEY `ix_class` (`OrganizationId`,`ClassId`,`FeeTypeId`,`IsDeleted`),
+  ADD KEY `ix_classfee_section` (`SectionId`);
 
 ALTER TABLE `ClassFeeMaster`
   MODIFY `ClassFeeId` int NOT NULL AUTO_INCREMENT;

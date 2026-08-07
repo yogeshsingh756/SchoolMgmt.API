@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +16,7 @@ namespace SchoolMgmt.Application.DTOs.Admin
         public string? AcademicYear { get; set; }
         public int? OrderNo { get; set; }
         public bool IsActive { get; set; } = true;
+        public int? SectionCount { get; set; }
+        public string? SectionNames { get; set; }
     }
 }

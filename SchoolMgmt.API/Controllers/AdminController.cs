@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolMgmt.Application.DTOs.Admin;
 using SchoolMgmt.Application.DTOs.User;
@@ -392,10 +392,6 @@ namespace SchoolMgmt.API.Controllers
                 return BadRequestResponse("Invalid organization context.", "INVALID_ORG");
 
             var result = await _adminService.GetAllUsersAsync(orgId, req);
-
-            if (!result.Users.Any())
-                return OkResponse("No users found for the current organization.");
-
             return OkResponse(result, "Fetched users successfully.");
         }
 
@@ -407,10 +403,6 @@ namespace SchoolMgmt.API.Controllers
                 return BadRequestResponse("Invalid organization context.", "INVALID_ORG");
 
             var result = await _adminService.GetAllStudentUsersAsync(orgId, req);
-
-            if (!result.Users.Any())
-                return NotFoundResponse("No users found for the current organization.");
-
             return OkResponse(result, "Fetched student users successfully.");
         }
 
@@ -422,10 +414,6 @@ namespace SchoolMgmt.API.Controllers
                 return BadRequestResponse("Invalid organization context.", "INVALID_ORG");
 
             var result = await _adminService.GetAllParentUsersAsync(orgId, req);
-
-            if (!result.Users.Any())
-                return NotFoundResponse("No users found for the current organization.");
-
             return OkResponse(result, "Fetched parent users successfully.");
         }
 
@@ -437,10 +425,6 @@ namespace SchoolMgmt.API.Controllers
                 return BadRequestResponse("Invalid organization context.", "INVALID_ORG");
 
             var result = await _adminService.GetAllTeacherUsersAsync(orgId, req);
-
-            if (!result.Users.Any())
-                return NotFoundResponse("No users found for the current organization.");
-
             return OkResponse(result, "Fetched teacher users successfully.");
         }
 

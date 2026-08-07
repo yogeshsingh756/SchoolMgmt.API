@@ -42,10 +42,10 @@ CREATE PROCEDURE `sp_Admin_User_GetAll` (IN `p_OrganizationId` INT, IN `p_PageNu
 
         CASE WHEN r.RoleName = 'Student' THEN s.AdmissionNo ELSE NULL END AS AdmissionNo,
         CASE WHEN r.RoleName = 'Student' THEN s.CurrentClassId ELSE NULL END AS CurrentClassId,
-
-
-        CASE WHEN r.RoleName = 'Student' THEN c.ClassName ELSE NULL END AS ClassName,   -- CHANGED
-        
+        CASE WHEN r.RoleName = 'Student' THEN s.CurrentSectionId ELSE NULL END AS CurrentSectionId,
+        CASE WHEN r.RoleName = 'Student' THEN c.ClassName ELSE NULL END AS ClassName,
+        CASE WHEN r.RoleName = 'Student' THEN sec.SectionName ELSE NULL END AS SectionName,
+        CASE WHEN r.RoleName = 'Student' THEN s.StudentType ELSE NULL END AS StudentType,
 
         CASE WHEN r.RoleName = 'Student' THEN s.MotherName ELSE NULL END AS MotherName,
         CASE WHEN r.RoleName = 'Student' THEN s.FatherName ELSE NULL END AS FatherName
@@ -60,7 +60,8 @@ CREATE PROCEDURE `sp_Admin_User_GetAll` (IN `p_OrganizationId` INT, IN `p_PageNu
         LEFT JOIN Students s ON s.UserId = u.UserId AND s.OrganizationId = u.OrganizationId
 
        
-        LEFT JOIN Classes c ON c.ClassId = s.CurrentClassId AND c.OrganizationId = u.OrganizationId   
+        LEFT JOIN Classes c ON c.ClassId = s.CurrentClassId AND c.OrganizationId = u.OrganizationId
+        LEFT JOIN Sections sec ON sec.SectionId = s.CurrentSectionId AND sec.OrganizationId = u.OrganizationId   
 
     WHERE 
         u.OrganizationId = p_OrganizationId

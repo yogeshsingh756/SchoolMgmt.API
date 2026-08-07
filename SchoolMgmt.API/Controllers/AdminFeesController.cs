@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolMgmt.Application.Interfaces;
@@ -48,8 +48,11 @@ namespace SchoolMgmt.API.Controllers
         public async Task<IActionResult> UpsertClassFee([FromBody] ClassFeeMaster dto)
         {
             var userId = GetCurrentUserId();
-            var id = await _svc.UpsertClassFeeAsync(dto, userId);
-            return OkResponse(new { classFeeId = id }, "Saved class fee.");
+            var orgId = GetOrgIdFromClaims();
+            var payload = dto with { OrganizationId = orgId > 0 ? orgId : dto.OrganizationId };
+            var (id, success, message) = await _svc.UpsertClassFeeAsync(payload, userId);
+            if (!success) return BadRequestResponse(message);
+            return OkResponse(new { classFeeId = id }, message);
         }
 
         [HttpDelete("class-fees/{classFeeId}")]
@@ -139,7 +142,92 @@ namespace SchoolMgmt.API.Controllers
             var orgId = GetOrgIdFromClaims();
             var userId = GetCurrentUserId();
             var result = await _svc.CreatePaymentAsync(orgId, req, userId);
-            return OkResponse(result, "Payment created & allocated.");
+            if (!result.Success) return BadRequestResponse(result.Message);
+            return OkResponse(new
+            {
+                paymentId = result.PaymentId,
+                receiptNo = result.ReceiptNo,
+                allocated = result.Allocated,
+                unallocated = result.Unallocated
+            }, result.Message);
+        }
+
+        [HttpGet("payments/{paymentId}")]
+        public async Task<IActionResult> GetPaymentById(int paymentId)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var result = await _svc.GetPaymentByIdAsync(orgId, paymentId);
+            if (result.Header == null) return NotFoundResponse("Payment not found.");
+            return OkResponse(new { header = result.Header, allocations = result.Allocations }, "Fetched payment.");
+        }
+
+        [HttpGet("balances")]
+        public async Task<IActionResult> GetStudentFeeBalances(
+            [FromQuery] int classId,
+            [FromQuery] int? sectionId = null,
+            [FromQuery] int? sessionId = null,
+            [FromQuery] string? search = null)
+        {
+            if (classId <= 0) return BadRequestResponse("Class is required.");
+            var orgId = GetOrgIdFromClaims();
+            var data = await _svc.GetStudentFeeBalancesAsync(orgId, classId, sectionId, sessionId, search);
+            return OkResponse(data, "Fetched student fee balances.");
+        }
+
+        [HttpGet("old-fees/{studentId}")]
+        public async Task<IActionResult> GetOldFee(int studentId)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var data = await _svc.GetOldFeeByStudentAsync(orgId, studentId);
+            return OkResponse(data, "Fetched old fee.");
+        }
+
+        [HttpPost("old-fees")]
+        public async Task<IActionResult> UpsertOldFee([FromBody] StudentOldFeeUpsert dto)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var userId = GetCurrentUserId();
+            var (id, success, message) = await _svc.UpsertOldFeeAsync(orgId, dto, userId);
+            if (!success) return BadRequestResponse(message);
+            return OkResponse(new { oldFeeId = id }, message);
+        }
+
+        [HttpDelete("old-fees/{oldFeeId}")]
+        public async Task<IActionResult> DeleteOldFee(int oldFeeId)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var userId = GetCurrentUserId();
+            var (success, message) = await _svc.DeleteOldFeeAsync(orgId, oldFeeId, userId);
+            if (!success) return BadRequestResponse(message);
+            return OkResponse(message);
+        }
+
+        [HttpGet("student-concessions/{studentId}")]
+        public async Task<IActionResult> GetStudentConcession(int studentId)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var data = await _svc.GetStudentConcessionByStudentAsync(orgId, studentId);
+            return OkResponse(data, "Fetched student concession.");
+        }
+
+        [HttpPost("student-concessions")]
+        public async Task<IActionResult> UpsertStudentConcession([FromBody] StudentConcessionUpsert dto)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var userId = GetCurrentUserId();
+            var (id, success, message) = await _svc.UpsertStudentConcessionAsync(orgId, dto, userId);
+            if (!success) return BadRequestResponse(message);
+            return OkResponse(new { concessionId = id }, message);
+        }
+
+        [HttpDelete("student-concessions/{concessionId}")]
+        public async Task<IActionResult> DeleteStudentConcession(int concessionId)
+        {
+            var orgId = GetOrgIdFromClaims();
+            var userId = GetCurrentUserId();
+            var (success, message) = await _svc.DeleteStudentConcessionAsync(orgId, concessionId, userId);
+            if (!success) return BadRequestResponse(message);
+            return OkResponse(message);
         }
 
         [HttpGet("students")]
@@ -155,13 +243,14 @@ namespace SchoolMgmt.API.Controllers
             [FromQuery] int size = 10,
             [FromQuery] string? search = null,
             [FromQuery] int? classId = null,
+            [FromQuery] int? sectionId = null,
             [FromQuery] string? paymentMode = null,
             [FromQuery] DateTime? fromDate = null,
             [FromQuery] DateTime? toDate = null)
         {
             var orgId = GetOrgIdFromClaims();
             var result = await _svc.GetPaymentsAsync(
-                orgId, page, size, search, classId, paymentMode, fromDate, toDate);
+                orgId, page, size, search, classId, sectionId, paymentMode, fromDate, toDate);
             return OkResponse(new { payments = result.Payments, totalCount = result.TotalCount }, "Fetched payments.");
         }
 

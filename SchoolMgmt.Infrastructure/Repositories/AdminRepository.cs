@@ -1,4 +1,4 @@
-﻿using Azure.Core;
+using Azure.Core;
 using Dapper;
 using SchoolMgmt.Domain.Entities;
 using SchoolMgmt.Shared.Interfaces;
@@ -90,7 +90,8 @@ namespace SchoolMgmt.Infrastructure.Repositories
     string? address = null,
     string? admissionNo = null,
     int? parentId = null,
-    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null, string? FatherName = null)
+    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null, string? FatherName = null,
+    int? sectionId = null, string? studentType = null)
         {
             using var conn = _dbFactory.CreateConnection();
 
@@ -118,6 +119,8 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("@p_MotherName", MotherName);
             parameters.Add("@p_Category", Category);
             parameters.Add("@p_FatherName", FatherName);
+            parameters.Add("@p_SectionId", sectionId);
+            parameters.Add("@p_StudentType", studentType);
 
             var result = await conn.QueryFirstOrDefaultAsync<SpResult>(
                 "sp_User_Create", parameters, commandType: CommandType.StoredProcedure);
@@ -138,7 +141,8 @@ namespace SchoolMgmt.Infrastructure.Repositories
     string? address = null,
     string? admissionNo = null,
     int? parentId = null,
-    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null, string? FatherName = null)
+    int? classId = null, string? Gender = null, string? MotherName = null, string? Category = null, string? FatherName = null,
+    int? sectionId = null, string? studentType = null)
         {
             using var conn = _dbFactory.CreateConnection();
             var parameters = new DynamicParameters();
@@ -164,6 +168,8 @@ namespace SchoolMgmt.Infrastructure.Repositories
             parameters.Add("@p_MotherName", MotherName);
             parameters.Add("@p_Category", Category);
             parameters.Add("@p_FatherName", FatherName);
+            parameters.Add("@p_SectionId", sectionId);
+            parameters.Add("@p_StudentType", studentType);
 
             var result = await conn.QueryFirstOrDefaultAsync<SpResult>(
                 "sp_User_Update", parameters, commandType: CommandType.StoredProcedure);
@@ -322,7 +328,8 @@ namespace SchoolMgmt.Infrastructure.Repositories
         }
 
         public async Task<(IEnumerable<AdminUserDbEntity> Users, int TotalCount)> GetAllStudentUsersAsync(
-            int organizationId, int pageNumber, int pageSize, string? search, string? statusFilter)
+            int organizationId, int pageNumber, int pageSize, string? search, string? statusFilter,
+            int? classId = null, string? studentType = null)
         {
             using var conn = _dbFactory.CreateConnection();
 
@@ -335,7 +342,9 @@ namespace SchoolMgmt.Infrastructure.Repositories
                     p_PageSize = pageSize,
                     p_Search = search,
                     p_StatusFilter = statusFilter,
-                    p_IsDropdown = 0
+                    p_IsDropdown = 0,
+                    p_ClassId = classId,
+                    p_StudentType = studentType
                 },
                 commandType: CommandType.StoredProcedure
             );
@@ -444,6 +453,100 @@ namespace SchoolMgmt.Infrastructure.Repositories
                 PageSize = PageSize,
                 TotalCount = total
             };
+        }
+
+        public async Task<IEnumerable<AdmissionNoPrefixDto>> GetAdmissionPrefixesAsync(int organizationId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            return await conn.QueryAsync<AdmissionNoPrefixDto>(
+                "sp_Admin_AdmissionNoPrefix_GetAll",
+                new { p_OrganizationId = organizationId },
+                commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<(bool Success, int NewId, string Message)> UpsertAdmissionPrefixAsync(
+            int organizationId, AdmissionNoPrefixUpsertRequest req, int userId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            var result = await conn.QueryFirstOrDefaultAsync<dynamic>(
+                "sp_Admin_AdmissionNoPrefix_Upsert",
+                new
+                {
+                    p_PrefixId = req.PrefixId,
+                    p_OrganizationId = organizationId,
+                    p_ClassId = req.ClassId,
+                    p_Prefix = req.Prefix,
+                    p_PadLength = req.PadLength <= 0 ? 2 : req.PadLength,
+                    p_IsActive = req.IsActive ? 1 : 0,
+                    p_ModifiedBy = userId
+                },
+                commandType: CommandType.StoredProcedure);
+
+            if (result == null)
+                return (false, 0, "Procedure returned no response.");
+
+            int success = (int)result.SuccessFlag;
+            int newId = result.NewId == null ? 0 : (int)result.NewId;
+            string message = (string)result.Message;
+            return (success == 1, newId, message);
+        }
+
+        public async Task<(bool Success, string Message)> DeleteAdmissionPrefixAsync(int organizationId, int prefixId, int userId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            var result = await conn.QueryFirstOrDefaultAsync<SpResult>(
+                "sp_Admin_AdmissionNoPrefix_Delete",
+                new
+                {
+                    p_PrefixId = prefixId,
+                    p_OrganizationId = organizationId,
+                    p_ModifiedBy = userId
+                },
+                commandType: CommandType.StoredProcedure);
+
+            if (result == null)
+                return (false, "Procedure returned no response.");
+
+            return (result.SuccessFlag == 1, result.Message);
+        }
+
+        public async Task<(bool Success, string? AdmissionNo, string Message)> AllocateNextAdmissionNoAsync(int organizationId, int classId)
+        {
+            using var conn = _dbFactory.CreateConnection();
+            if (conn.State != ConnectionState.Open)
+                conn.Open();
+
+            using var tx = conn.BeginTransaction();
+            try
+            {
+                var result = await conn.QueryFirstOrDefaultAsync<dynamic>(
+                    "sp_Admin_AdmissionNo_Next",
+                    new { p_OrganizationId = organizationId, p_ClassId = classId },
+                    transaction: tx,
+                    commandType: CommandType.StoredProcedure);
+
+                if (result == null)
+                {
+                    tx.Rollback();
+                    return (false, null, "Procedure returned no response.");
+                }
+
+                int success = (int)result.SuccessFlag;
+                string? admissionNo = result.AdmissionNo == null ? null : (string)result.AdmissionNo;
+                string message = (string)result.Message;
+
+                if (success == 1)
+                    tx.Commit();
+                else
+                    tx.Rollback();
+
+                return (success == 1, admissionNo, message);
+            }
+            catch
+            {
+                tx.Rollback();
+                throw;
+            }
         }
     }
 }

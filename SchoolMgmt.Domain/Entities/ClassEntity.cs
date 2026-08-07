@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +18,8 @@ namespace SchoolMgmt.Domain.Entities
         public int? OrderNo { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
+        public int? SectionCount { get; set; }
+        public string? SectionNames { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? CreatedOn { get; set; }
         public int? ModifiedBy { get; set; }

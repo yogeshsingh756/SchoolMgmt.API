@@ -1,4 +1,4 @@
-﻿using SchoolMgmt.Application.DTOs.Admin;
+using SchoolMgmt.Application.DTOs.Admin;
 using SchoolMgmt.Application.DTOs.SuperAdmin;
 using SchoolMgmt.Application.DTOs.User;
 using SchoolMgmt.Domain.Entities;
@@ -32,5 +32,11 @@ namespace SchoolMgmt.Application.Interfaces
         Task<IEnumerable<RoleDto>> GetAssignableRolesForAdminAsync(int adminId);
         Task<PaginatedResponse<ParentDto>> GetParentsAsync(ParentSearchRequest request, int organizationId);
         Task<PaginatedUserResponse> GetAllStudentUsersAsync(int organizationId, GetUsersRequest req);
+
+        Task<IEnumerable<AdmissionNoPrefixDto>> GetAdmissionPrefixesAsync(int organizationId);
+        Task<(bool Success, int NewId, string Message)> UpsertAdmissionPrefixAsync(
+            int organizationId, AdmissionNoPrefixUpsertRequest req, int userId);
+        Task<(bool Success, string Message)> DeleteAdmissionPrefixAsync(int organizationId, int prefixId, int userId);
+        Task<(bool Success, string? AdmissionNo, string Message)> AllocateNextAdmissionNoAsync(int organizationId, int classId);
     }
 }

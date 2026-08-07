@@ -9,6 +9,8 @@ CREATE TABLE `Students` (
   `AdmissionDate` date DEFAULT NULL,
   `ParentId` int DEFAULT NULL,
   `CurrentClassId` int DEFAULT NULL,
+  `CurrentSectionId` int DEFAULT NULL,
+  `StudentType` enum('Regular','Private') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Regular',
   `Status` enum('Active','Graduated','Left') COLLATE utf8mb4_general_ci DEFAULT 'Active',
   `IsDeleted` tinyint(1) DEFAULT '0',
   `CreatedOn` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -25,6 +27,7 @@ ALTER TABLE `Students`
   ADD KEY `UserId` (`UserId`),
   ADD KEY `ParentId` (`ParentId`),
   ADD KEY `CurrentClassId` (`CurrentClassId`),
+  ADD KEY `idx_students_section` (`CurrentSectionId`),
   ADD KEY `idx_students_org` (`OrganizationId`),
   ADD KEY `idx_students_org_class` (`OrganizationId`,`CurrentClassId`);
 
@@ -34,4 +37,5 @@ ALTER TABLE `Students`
 ALTER TABLE `Students`
   ADD CONSTRAINT `Students_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`UserId`) ON DELETE CASCADE,
   ADD CONSTRAINT `Students_ibfk_3` FOREIGN KEY (`CurrentClassId`) REFERENCES `Classes` (`ClassId`),
-  ADD CONSTRAINT `Students_ibfk_4` FOREIGN KEY (`OrganizationId`) REFERENCES `Organizations` (`OrganizationId`) ON DELETE CASCADE;
+  ADD CONSTRAINT `Students_ibfk_4` FOREIGN KEY (`OrganizationId`) REFERENCES `Organizations` (`OrganizationId`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_students_section` FOREIGN KEY (`CurrentSectionId`) REFERENCES `Sections` (`SectionId`) ON DELETE SET NULL;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +23,9 @@ namespace SchoolMgmt.Shared.Models.Admin
 
         public int? ClassId { get; set; }
         public string? ClassName { get; set; }
+        public int? SectionId { get; set; }
+        public string? SectionName { get; set; }
+        public string? StudentType { get; set; }
 
         // 🔹 for dropdown selected value
         public int? ParentId { get; set; }

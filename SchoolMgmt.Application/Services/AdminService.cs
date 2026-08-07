@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using SchoolMgmt.Application.DTOs.Admin;
 using SchoolMgmt.Application.DTOs.SuperAdmin;
 using SchoolMgmt.Application.DTOs.User;
@@ -58,7 +58,9 @@ namespace SchoolMgmt.Application.Services
         req.Gender,
                 req.MotherName,
                 req.Category,
-                req.FatherName
+                req.FatherName,
+                req.SectionId,
+                req.StudentType
     );
         }
         public async Task<AdminDashboardDto> GetDashboardAsync(int organizationId)
@@ -95,7 +97,9 @@ namespace SchoolMgmt.Application.Services
         req.Gender,
                 req.MotherName,
                 req.Category,
-                req.FatherName
+                req.FatherName,
+                req.SectionId,
+                req.StudentType
     );
         }
 
@@ -156,6 +160,9 @@ namespace SchoolMgmt.Application.Services
                 AdmissionNo = u.AdmissionNo,
                 CurrentClassId = u.CurrentClassId,
                 ClassName = u.ClassName,
+                CurrentSectionId = u.CurrentSectionId,
+                SectionName = u.SectionName,
+                StudentType = u.StudentType,
                 Gender = u.Gender,
                 Category = u.Category,
                 MotherName = u.MotherName,
@@ -174,12 +181,15 @@ namespace SchoolMgmt.Application.Services
         public async Task<PaginatedUserResponse> GetAllStudentUsersAsync(int organizationId, GetUsersRequest req)
         {
             var (usersDb, total) = await _repo.GetAllStudentUsersAsync(
-                organizationId, req.PageNumber, req.PageSize, req.Search, req.StatusFilter);
+                organizationId, req.PageNumber, req.PageSize, req.Search, req.StatusFilter,
+                req.ClassId, req.StudentType);
 
             var mapped = usersDb.Select(u => new AdminUserDto
             {
                 UserId = u.UserId,
                 FullName = u.FullName,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
                 Username = u.Username,
                 Email = u.Email,
                 Phone = u.Phone,
@@ -198,6 +208,9 @@ namespace SchoolMgmt.Application.Services
                 AdmissionNo = u.AdmissionNo,
                 CurrentClassId = u.CurrentClassId,
                 ClassName = u.ClassName,
+                CurrentSectionId = u.CurrentSectionId,
+                SectionName = u.SectionName,
+                StudentType = u.StudentType,
                 Gender = u.Gender,
                 Category = u.Category,
                 MotherName = u.MotherName,
@@ -302,5 +315,18 @@ namespace SchoolMgmt.Application.Services
         {
             return await _repo.GetParentsAsync(request.PageNumber,request.PageSize,request.SearchTerm, organizationId);
         }
+
+        public Task<IEnumerable<AdmissionNoPrefixDto>> GetAdmissionPrefixesAsync(int organizationId)
+            => _repo.GetAdmissionPrefixesAsync(organizationId);
+
+        public Task<(bool Success, int NewId, string Message)> UpsertAdmissionPrefixAsync(
+            int organizationId, AdmissionNoPrefixUpsertRequest req, int userId)
+            => _repo.UpsertAdmissionPrefixAsync(organizationId, req, userId);
+
+        public Task<(bool Success, string Message)> DeleteAdmissionPrefixAsync(int organizationId, int prefixId, int userId)
+            => _repo.DeleteAdmissionPrefixAsync(organizationId, prefixId, userId);
+
+        public Task<(bool Success, string? AdmissionNo, string Message)> AllocateNextAdmissionNoAsync(int organizationId, int classId)
+            => _repo.AllocateNextAdmissionNoAsync(organizationId, classId);
     }
 }

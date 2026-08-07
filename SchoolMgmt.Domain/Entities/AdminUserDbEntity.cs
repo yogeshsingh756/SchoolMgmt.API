@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,8 +30,10 @@ namespace SchoolMgmt.Domain.Entities
 
         public string? AdmissionNo { get; set; }
         public int? CurrentClassId { get; set; }
-
         public string? ClassName { get; set; }
+        public int? CurrentSectionId { get; set; }
+        public string? SectionName { get; set; }
+        public string? StudentType { get; set; }
 
         public string? Gender { get; set; }
         public string? Category { get; set; }
